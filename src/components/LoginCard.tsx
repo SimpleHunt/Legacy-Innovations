@@ -5,7 +5,7 @@ import z from "zod";
 import Logo from "./Logo";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import InputFieldLogin from "./inputFieldLogin";
+import InputFieldLogin from "./InputFieldLogin";
 import Link from "next/link";
 
 const schema = z.object({
@@ -63,7 +63,7 @@ const LoginCard = ({
           error={errors?.password} 
         />
       </div>
-      <Link href="/admin">
+      <Link href="/dashboard">
       <button className=" bg-blue-400 text-white gap-2 p-2 rounded-md w-full mt-4">
         {type = "Login IN"}
       </button>

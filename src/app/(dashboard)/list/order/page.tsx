@@ -44,11 +44,11 @@ const OrderListPage = () => {
     >
       <td>
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.id}</h3>
+          <h3 className="font-semibold py-4 ">{item.id}</h3>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.customerID}</td>
-      <td className="hidden md:table-cell">{item.productID}</td>
+      <td className="hidden md:table-cell py-4 ">{item.customerID}</td>
+      <td className="hidden md:table-cell py-4">{item.productID}</td>
       
       <td>
         <div className="flex items-center gap-2">

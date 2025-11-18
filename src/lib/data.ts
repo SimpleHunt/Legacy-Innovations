@@ -74,6 +74,17 @@ export const CustomerData = [
  
 ];
 
+// YOU SHOULD CHANGE THE DATES OF THE EVENTS TO THE CURRENT DATE TO SEE THE EVENTS ON THE CALENDAR
+export const calendarEvents = [
+  {
+    title: "Test",
+    allDay: false,
+    start: new Date(2024, 7, 12, 8, 0),
+    end: new Date(2024, 7, 12, 8, 45),
+  },
+  
+];
+
 
 
 

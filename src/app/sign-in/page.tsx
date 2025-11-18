@@ -11,7 +11,7 @@ const LoginPage = () => {
         <LoginCard  type="Login IN"/>
         
         <div className="text-center text-sm mt-6 text-gray-600">
-          2025 © — By <span className="text-blue-500">SmartHub</span>
+          2025 © — By <span className="text-blue-500">Simple Hunt</span>
         </div>
       </div>
     </div>
