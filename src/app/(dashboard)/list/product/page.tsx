@@ -2,21 +2,15 @@ import FormModal from '@/components/FromModel';
 import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
 import TableSearch from '@/components/TableSearch'
+import { ProductTable } from '@/generated';
+import { prisma } from '@/lib/prisma';
 import { role, productsData } from "@/lib/data";
 import Image from "next/image";
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
+import { ITEM_PER_PAGE } from '@/lib/settings';
 
-type Product = {
-  id: number;
-  productName: string;
-  type: string;
-  photo: string;
-  size: string;
-  Desc: string[];
-  climate: string;
-  tareene: string;
-};
+
 
 const columns = [
   {
@@ -62,8 +56,7 @@ const columns = [
   },
 ];
 
-const ProductListPage = () => {
-    const renderRow = (item: Product) => (
+const renderRow = (item: ProductTable) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
@@ -73,20 +66,21 @@ const ProductListPage = () => {
           <h3 className="font-semibold">{item.productName}</h3>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.Desc}</td>
-      <td className="hidden md:table-cell">{item.type}</td>
-      <td className="hidden md:table-cell">{item.size}</td>
+      <td className="hidden md:table-cell">{item.productDes}</td>
+      <td className="hidden md:table-cell">{item.productType}</td>
+      <td className="hidden md:table-cell">{item.productSize}</td>
       <td className="hidden md:table-cell">{item.climate}</td>
-      <td className="hidden md:table-cell">{item.tareene}</td>
+      <td className="hidden md:table-cell">{item.tareena}</td>
 
       <td className="flex items-center gap-4 p-4">
-        <Image
+        {/* <Image
           src={item.photo}
           alt=""
           width={40}
           height={40}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-        />
+        /> */}
+        image
         
       </td>
       
@@ -99,17 +93,24 @@ const ProductListPage = () => {
               <Image src="/view.png" alt="" width={16} height={16} />
             </button>
           {/* </Link> */}
-          {role === "admin" && (
+          {/* {role === "admin" && (
                 // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
                 // <Image src="/delete.png" alt="" width={16} height={16} />
                 // </button>
                 <FormModal table="product" type="delete" id={item.id}/>
-            )}
+            )} */}
           
         </div>
       </td>
     </tr>
   );
+
+const ProductListPage = async () => {
+
+  const products = await prisma.ProductTable.findMany()
+
+  console.log(products)
+    
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -124,12 +125,12 @@ const ProductListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-             {role === "admin" && (
+             {/* {role === "admin" && (
               // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               //   <Image src="/plus.png" alt="" width={14} height={14} />
               // </button>
               <FormModal table="product" type="create"/>
-            )}
+            )} */}
           </div>
         </div>
       </div>
