@@ -1,0 +1,125 @@
+"use client";
+
+import Image from "next/image";
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+
+const Login = () => {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        loginUserId: formData.get("loginUserId"),
+        password: formData.get("password"),
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+    setLoading(false);
+
+    if (data.error) {
+      setError(data.error);
+      return;
+    }
+
+    window.location.href = "/dashboard";
+  };
+
+  return (
+    <div className="h-screen w-full flex flex-col md:flex-row bg-[#144E76] items-center justify-center p-4">
+
+      {/* LOGIN CARD */}
+      <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
+        
+        {/* LOGO CENTERED */}
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/LegacyLogo.png"
+            alt="Legacy Logo"
+            width={200}
+            height={110}
+            priority
+          />
+        </div>
+
+        {/* FORM */}
+        <form onSubmit={handleLogin} className="space-y-4">
+          {/* USER ID */}
+          <div>
+            <label className="text-gray-700 font-medium text-sm">Login User ID</label>
+            <input
+              name="loginUserId"
+              type="text"
+              required
+              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-black"
+              placeholder="Enter your User ID"
+            />
+          </div>
+
+          {/* PASSWORD FIELD WITH TOGGLE */}
+          <div className="relative">
+            <label className="text-gray-700 font-medium text-sm">Password</label>
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              required
+              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-black pr-10"
+              placeholder="Enter password"
+            />
+
+            {/* Eye Icon */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[38px] text-gray-500"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          {/* ERROR MESSAGE */}
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+          {/* BUTTON */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-md disabled:opacity-50"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        {/* FOOTER */}
+        <div className="text-center text-xs mt-6 text-gray-600">
+          2025 © — By <span className="text-red-500">Simple Hunt</span>
+        </div>
+      </div>
+
+      {/* RIGHT-SIDE IMAGE (optional for desktop) */}
+      <div className="hidden md:block md:w-[50%] h-full relative ml-10">
+        <Image
+          src="/loginimage.png"
+          alt="Login Background"
+          fill
+          priority
+          quality={100}
+          className="object-cover rounded-xl shadow-lg"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Login;
