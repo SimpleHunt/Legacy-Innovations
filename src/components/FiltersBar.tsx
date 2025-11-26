@@ -24,9 +24,10 @@ export default function FiltersBar({ params, table }: any) {
     ],
     customer: [
       { key: "id", label: "ID" },
-      { key: "name", label: "Customer Name" },
-      { key: "phone", label: "Phone" },
-      { key: "city", label: "City" },
+      { key: "name", label: "Name" },
+      { key: "phone", label: "Mobile" },
+      { key: "email", label: "Email" },
+      { key: "address", label: "Address" },
     ],
     order: [
       { key: "id", label: "ID" },
@@ -43,6 +44,11 @@ export default function FiltersBar({ params, table }: any) {
       { key: "ownerPhone", label: "Phone" },
     ],
     payment: [
+      { key: "id", label: "ID" },
+      { key: "amount", label: "Amount" },
+      { key: "method", label: "Payment Method" },
+    ],
+    factory: [
       { key: "id", label: "ID" },
       { key: "amount", label: "Amount" },
       { key: "method", label: "Payment Method" },

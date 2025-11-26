@@ -6,9 +6,9 @@ import { role } from "@/lib/data1";
 import Image from "next/image";
 import Link from 'next/link';
 import React from 'react'
-import { User } from "@/generated";
+import FiltersBar from "@/components/FiltersBar";
+import { Factory } from "@/generated";
 import { ITEM_PER_PAGE } from '@/lib/settings';
-import FiltersBar from '@/components/FiltersBar';
 
 
 const columns = [
@@ -17,77 +17,46 @@ const columns = [
     accessor: "info",
   },
   {
-    header: "Login UserId",
-    accessor: "loginUserId",
+    header: "Order ID",
+    accessor: "orderID",
     className: "hidden lg:table-cell",
   },
   {
-    header: "Password",
-    accessor: "password",
+    header: "Order Status",
+    accessor: "status",
     className: "hidden lg:table-cell",
   },
   {
-    header: "Email",
-    accessor: "email",
+    header: "delivery Date",
+    accessor: "deliveryDate",
     className: "hidden lg:table-cell",
   },
   {
-    header: "FullName",
-    accessor: "fullName",
+    header: "IsActive",
+    accessor: "isActive",
     className: "hidden lg:table-cell",
   },
-  {
-    header: "Phone",
-    accessor: "phone",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "UserType",
-    accessor: "type",
-    className: "hidden lg:table-cell",
-  },
-  
-  
-  
-  { header: "IsActive", accessor: "isActive", className: "hidden md:table-cell" },
-  
-  
+ 
   {
     header: "Actions",
     accessor: "action",
   },
 ];
-  const renderRow = (item: User) => (
+
+ const renderRow = (item: Factory) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
     >
-        <td className=" md:table-cell py-4 ">#</td>
-        <td>
-        <div className="flex flex-col">
-          <h3 className="font-semibold">{item.loginUserId}</h3>
-        </div>
-      </td>
+        <td className=" md:table-cell py-4">#</td>
       <td>
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.password}</h3>
+          <h3 className="font-semibold">{item.orderId}</h3>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.email}</td>
-      <td className="hidden md:table-cell">{item.fullName}</td>
-      <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.role}</td>
-      <td className="hidden md:table-cell">
-      {item.isActive ? (
-        <span className="px-3 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">
-          Active
-        </span>
-      ) : (
-        <span className="px-3 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">
-          Inactive
-        </span>
-      )}
-    </td>
+      <td className="hidden md:table-cell">{item.orderStatus}</td>
+      <td className="hidden md:table-cell">{item.deliveryDate}</td>
+      <td className="hidden md:table-cell">{item.isActive}</td>
       
       <td>
         <div className="flex items-center gap-2">
@@ -96,22 +65,25 @@ const columns = [
               <Image src="/view.png" alt="" width={16} height={16} />
             </button> */}
           {/* </Link> */}
-          {["SUPER_ADMIN", "ADMIN"].includes(role) && item.isActive &&(
+          {["SUPER_ADMIN", "ADMIN"].includes(role) && (
                 // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
                 // <Image src="/delete.png" alt="" width={16} height={16} />
                 // </button>
-                <FormModal table="users" type="delete" id={item.id}/>
+                <FormModal table="factory" type="delete" id={item.id}/>
             )}
           
         </div>
       </td>
     </tr>
   );
-const FranchiseListPage = async({
+
+const FactoryListPage = async({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
+
+  
 
   // ✅ params MUST be defined here FIRST
     const params = await searchParams;
@@ -125,31 +97,38 @@ const FranchiseListPage = async({
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   
     const res = await fetch(
-      `${baseUrl}/api/users?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${baseUrl}/api/customers?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}&franchiseId=3`,
       { next: { revalidate: 0 } }
     );
   
-    const { users: data, count } = await res.json();
-  
+    const { customer: data, count } = await res.json();
+
+    console.log(data)
+   
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">User List</h1>
+        <h1 className="hidden md:block text-lg font-semibold">Factory List</h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
-            <div className="flex items-center gap-4 self-end">            
-              <FiltersBar params={params} role={role} table="franchise" />            
-              {["SUPER_ADMIN", "ADMIN"].includes(role) && <FormModal table="users" type="create" />}
-            </div>
+          <div className="flex items-center gap-4 self-end">            
+            <FiltersBar params={params} role={role} table="factory"/>            
+            {/* {["SUPER_ADMIN", "ADMIN", "FRANCHISE", "INSALES"].includes(role) && <FormModal table="factory" type="create" />} */}
+          </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={data} />
+      {/* Show table or empty message */}
+        {data.length === 0 ? (
+          <p className="text-center text-gray-500 py-10">No Factory found.</p>
+        ) : (
+          <Table columns={columns} renderRow={renderRow} data={data} />
+        )}
       {/* PAGINATION */}
       <Pagination page={page} count={count} />
     </div>
   )
 }
 
-export default FranchiseListPage
+export default FactoryListPage

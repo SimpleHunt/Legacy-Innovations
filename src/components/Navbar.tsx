@@ -9,22 +9,40 @@ const Navbar = () => {
   const [userOpen, setUserOpen] = useState(false);
   const [notifyOpen, setNotifyOpen] = useState(false);
 
+  const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState("");
+  const [mounted, setMounted] = useState(false);
+
   const userRef = useRef<HTMLDivElement>(null);
   const notifyRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
 
-  // -------- LOGOUT FUNCTION --------
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/logout", {
-        method: "POST",
-      });
 
-      router.replace("/login"); // redirect to login
-    } catch (error) {
-      console.error("Logout failed:", error);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // ---------- Load session after mount ----------
+  useEffect(() => {
+    if (!mounted) return;
+
+    const name = sessionStorage.getItem("fullName");
+    const r = sessionStorage.getItem("role");
+
+    if (!name || !r) {
+      router.replace("/login");
+      return;
     }
+
+    setFullName(name);
+    setRole(r);
+  }, [mounted, router]);
+
+  // -------- LOGOUT FUNCTION --------
+  const handleLogout = () => {
+    sessionStorage.clear();
+    router.replace("/login");
   };
 
   // Close dropdowns when clicking outside
@@ -37,10 +55,12 @@ const Navbar = () => {
         setNotifyOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+ 
+  if (!mounted) return null;
 
   return (
     <div className="flex items-center justify-between p-4 relative">
@@ -68,7 +88,6 @@ const Navbar = () => {
             onClick={() => setNotifyOpen(!notifyOpen)}
           >
             <Image src="/announcement.png" alt="" width={20} height={20} />
-
             <div className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center 
                             bg-purple-500 text-white rounded-full text-[10px]">
               1
@@ -80,15 +99,12 @@ const Navbar = () => {
               <div className="px-4 py-2 text-sm text-gray-600 border-b font-medium">
                 Notifications
               </div>
-
               <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                 New order received
               </div>
-
               <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                 Franchise request pending
               </div>
-
               <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                 System update available
               </div>
@@ -103,8 +119,8 @@ const Navbar = () => {
             onClick={() => setUserOpen(!userOpen)}
           >
             <div className="flex flex-col text-right">
-              <span className="text-xs leading-3 font-medium">Super Admin</span>
-              <span className="text-[10px] text-gray-500 text-right">Admin</span>
+              <span className="text-xs leading-3 font-medium">{fullName}</span>
+              <span className="text-[10px] text-gray-500 text-right">{role}</span>
             </div>
 
             <Image
@@ -124,8 +140,6 @@ const Navbar = () => {
               >
                 Profile
               </Link>
-
-              {/* LOGOUT BUTTON */}
               <button
                 onClick={handleLogout}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-500"

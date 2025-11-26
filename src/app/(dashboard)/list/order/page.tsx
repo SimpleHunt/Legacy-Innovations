@@ -1,3 +1,5 @@
+
+
 import FormModal from '@/components/FromModel';
 import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
@@ -5,10 +7,11 @@ import TableSearch from '@/components/TableSearch'
 import { role } from "@/lib/data1";
 import Image from "next/image";
 import Link from 'next/link';
-import React from 'react'
+//import  { useEffect, useState } from 'react'
 import { Order } from "@/generated";
 import { ITEM_PER_PAGE } from '@/lib/settings';
 import FiltersBar from '@/components/FiltersBar';
+import { getSessionUser } from '@/lib/getSessionUser';
 
 
 
@@ -75,8 +78,13 @@ const renderRow = (item: Order) => (
         </div>
       </td>
       <td className="hidden md:table-cell py-4 ">{item.orderNumber}</td>
-      <td className="hidden md:table-cell py-4">{item.customerId}</td>
-      <td className="hidden md:table-cell py-4">{item.productId}</td>
+      <td className="hidden md:table-cell py-4">
+          {item.customer?.name || "Unknown"}
+        </td>
+
+        <td className="hidden md:table-cell py-4">
+          {item.product?.name || "Unknown"}
+      </td>
       <td className="hidden md:table-cell py-4">{item.climate}</td>
       <td className="hidden md:table-cell py-4">{item.terrain}</td>
       <td className="hidden md:table-cell py-4">
@@ -124,6 +132,12 @@ const OrderListPage = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
 
+  // const [user, setUser] = useState({ fullName: "", role: "", id: "" });
+
+  // useEffect(() => {
+  //   setUser(getSessionUser());
+  // }, []);
+
   // ✅ params MUST be defined here FIRST
     const params = await searchParams;
   
@@ -136,7 +150,7 @@ const OrderListPage = async ({
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   
     const res = await fetch(
-      `${baseUrl}/api/orders?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${baseUrl}/api/orders?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}&franchiseId=3`,
       { next: { revalidate: 0 } }
     );
   
@@ -151,12 +165,17 @@ const OrderListPage = async ({
           <TableSearch />
           <div className="flex items-center gap-4 self-end">            
             <FiltersBar params={params} role={role} table="products"/>            
-            {role === "ADMIN" && <FormModal table="order" type="create" />}
+            {["SUPER_ADMIN", "ADMIN", "FRANCHISE", "INSALES"].includes(role) && <FormModal table="order" type="create" />}
           </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={data} />
+      {/* Show table or empty message */}
+        {data.length === 0 ? (
+          <p className="text-center text-gray-500 py-10">No Orders found.</p>
+        ) : (
+          <Table columns={columns} renderRow={renderRow} data={data} />
+        )}
       {/* PAGINATION */}
       <Pagination page={page} count={count} />
     </div>

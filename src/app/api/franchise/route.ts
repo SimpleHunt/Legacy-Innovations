@@ -51,24 +51,59 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
-// export async function GET() {
-//   try {
-//     const list = await prisma.franchise.findMany({ where: { isActive: true } });
-//     return NextResponse.json(list);
-//   } catch (err) {
-//     return NextResponse.json({ error: String(err) }, { status: 500 });
-//   }
-// }
+
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    if (body.createdBy) body.createdBy = Number(body.createdBy);
 
-    delete body.id;
-    const created = await prisma.franchise.create({ data: body });
-    return NextResponse.json(created, { status: 201 });
+    const {
+      name,
+      code,
+      ownerName,
+      ownerEmail,
+      ownerPhone,
+      address,
+      loginUserId,
+      password,
+      isActive
+    } = body;
+
+    // 🔥 Use transaction to ensure atomic inserts
+    const result = await prisma.$transaction(async (tx) => {
+      // 1️⃣ Create Franchise
+      const franchise = await tx.franchise.create({
+        data: {
+          name,
+          code,
+          ownerName,
+          ownerEmail,
+          ownerPhone,
+          address,
+          isActive: isActive ?? true,
+        }
+      });
+
+      // 2️⃣ Create User linked to Franchise
+      const user = await tx.user.create({
+        data: {
+          fullName: name,
+          phone: ownerPhone,
+          email: ownerEmail,
+          loginUserId,
+          password,     
+          //franchiseId: franchise.id,
+          role: "FRANCHISE",  
+          isActive: true,
+        }
+      });
+
+      return { franchise, user };
+    });
+
+    return NextResponse.json(result, { status: 201 });
   } catch (err) {
+    console.log("Error creating franchise:", err);
     return NextResponse.json({ error: String(err) }, { status: 400 });
   }
 }

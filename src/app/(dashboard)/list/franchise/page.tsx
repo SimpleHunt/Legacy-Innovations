@@ -95,7 +95,7 @@ const columns = [
               <Image src="/view.png" alt="" width={16} height={16} />
             </button> */}
           {/* </Link> */}
-          {role === "ADMIN" && item.isActive &&(
+          {["SUPER_ADMIN", "ADMIN"].includes(role) && item.isActive &&(
                 // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
                 // <Image src="/delete.png" alt="" width={16} height={16} />
                 // </button>
@@ -139,12 +139,18 @@ const FranchiseListPage = async({
           <TableSearch />
             <div className="flex items-center gap-4 self-end">            
               <FiltersBar params={params} role={role} table="franchise" />            
-              {role === "ADMIN" && <FormModal table="franchise" type="create" />}
+              {["SUPER_ADMIN", "ADMIN"].includes(role) && <FormModal table="franchise" type="create" />}
             </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={data} />
+      {/* Show table or empty message */}
+        {data.length === 0 ? (
+          <p className="text-center text-gray-500 py-10">No Franchise found.</p>
+        ) : (
+          <Table columns={columns} renderRow={renderRow} data={data} />
+        )}
+      
       {/* PAGINATION */}
       <Pagination page={page} count={count} />
     </div>

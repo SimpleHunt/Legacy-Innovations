@@ -47,7 +47,7 @@ const onSubmit = handleSubmit(async (formData) => {
       createdById: 1,
     };
 
-    //console.log("PAYLOAD:", payload);
+    console.log("PAYLOAD:", payload);
 
     const res = await axios.post("/api/products", payload);
 

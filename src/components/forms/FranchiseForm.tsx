@@ -10,6 +10,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {  useRouter } from "next/navigation";
 import TextAreaField from "../TextAreaField";
+import bcrypt from "bcryptjs";
 
 
 
@@ -37,6 +38,9 @@ const FranchiseForm = ({
 
   const onSubmit = handleSubmit(async (formData) => {
   try {
+    // 🔐 Hash the password
+    const hashedPassword = await bcrypt.hash(formData.password, 10);
+
     const payload = {
       name: formData.franchiseName,
       code: formData.code,
@@ -44,6 +48,8 @@ const FranchiseForm = ({
       ownerEmail: formData.email,
       ownerPhone: formData.phone,
       address: formData.address,
+      loginUserId: formData.loginUserId,
+      password: hashedPassword,
       isActive: true,
     };
 
@@ -110,6 +116,22 @@ const FranchiseForm = ({
           defaultValue={data?.address}
           register={register}
           error={errors.address}
+        />
+
+
+        <InputField
+          label="User Name"
+          name="loginUserId"
+          defaultValue={data?.loginUserId}
+          register={register}
+          error={errors.loginUserId}
+        />
+        <InputField
+          label="Password"
+          name="password"
+          defaultValue={data?.password}
+          register={register}
+          error={errors.password}
         />
         
         

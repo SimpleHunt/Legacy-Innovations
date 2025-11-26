@@ -20,7 +20,14 @@ const columns = [
   { header: "Price", accessor: "price", className: "hidden md:table-cell" },
   { header: "stock", accessor: "stock", className: "hidden md:table-cell" },
   { header: "IsActive", accessor: "isActive", className: "hidden md:table-cell" },
-  { header: "Actions", accessor: "action" },
+  ...(["SUPER_ADMIN", "ADMIN"].includes(role)
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
 ];
 
 
@@ -50,13 +57,16 @@ const renderRow = (item: Product) => (
       )}
     </td>
 
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "ADMIN" && item.isActive && (
-          <FormModal table="products" type="delete" id={item.id} />
-        )}
-      </div>
-    </td>
+    {["SUPER_ADMIN", "ADMIN"].includes(role) && (
+      <td>
+         <div className="flex items-center gap-2">
+           {item.isActive && (
+           <FormModal table="products" type="delete" id={item.id} />
+          )}
+         </div>
+      </td>
+    )}
+
   </tr>
 );
 
@@ -99,7 +109,7 @@ const ProductListPage = async ({
           <TableSearch />
           <div className="flex items-center gap-4 self-end">            
             <FiltersBar params={params} role={role} table="products"/>            
-            {role === "ADMIN" && <FormModal table="products" type="create" />}
+            {["SUPER_ADMIN", "ADMIN"].includes(role) && <FormModal table="products" type="create" />}
           </div>
         </div>
       </div>

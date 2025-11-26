@@ -39,6 +39,10 @@ export async function GET(req: Request) {
         orderBy: { [sortBy]: sortOrder },
         take,
         skip: take * (page - 1),
+        include: {
+           customer: true,
+           product: true,
+         }
       }),
 
       prisma.order.count({ where }),
@@ -62,7 +66,7 @@ export async function POST(req: NextRequest) {
     if (body.customerId) body.customerId = Number(body.customerId);
     if (body.franchiseId) body.franchiseId = Number(body.franchiseId);
     if (body.employeeId) body.employeeId = Number(body.employeeId);
-
+    console.log(body)
     delete body.id;
     const created = await prisma.order.create({ data: body });
     return NextResponse.json(created, { status: 201 });

@@ -41,7 +41,7 @@ const OrderForm = ({
   useEffect(() => {
   const loadCustomers = async () => {
     try {
-      const customerRes = await axios.get("/api/customers");
+      const customerRes = await axios.get("/api/customers?franchiseId=3");
       const productRes  = await axios.get("/api/products");
 
       setCustomers(customerRes.data.customer);  // ← customer array
@@ -57,13 +57,14 @@ const OrderForm = ({
   const onSubmit = handleSubmit(async (formData) => {
   try {
     const payload = {
-      orderNumber:"ORD003",
+      orderNumber:formData.orderNumber,
       customerId: formData.customerId,
       productId: formData.productId,
       climate: formData.climate,
       terrain: formData.terrain,
       expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
       totalAmount: Number(formData.totalAmount),
+      franchiseId: 3,
 
     };
 

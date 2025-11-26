@@ -27,7 +27,9 @@ export const franchiseSchema = z.object({
   ownerName: z.string().min(1, { message: "Owner Name is required!" }),
   email: z.string().email({ message: "Invalid email address!" }),  
   phone: z.string().min(1, { message: "Phone is required!" }),
-  address: z.string().min(1, { message: "Address is required!" })
+  address: z.string().min(1, { message: "Address is required!" }),
+  loginUserId: z.string().min(1, { message: "Username is required!" }),
+  password: z.string().min(1, { message: "Password is required!" })
 });
 
 export type FranchiseSchema = z.infer<typeof franchiseSchema>;
@@ -37,7 +39,9 @@ export const customerSchema = z.object({
   name: z.string().min(1, { message: "Customer Name is required!" }),
   email: z.string().email({ message: "Invalid email address!" }),  
   phone: z.string().min(1, { message: "Phone is required!" }),
-  address: z.string().min(1, { message: "Address is required!" })
+  address: z.string().min(1, { message: "Address is required!" }),
+  loginUserId: z.string().min(1, { message: "Username is required!" }),
+  password: z.string().min(1, { message: "Password is required!" })
 });
 
 export type CustomerSchema = z.infer<typeof customerSchema>;
@@ -68,6 +72,7 @@ productId: z.coerce
   .min(1, "Expected delivery date is required"),
 
   totalAmount: z.coerce.number().positive("Total amount is required"),
+  
 });
 
 export type OrderSchema = z.infer<typeof orderSchema>;
