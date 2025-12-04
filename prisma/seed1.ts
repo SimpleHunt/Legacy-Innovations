@@ -39,6 +39,7 @@ async function main() {
       name: "Legacy Brick",
       price: 250,
       size: "10 x 20",
+      //description: "Model Description",
       stock: 500,
       createdById: superAdmin.id
     },

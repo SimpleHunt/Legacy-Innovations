@@ -1,20 +1,4 @@
 // TEMPORARY DATA
 
-export let role = "ADMIN";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export let role = "CUSTOMER";
 

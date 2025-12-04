@@ -10,6 +10,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {  useRouter } from "next/navigation";
 import TextAreaField from "../TextAreaField";
+import bcrypt from "bcryptjs";
+import { useEffect } from "react";
 
 
 
@@ -27,6 +29,7 @@ const FranchiseForm = ({
 
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FranchiseSchema>({
     resolver: zodResolver(franchiseSchema),
     defaultValues: data || {},
@@ -35,8 +38,39 @@ const FranchiseForm = ({
    const router = useRouter(); 
 
 
+   useEffect(() => {
+  if (type === "create") {
+    const getLastCode = async () => {
+      try {
+        const res = await axios.get("/api/franchise/lastCode");
+        const lastCode = res.data?.lastCode || "FC00";
+
+        // Extract the numeric part: "FR-002" → 2
+        const lastNumber = parseInt(lastCode.replace("FC", ""), 10);
+
+        // Increment: 2 → 3
+        const nextNumber = lastNumber + 1;
+
+        // Format with padding: 3 → "003"
+        const formatted = `FC${String(nextNumber).padStart(3, "0")}`;
+
+        
+        setValue("code", formatted);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLastCode();
+  }
+}, [type, setValue]);
+
+
   const onSubmit = handleSubmit(async (formData) => {
   try {
+    // 🔐 Hash the password
+    const hashedPassword = await bcrypt.hash(formData.password, 10);
+
     const payload = {
       name: formData.franchiseName,
       code: formData.code,
@@ -44,6 +78,8 @@ const FranchiseForm = ({
       ownerEmail: formData.email,
       ownerPhone: formData.phone,
       address: formData.address,
+      loginUserId: formData.loginUserId,
+      password: hashedPassword,
       isActive: true,
     };
 
@@ -87,7 +123,9 @@ const FranchiseForm = ({
           defaultValue={data?.code}
           register={register}
           error={errors.code}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }}   // 👈 Prevent editing
         />
+
         <InputField
           label="Phone"
           name="phone"
@@ -110,6 +148,22 @@ const FranchiseForm = ({
           defaultValue={data?.address}
           register={register}
           error={errors.address}
+        />
+
+
+        <InputField
+          label="User Name"
+          name="loginUserId"
+          defaultValue={data?.loginUserId}
+          register={register}
+          error={errors.loginUserId}
+        />
+        <InputField
+          label="Password"
+          name="password"
+          defaultValue={data?.password}
+          register={register}
+          error={errors.password}
         />
         
         

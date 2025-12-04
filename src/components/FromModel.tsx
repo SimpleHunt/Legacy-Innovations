@@ -17,15 +17,16 @@ const UserForm = dynamic(() => import("./forms/UserForm"), { loading: () => <h1>
 
 // FIXED: Added onClose support to forms[]
 const forms: {
-  [key: string]: (type: "create" | "update", data?: any, onClose?: () => void) => JSX.Element;
+  [key: string]: (type: "create" | "update", data?: any, onClose?: () => void,onSuccess?: () => void) => JSX.Element;
 } = {
   products: (type, data, onClose) => <ProductForm type={type} data={data} onClose={onClose} />,
   customers: (type, data, onClose) => <CustomerForm type={type} data={data} onClose={onClose} />,
-  order: (type, data, onClose) => <OrderForm type={type} data={data}  onClose={onClose}/>,
+  order: (type, data, onClose) => <OrderForm type={type} data={data}  onClose={onClose} />,
   franchise: (type, data, onClose) => <FranchiseForm type={type} data={data} onClose={onClose}  />,
   payment: (type, data, onClose) => <PaymentForm type={type} data={data} />,
   users: (type, data, onClose) => <UserForm type={type} data={data} onClose={onClose}/>,
 };
+
 
 const FormModal = ({
   table,
@@ -33,10 +34,12 @@ const FormModal = ({
   data,
   id,
 }: {
-  table: "products" | "customers" | "order" | "franchise" | "payment" | "users" ;
+  table: "products" | "customers" | "order" | "franchise" | "payment" | "users" | "factory";
   type: "create" | "update" | "delete";
   data?: any;
   id?: number;
+  onClose?: () => void;
+ 
 }) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =

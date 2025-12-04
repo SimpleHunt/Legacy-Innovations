@@ -94,8 +94,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  loginUserId: 'loginUserId',
   email: 'email',
   password: 'password',
   fullName: 'fullName',
@@ -103,66 +101,66 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  loginUserId: 'loginUserId',
+  id: 'id'
 };
 
 exports.Prisma.FranchiseScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   code: 'code',
-  ownerName: 'ownerName',
-  ownerEmail: 'ownerEmail',
-  ownerPhone: 'ownerPhone',
   address: 'address',
-  isActive: 'isActive',
-  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isActive: 'isActive',
+  ownerEmail: 'ownerEmail',
+  ownerName: 'ownerName',
+  ownerPhone: 'ownerPhone',
+  id: 'id',
+  createdBy: 'createdBy'
 };
 
 exports.Prisma.CustomerScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   email: 'email',
   phone: 'phone',
   address: 'address',
-  isActive: 'isActive',
-  customerType: 'customerType',
-  franchiseId: 'franchiseId',
-  employeeId: 'employeeId',
-  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  customerType: 'customerType',
+  id: 'id',
+  franchiseId: 'franchiseId',
+  createdBy: 'createdBy',
+  employeeId: 'employeeId'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   price: 'price',
   stock: 'stock',
-  description: 'description',
-  size: 'size',
   isActive: 'isActive',
-  createdById: 'createdById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  size: 'size',
+  id: 'id',
+  createdById: 'createdById'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
-  id: 'id',
   orderNumber: 'orderNumber',
-  franchiseId: 'franchiseId',
-  customerId: 'customerId',
-  employeeId: 'employeeId',
-  productId: 'productId',
-  climate: 'climate',
-  terrain: 'terrain',
   status: 'status',
   expectedDeliveryDate: 'expectedDeliveryDate',
   totalAmount: 'totalAmount',
-  isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  climate: 'climate',
+  employeeId: 'employeeId',
+  createdBy: 'createdBy',
+  productId: 'productId',
+  terrain: 'terrain',
+  id: 'id',
+  franchiseId: 'franchiseId',
+  customerId: 'customerId'
 };
 
 exports.Prisma.FactoryScalarFieldEnum = {
@@ -170,19 +168,17 @@ exports.Prisma.FactoryScalarFieldEnum = {
   orderId: 'orderId',
   orderStatus: 'orderStatus',
   deliveryDate: 'deliveryDate',
-  isActive: 'isActive',
   createdAt: 'createdAt'
 };
 
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
-  orderId: 'orderId',
   amount: 'amount',
-  method: 'method',
-  status: 'status',
-  isActive: 'isActive',
+  orderId: 'orderId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status',
+  method: 'method'
 };
 
 exports.Prisma.SortOrder = {
@@ -203,7 +199,7 @@ exports.Role = exports.$Enums.Role = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   FACTORY: 'FACTORY',
-  INSALES: 'INSALES',
+  EMPLOYEE: 'EMPLOYEE',
   FRANCHISE: 'FRANCHISE',
   CUSTOMER: 'CUSTOMER'
 };
@@ -211,8 +207,8 @@ exports.Role = exports.$Enums.Role = {
 exports.Climate = exports.$Enums.Climate = {
   HOT: 'HOT',
   COLD: 'COLD',
-  NORMAL: 'NORMAL',
-  RAINY: 'RAINY'
+  RAINY: 'RAINY',
+  NORMAL: 'NORMAL'
 };
 
 exports.Terrain = exports.$Enums.Terrain = {
@@ -247,7 +243,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\legacyLatest\\src\\generated",
+      "value": "D:\\legacyFinal\\src\\generated",
       "fromEnvVar": null
     },
     "config": {
@@ -261,7 +257,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\legacyLatest\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\legacyFinal\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -284,13 +280,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n  //directUrl = env(\"DIRECT_DATABASE_URL\")\n}\n\nenum Role {\n  SUPER_ADMIN\n  ADMIN\n  FACTORY\n  INSALES\n  FRANCHISE\n  CUSTOMER\n}\n\nenum Climate {\n  HOT\n  COLD\n  NORMAL\n  RAINY\n}\n\nenum Terrain {\n  FLAT\n  HILL\n}\n\nenum PaymentMethod {\n  CASH\n  CARD\n  UPI\n  BANK_TRANSFER\n}\n\nmodel User {\n  id          Int      @id @default(autoincrement())\n  loginUserId String?  @unique\n  email       String?  @unique\n  password    String?\n  fullName    String?\n  phone       String?\n  role        Role\n  isActive    Boolean  @default(true)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  products     Product[]\n  ordersPlaced Order[]     @relation(\"UserOrdersPlaced\")\n  customers    Customer[]\n  franchises   Franchise[]\n}\n\nmodel Franchise {\n  id         Int     @id @default(autoincrement())\n  name       String\n  code       String  @unique\n  ownerName  String?\n  ownerEmail String?\n  ownerPhone String?\n  address    String?\n  isActive   Boolean @default(true)\n\n  createdBy Int?\n  creator   User? @relation(fields: [createdBy], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  orders    Order[]\n  customers Customer[]\n}\n\nmodel Customer {\n  id       Int     @id @default(autoincrement())\n  name     String\n  email    String?\n  phone    String?\n  address  String?\n  isActive Boolean @default(true)\n\n  customerType String?\n\n  franchiseId Int?\n  franchise   Franchise? @relation(fields: [franchiseId], references: [id])\n\n  employeeId Int?\n  employee   User? @relation(fields: [employeeId], references: [id])\n\n  createdBy Int?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  orders Order[]\n}\n\nmodel Product {\n  id          Int    @id @default(autoincrement())\n  name        String\n  price       Float\n  stock       Int    @default(0)\n  description String\n\n  size     String\n  isActive Boolean @default(true)\n\n  createdById Int?\n  createdBy   User? @relation(fields: [createdById], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  orders Order[]\n}\n\nmodel Order {\n  id          Int    @id @default(autoincrement())\n  orderNumber String @unique\n\n  franchiseId Int?\n  franchise   Franchise? @relation(fields: [franchiseId], references: [id])\n\n  customerId Int?\n  customer   Customer? @relation(fields: [customerId], references: [id])\n\n  employeeId Int?\n  employee   User? @relation(\"UserOrdersPlaced\", fields: [employeeId], references: [id])\n\n  productId Int\n  product   Product @relation(fields: [productId], references: [id])\n\n  climate              Climate\n  terrain              Terrain\n  status               String    @default(\"PENDING\")\n  expectedDeliveryDate DateTime?\n  totalAmount          Float     @default(0)\n  isActive             Boolean   @default(true)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  factory  Factory?\n  payments Payment[]\n}\n\nmodel Factory {\n  id           Int       @id @default(autoincrement())\n  orderId      Int       @unique\n  order        Order     @relation(fields: [orderId], references: [id])\n  orderStatus  String    @default(\"PROCESSING\")\n  deliveryDate DateTime?\n  isActive     Boolean   @default(true)\n\n  createdAt DateTime @default(now())\n}\n\nmodel Payment {\n  id      Int   @id @default(autoincrement())\n  orderId Int\n  order   Order @relation(fields: [orderId], references: [id])\n\n  amount   Float\n  method   String // CASH | UPI | CARD\n  status   String  @default(\"PENDING\")\n  isActive Boolean @default(true)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "d05d0d34d7dc115471dfd44df686fa6186fb74f1145e7cc268fb287683c4a81c",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  email         String?     @unique\n  password      String?\n  fullName      String?\n  phone         String?\n  role          Role\n  isActive      Boolean     @default(true)\n  createdAt     DateTime    @default(now())\n  updatedAt     DateTime    @updatedAt\n  loginUserId   String?     @unique\n  id            Int         @id @default(autoincrement())\n  customers     Customer[]\n  franchises    Franchise[]\n  ordersPlaced  Order[]     @relation(\"UserOrdersPlaced\")\n  products      Product[]\n  ordersCreated Order[]     @relation(\"OrderCreatedBy\") // <--- ADD THIS\n}\n\nmodel Franchise {\n  name       String\n  code       String     @unique\n  address    String?\n  createdAt  DateTime   @default(now())\n  updatedAt  DateTime   @updatedAt\n  isActive   Boolean    @default(true)\n  ownerEmail String?\n  ownerName  String?\n  ownerPhone String?\n  id         Int        @id @default(autoincrement())\n  createdBy  Int?\n  customers  Customer[]\n  creator    User?      @relation(fields: [createdBy], references: [id])\n  orders     Order[]\n}\n\nmodel Customer {\n  name         String\n  email        String?\n  phone        String?\n  address      String?\n  createdAt    DateTime   @default(now())\n  updatedAt    DateTime   @updatedAt\n  customerType String?\n  id           Int        @id @default(autoincrement())\n  franchiseId  Int?\n  createdBy    Int?\n  employeeId   Int?\n  employee     User?      @relation(fields: [employeeId], references: [id])\n  franchise    Franchise? @relation(fields: [franchiseId], references: [id])\n  orders       Order[]\n}\n\nmodel Product {\n  name        String\n  price       Float\n  stock       Int      @default(0)\n  isActive    Boolean  @default(true)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n  size        String\n  id          Int      @id @default(autoincrement())\n  createdById Int?\n  orders      Order[]\n  createdBy   User?    @relation(fields: [createdById], references: [id])\n}\n\nmodel Order {\n  orderNumber          String     @unique\n  status               String     @default(\"PENDING\")\n  expectedDeliveryDate DateTime?\n  totalAmount          Float      @default(0)\n  createdAt            DateTime   @default(now())\n  updatedAt            DateTime   @updatedAt\n  climate              Climate\n  employeeId           Int?\n  createdBy            Int? // <--- field\n  productId            Int\n  terrain              Terrain\n  id                   Int        @id @default(autoincrement())\n  franchiseId          Int?\n  customerId           Int?\n  factory              Factory?\n  customer             Customer?  @relation(fields: [customerId], references: [id])\n  employee             User?      @relation(\"UserOrdersPlaced\", fields: [employeeId], references: [id])\n  franchise            Franchise? @relation(fields: [franchiseId], references: [id])\n  product              Product    @relation(fields: [productId], references: [id])\n\n  // ✅ ADD THIS RELATION\n  createdByUser User? @relation(\"OrderCreatedBy\", fields: [createdBy], references: [id])\n\n  payments Payment[]\n}\n\nmodel Factory {\n  id           Int       @id @default(autoincrement())\n  orderId      Int       @unique\n  orderStatus  String    @default(\"PROCESSING\")\n  deliveryDate DateTime?\n  createdAt    DateTime  @default(now())\n  order        Order     @relation(fields: [orderId], references: [id])\n}\n\nmodel Payment {\n  id        Int      @id @default(autoincrement())\n  amount    Float\n  orderId   Int\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  status    String   @default(\"PENDING\")\n  method    String\n  order     Order    @relation(fields: [orderId], references: [id])\n}\n\nenum Role {\n  SUPER_ADMIN\n  ADMIN\n  FACTORY\n  EMPLOYEE\n  FRANCHISE\n  CUSTOMER\n}\n\nenum Climate {\n  HOT\n  COLD\n  RAINY\n  NORMAL\n}\n\nenum Terrain {\n  FLAT\n  HILL\n}\n\nenum PaymentMethod {\n  CASH\n  CARD\n  UPI\n  BANK_TRANSFER\n}\n",
+  "inlineSchemaHash": "70b31e28c3e85ded43ee4b92070c18a24154ef38af79913e49968b40958b9e4d",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"loginUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToUser\"},{\"name\":\"ordersPlaced\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"UserOrdersPlaced\"},{\"name\":\"customers\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToUser\"},{\"name\":\"franchises\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"FranchiseToUser\"}],\"dbName\":null},\"Franchise\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"FranchiseToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"FranchiseToOrder\"},{\"name\":\"customers\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToFranchise\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"customerType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"franchiseId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"franchise\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"CustomerToFranchise\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"employee\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CustomerToUser\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"CustomerToOrder\"}],\"dbName\":null},\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdById\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProductToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToProduct\"}],\"dbName\":null},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"franchiseId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"franchise\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"FranchiseToOrder\"},{\"name\":\"customerId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToOrder\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"employee\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserOrdersPlaced\"},{\"name\":\"productId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"OrderToProduct\"},{\"name\":\"climate\",\"kind\":\"enum\",\"type\":\"Climate\"},{\"name\":\"terrain\",\"kind\":\"enum\",\"type\":\"Terrain\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expectedDeliveryDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"factory\",\"kind\":\"object\",\"type\":\"Factory\",\"relationName\":\"FactoryToOrder\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"OrderToPayment\"}],\"dbName\":null},\"Factory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"FactoryToOrder\"},{\"name\":\"orderStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"deliveryDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToPayment\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"method\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fullName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"loginUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"customers\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToUser\"},{\"name\":\"franchises\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"FranchiseToUser\"},{\"name\":\"ordersPlaced\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"UserOrdersPlaced\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToUser\"},{\"name\":\"ordersCreated\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderCreatedBy\"}],\"dbName\":null},\"Franchise\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"ownerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"customers\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToFranchise\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"FranchiseToUser\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"FranchiseToOrder\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customerType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"franchiseId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"employee\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CustomerToUser\"},{\"name\":\"franchise\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"CustomerToFranchise\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"CustomerToOrder\"}],\"dbName\":null},\"Product\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdById\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToProduct\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProductToUser\"}],\"dbName\":null},\"Order\":{\"fields\":[{\"name\":\"orderNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expectedDeliveryDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"climate\",\"kind\":\"enum\",\"type\":\"Climate\"},{\"name\":\"employeeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"productId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"terrain\",\"kind\":\"enum\",\"type\":\"Terrain\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"franchiseId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"customerId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"factory\",\"kind\":\"object\",\"type\":\"Factory\",\"relationName\":\"FactoryToOrder\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToOrder\"},{\"name\":\"employee\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserOrdersPlaced\"},{\"name\":\"franchise\",\"kind\":\"object\",\"type\":\"Franchise\",\"relationName\":\"FranchiseToOrder\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"OrderToProduct\"},{\"name\":\"createdByUser\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"OrderCreatedBy\"},{\"name\":\"payments\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"OrderToPayment\"}],\"dbName\":null},\"Factory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"orderStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"deliveryDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"FactoryToOrder\"}],\"dbName\":null},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"orderId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"method\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToPayment\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

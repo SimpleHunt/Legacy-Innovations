@@ -20,6 +20,7 @@ export async function GET(req: Request) {
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
     const where: any = {};
+    //where.isActive = true;
 
     // SEARCH LOGIC
     if (search) {

@@ -122,8 +122,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  loginUserId: 'loginUserId',
   email: 'email',
   password: 'password',
   fullName: 'fullName',
@@ -131,66 +129,66 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  loginUserId: 'loginUserId',
+  id: 'id'
 };
 
 exports.Prisma.FranchiseScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   code: 'code',
-  ownerName: 'ownerName',
-  ownerEmail: 'ownerEmail',
-  ownerPhone: 'ownerPhone',
   address: 'address',
-  isActive: 'isActive',
-  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isActive: 'isActive',
+  ownerEmail: 'ownerEmail',
+  ownerName: 'ownerName',
+  ownerPhone: 'ownerPhone',
+  id: 'id',
+  createdBy: 'createdBy'
 };
 
 exports.Prisma.CustomerScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   email: 'email',
   phone: 'phone',
   address: 'address',
-  isActive: 'isActive',
-  customerType: 'customerType',
-  franchiseId: 'franchiseId',
-  employeeId: 'employeeId',
-  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  customerType: 'customerType',
+  id: 'id',
+  franchiseId: 'franchiseId',
+  createdBy: 'createdBy',
+  employeeId: 'employeeId'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
-  id: 'id',
   name: 'name',
   price: 'price',
   stock: 'stock',
-  description: 'description',
-  size: 'size',
   isActive: 'isActive',
-  createdById: 'createdById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  size: 'size',
+  id: 'id',
+  createdById: 'createdById'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
-  id: 'id',
   orderNumber: 'orderNumber',
-  franchiseId: 'franchiseId',
-  customerId: 'customerId',
-  employeeId: 'employeeId',
-  productId: 'productId',
-  climate: 'climate',
-  terrain: 'terrain',
   status: 'status',
   expectedDeliveryDate: 'expectedDeliveryDate',
   totalAmount: 'totalAmount',
-  isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  climate: 'climate',
+  employeeId: 'employeeId',
+  createdBy: 'createdBy',
+  productId: 'productId',
+  terrain: 'terrain',
+  id: 'id',
+  franchiseId: 'franchiseId',
+  customerId: 'customerId'
 };
 
 exports.Prisma.FactoryScalarFieldEnum = {
@@ -198,19 +196,17 @@ exports.Prisma.FactoryScalarFieldEnum = {
   orderId: 'orderId',
   orderStatus: 'orderStatus',
   deliveryDate: 'deliveryDate',
-  isActive: 'isActive',
   createdAt: 'createdAt'
 };
 
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
-  orderId: 'orderId',
   amount: 'amount',
-  method: 'method',
-  status: 'status',
-  isActive: 'isActive',
+  orderId: 'orderId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status',
+  method: 'method'
 };
 
 exports.Prisma.SortOrder = {
@@ -231,7 +227,7 @@ exports.Role = exports.$Enums.Role = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   FACTORY: 'FACTORY',
-  INSALES: 'INSALES',
+  EMPLOYEE: 'EMPLOYEE',
   FRANCHISE: 'FRANCHISE',
   CUSTOMER: 'CUSTOMER'
 };
@@ -239,8 +235,8 @@ exports.Role = exports.$Enums.Role = {
 exports.Climate = exports.$Enums.Climate = {
   HOT: 'HOT',
   COLD: 'COLD',
-  NORMAL: 'NORMAL',
-  RAINY: 'RAINY'
+  RAINY: 'RAINY',
+  NORMAL: 'NORMAL'
 };
 
 exports.Terrain = exports.$Enums.Terrain = {

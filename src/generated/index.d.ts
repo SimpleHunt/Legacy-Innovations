@@ -57,7 +57,7 @@ export namespace $Enums {
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   FACTORY: 'FACTORY',
-  INSALES: 'INSALES',
+  EMPLOYEE: 'EMPLOYEE',
   FRANCHISE: 'FRANCHISE',
   CUSTOMER: 'CUSTOMER'
 };
@@ -68,8 +68,8 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const Climate: {
   HOT: 'HOT',
   COLD: 'COLD',
-  NORMAL: 'NORMAL',
-  RAINY: 'RAINY'
+  RAINY: 'RAINY',
+  NORMAL: 'NORMAL'
 };
 
 export type Climate = (typeof Climate)[keyof typeof Climate]
@@ -1468,17 +1468,19 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    products: number
-    ordersPlaced: number
     customers: number
     franchises: number
+    ordersPlaced: number
+    products: number
+    ordersCreated: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    products?: boolean | UserCountOutputTypeCountProductsArgs
-    ordersPlaced?: boolean | UserCountOutputTypeCountOrdersPlacedArgs
     customers?: boolean | UserCountOutputTypeCountCustomersArgs
     franchises?: boolean | UserCountOutputTypeCountFranchisesArgs
+    ordersPlaced?: boolean | UserCountOutputTypeCountOrdersPlacedArgs
+    products?: boolean | UserCountOutputTypeCountProductsArgs
+    ordersCreated?: boolean | UserCountOutputTypeCountOrdersCreatedArgs
   }
 
   // Custom InputTypes
@@ -1495,8 +1497,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProductWhereInput
+  export type UserCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomerWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFranchisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FranchiseWhereInput
   }
 
   /**
@@ -1509,15 +1518,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CustomerWhereInput
+  export type UserCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountFranchisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FranchiseWhereInput
+  export type UserCountOutputTypeCountOrdersCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
   }
 
 
@@ -1526,13 +1535,13 @@ export namespace Prisma {
    */
 
   export type FranchiseCountOutputType = {
-    orders: number
     customers: number
+    orders: number
   }
 
   export type FranchiseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    orders?: boolean | FranchiseCountOutputTypeCountOrdersArgs
     customers?: boolean | FranchiseCountOutputTypeCountCustomersArgs
+    orders?: boolean | FranchiseCountOutputTypeCountOrdersArgs
   }
 
   // Custom InputTypes
@@ -1549,15 +1558,15 @@ export namespace Prisma {
   /**
    * FranchiseCountOutputType without action
    */
-  export type FranchiseCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
+  export type FranchiseCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomerWhereInput
   }
 
   /**
    * FranchiseCountOutputType without action
    */
-  export type FranchiseCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CustomerWhereInput
+  export type FranchiseCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
   }
 
 
@@ -1679,8 +1688,6 @@ export namespace Prisma {
   }
 
   export type UserMinAggregateOutputType = {
-    id: number | null
-    loginUserId: string | null
     email: string | null
     password: string | null
     fullName: string | null
@@ -1689,11 +1696,11 @@ export namespace Prisma {
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    loginUserId: string | null
+    id: number | null
   }
 
   export type UserMaxAggregateOutputType = {
-    id: number | null
-    loginUserId: string | null
     email: string | null
     password: string | null
     fullName: string | null
@@ -1702,11 +1709,11 @@ export namespace Prisma {
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    loginUserId: string | null
+    id: number | null
   }
 
   export type UserCountAggregateOutputType = {
-    id: number
-    loginUserId: number
     email: number
     password: number
     fullName: number
@@ -1715,6 +1722,8 @@ export namespace Prisma {
     isActive: number
     createdAt: number
     updatedAt: number
+    loginUserId: number
+    id: number
     _all: number
   }
 
@@ -1728,8 +1737,6 @@ export namespace Prisma {
   }
 
   export type UserMinAggregateInputType = {
-    id?: true
-    loginUserId?: true
     email?: true
     password?: true
     fullName?: true
@@ -1738,11 +1745,11 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    loginUserId?: true
+    id?: true
   }
 
   export type UserMaxAggregateInputType = {
-    id?: true
-    loginUserId?: true
     email?: true
     password?: true
     fullName?: true
@@ -1751,11 +1758,11 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    loginUserId?: true
+    id?: true
   }
 
   export type UserCountAggregateInputType = {
-    id?: true
-    loginUserId?: true
     email?: true
     password?: true
     fullName?: true
@@ -1764,6 +1771,8 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    loginUserId?: true
+    id?: true
     _all?: true
   }
 
@@ -1854,8 +1863,6 @@ export namespace Prisma {
   }
 
   export type UserGroupByOutputType = {
-    id: number
-    loginUserId: string | null
     email: string | null
     password: string | null
     fullName: string | null
@@ -1864,6 +1871,8 @@ export namespace Prisma {
     isActive: boolean
     createdAt: Date
     updatedAt: Date
+    loginUserId: string | null
+    id: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1886,8 +1895,6 @@ export namespace Prisma {
 
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    loginUserId?: boolean
     email?: boolean
     password?: boolean
     fullName?: boolean
@@ -1896,16 +1903,17 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    products?: boolean | User$productsArgs<ExtArgs>
-    ordersPlaced?: boolean | User$ordersPlacedArgs<ExtArgs>
+    loginUserId?: boolean
+    id?: boolean
     customers?: boolean | User$customersArgs<ExtArgs>
     franchises?: boolean | User$franchisesArgs<ExtArgs>
+    ordersPlaced?: boolean | User$ordersPlacedArgs<ExtArgs>
+    products?: boolean | User$productsArgs<ExtArgs>
+    ordersCreated?: boolean | User$ordersCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    loginUserId?: boolean
     email?: boolean
     password?: boolean
     fullName?: boolean
@@ -1914,11 +1922,11 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    loginUserId?: boolean
+    id?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    loginUserId?: boolean
     email?: boolean
     password?: boolean
     fullName?: boolean
@@ -1927,11 +1935,11 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    loginUserId?: boolean
+    id?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
-    id?: boolean
-    loginUserId?: boolean
     email?: boolean
     password?: boolean
     fullName?: boolean
@@ -1940,14 +1948,17 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    loginUserId?: boolean
+    id?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loginUserId" | "email" | "password" | "fullName" | "phone" | "role" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"email" | "password" | "fullName" | "phone" | "role" | "isActive" | "createdAt" | "updatedAt" | "loginUserId" | "id", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    products?: boolean | User$productsArgs<ExtArgs>
-    ordersPlaced?: boolean | User$ordersPlacedArgs<ExtArgs>
     customers?: boolean | User$customersArgs<ExtArgs>
     franchises?: boolean | User$franchisesArgs<ExtArgs>
+    ordersPlaced?: boolean | User$ordersPlacedArgs<ExtArgs>
+    products?: boolean | User$productsArgs<ExtArgs>
+    ordersCreated?: boolean | User$ordersCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1956,14 +1967,13 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      products: Prisma.$ProductPayload<ExtArgs>[]
-      ordersPlaced: Prisma.$OrderPayload<ExtArgs>[]
       customers: Prisma.$CustomerPayload<ExtArgs>[]
       franchises: Prisma.$FranchisePayload<ExtArgs>[]
+      ordersPlaced: Prisma.$OrderPayload<ExtArgs>[]
+      products: Prisma.$ProductPayload<ExtArgs>[]
+      ordersCreated: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      loginUserId: string | null
       email: string | null
       password: string | null
       fullName: string | null
@@ -1972,6 +1982,8 @@ export namespace Prisma {
       isActive: boolean
       createdAt: Date
       updatedAt: Date
+      loginUserId: string | null
+      id: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2055,8 +2067,8 @@ export namespace Prisma {
      * // Get first 10 Users
      * const users = await prisma.user.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
+     * // Only select the `email`
+     * const userWithEmailOnly = await prisma.user.findMany({ select: { email: true } })
      * 
      */
     findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -2100,9 +2112,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Users and only return the `email`
+     * const userWithEmailOnly = await prisma.user.createManyAndReturn({
+     *   select: { email: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -2191,9 +2203,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Users and only return the `id`
-     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Users and only return the `email`
+     * const userWithEmailOnly = await prisma.user.updateManyAndReturn({
+     *   select: { email: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2366,10 +2378,11 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    products<T extends User$productsArgs<ExtArgs> = {}>(args?: Subset<T, User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ordersPlaced<T extends User$ordersPlacedArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersPlacedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     customers<T extends User$customersArgs<ExtArgs> = {}>(args?: Subset<T, User$customersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     franchises<T extends User$franchisesArgs<ExtArgs> = {}>(args?: Subset<T, User$franchisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ordersPlaced<T extends User$ordersPlacedArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersPlacedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    products<T extends User$productsArgs<ExtArgs> = {}>(args?: Subset<T, User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ordersCreated<T extends User$ordersCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2399,8 +2412,6 @@ export namespace Prisma {
    * Fields of the User model
    */
   interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'Int'>
-    readonly loginUserId: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly fullName: FieldRef<"User", 'String'>
@@ -2409,6 +2420,8 @@ export namespace Prisma {
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly loginUserId: FieldRef<"User", 'String'>
+    readonly id: FieldRef<"User", 'Int'>
   }
     
 
@@ -2797,54 +2810,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.products
-   */
-  export type User$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Product
-     */
-    select?: ProductSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Product
-     */
-    omit?: ProductOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProductInclude<ExtArgs> | null
-    where?: ProductWhereInput
-    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
-    cursor?: ProductWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
-  }
-
-  /**
-   * User.ordersPlaced
-   */
-  export type User$ordersPlacedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Order
-     */
-    select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrderInclude<ExtArgs> | null
-    where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-  }
-
-  /**
    * User.customers
    */
   export type User$customersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2893,6 +2858,78 @@ export namespace Prisma {
   }
 
   /**
+   * User.ordersPlaced
+   */
+  export type User$ordersPlacedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.products
+   */
+  export type User$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
+  }
+
+  /**
+   * User.ordersCreated
+   */
+  export type User$ordersCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2934,45 +2971,45 @@ export namespace Prisma {
   }
 
   export type FranchiseMinAggregateOutputType = {
-    id: number | null
     name: string | null
     code: string | null
-    ownerName: string | null
-    ownerEmail: string | null
-    ownerPhone: string | null
     address: string | null
-    isActive: boolean | null
-    createdBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    isActive: boolean | null
+    ownerEmail: string | null
+    ownerName: string | null
+    ownerPhone: string | null
+    id: number | null
+    createdBy: number | null
   }
 
   export type FranchiseMaxAggregateOutputType = {
-    id: number | null
     name: string | null
     code: string | null
-    ownerName: string | null
-    ownerEmail: string | null
-    ownerPhone: string | null
     address: string | null
-    isActive: boolean | null
-    createdBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    isActive: boolean | null
+    ownerEmail: string | null
+    ownerName: string | null
+    ownerPhone: string | null
+    id: number | null
+    createdBy: number | null
   }
 
   export type FranchiseCountAggregateOutputType = {
-    id: number
     name: number
     code: number
-    ownerName: number
-    ownerEmail: number
-    ownerPhone: number
     address: number
-    isActive: number
-    createdBy: number
     createdAt: number
     updatedAt: number
+    isActive: number
+    ownerEmail: number
+    ownerName: number
+    ownerPhone: number
+    id: number
+    createdBy: number
     _all: number
   }
 
@@ -2988,45 +3025,45 @@ export namespace Prisma {
   }
 
   export type FranchiseMinAggregateInputType = {
-    id?: true
     name?: true
     code?: true
-    ownerName?: true
-    ownerEmail?: true
-    ownerPhone?: true
     address?: true
-    isActive?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    isActive?: true
+    ownerEmail?: true
+    ownerName?: true
+    ownerPhone?: true
+    id?: true
+    createdBy?: true
   }
 
   export type FranchiseMaxAggregateInputType = {
-    id?: true
     name?: true
     code?: true
-    ownerName?: true
-    ownerEmail?: true
-    ownerPhone?: true
     address?: true
-    isActive?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    isActive?: true
+    ownerEmail?: true
+    ownerName?: true
+    ownerPhone?: true
+    id?: true
+    createdBy?: true
   }
 
   export type FranchiseCountAggregateInputType = {
-    id?: true
     name?: true
     code?: true
-    ownerName?: true
-    ownerEmail?: true
-    ownerPhone?: true
     address?: true
-    isActive?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    isActive?: true
+    ownerEmail?: true
+    ownerName?: true
+    ownerPhone?: true
+    id?: true
+    createdBy?: true
     _all?: true
   }
 
@@ -3117,17 +3154,17 @@ export namespace Prisma {
   }
 
   export type FranchiseGroupByOutputType = {
-    id: number
     name: string
     code: string
-    ownerName: string | null
-    ownerEmail: string | null
-    ownerPhone: string | null
     address: string | null
-    isActive: boolean
-    createdBy: number | null
     createdAt: Date
     updatedAt: Date
+    isActive: boolean
+    ownerEmail: string | null
+    ownerName: string | null
+    ownerPhone: string | null
+    id: number
+    createdBy: number | null
     _count: FranchiseCountAggregateOutputType | null
     _avg: FranchiseAvgAggregateOutputType | null
     _sum: FranchiseSumAggregateOutputType | null
@@ -3150,72 +3187,72 @@ export namespace Prisma {
 
 
   export type FranchiseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     code?: boolean
-    ownerName?: boolean
-    ownerEmail?: boolean
-    ownerPhone?: boolean
     address?: boolean
-    isActive?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isActive?: boolean
+    ownerEmail?: boolean
+    ownerName?: boolean
+    ownerPhone?: boolean
+    id?: boolean
+    createdBy?: boolean
+    customers?: boolean | Franchise$customersArgs<ExtArgs>
     creator?: boolean | Franchise$creatorArgs<ExtArgs>
     orders?: boolean | Franchise$ordersArgs<ExtArgs>
-    customers?: boolean | Franchise$customersArgs<ExtArgs>
     _count?: boolean | FranchiseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["franchise"]>
 
   export type FranchiseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     code?: boolean
-    ownerName?: boolean
-    ownerEmail?: boolean
-    ownerPhone?: boolean
     address?: boolean
-    isActive?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isActive?: boolean
+    ownerEmail?: boolean
+    ownerName?: boolean
+    ownerPhone?: boolean
+    id?: boolean
+    createdBy?: boolean
     creator?: boolean | Franchise$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["franchise"]>
 
   export type FranchiseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     code?: boolean
-    ownerName?: boolean
-    ownerEmail?: boolean
-    ownerPhone?: boolean
     address?: boolean
-    isActive?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isActive?: boolean
+    ownerEmail?: boolean
+    ownerName?: boolean
+    ownerPhone?: boolean
+    id?: boolean
+    createdBy?: boolean
     creator?: boolean | Franchise$creatorArgs<ExtArgs>
   }, ExtArgs["result"]["franchise"]>
 
   export type FranchiseSelectScalar = {
-    id?: boolean
     name?: boolean
     code?: boolean
-    ownerName?: boolean
-    ownerEmail?: boolean
-    ownerPhone?: boolean
     address?: boolean
-    isActive?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isActive?: boolean
+    ownerEmail?: boolean
+    ownerName?: boolean
+    ownerPhone?: boolean
+    id?: boolean
+    createdBy?: boolean
   }
 
-  export type FranchiseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "ownerName" | "ownerEmail" | "ownerPhone" | "address" | "isActive" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["franchise"]>
+  export type FranchiseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "code" | "address" | "createdAt" | "updatedAt" | "isActive" | "ownerEmail" | "ownerName" | "ownerPhone" | "id" | "createdBy", ExtArgs["result"]["franchise"]>
   export type FranchiseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customers?: boolean | Franchise$customersArgs<ExtArgs>
     creator?: boolean | Franchise$creatorArgs<ExtArgs>
     orders?: boolean | Franchise$ordersArgs<ExtArgs>
-    customers?: boolean | Franchise$customersArgs<ExtArgs>
     _count?: boolean | FranchiseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FranchiseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3228,22 +3265,22 @@ export namespace Prisma {
   export type $FranchisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Franchise"
     objects: {
+      customers: Prisma.$CustomerPayload<ExtArgs>[]
       creator: Prisma.$UserPayload<ExtArgs> | null
       orders: Prisma.$OrderPayload<ExtArgs>[]
-      customers: Prisma.$CustomerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
       name: string
       code: string
-      ownerName: string | null
-      ownerEmail: string | null
-      ownerPhone: string | null
       address: string | null
-      isActive: boolean
-      createdBy: number | null
       createdAt: Date
       updatedAt: Date
+      isActive: boolean
+      ownerEmail: string | null
+      ownerName: string | null
+      ownerPhone: string | null
+      id: number
+      createdBy: number | null
     }, ExtArgs["result"]["franchise"]>
     composites: {}
   }
@@ -3327,8 +3364,8 @@ export namespace Prisma {
      * // Get first 10 Franchises
      * const franchises = await prisma.franchise.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const franchiseWithIdOnly = await prisma.franchise.findMany({ select: { id: true } })
+     * // Only select the `name`
+     * const franchiseWithNameOnly = await prisma.franchise.findMany({ select: { name: true } })
      * 
      */
     findMany<T extends FranchiseFindManyArgs>(args?: SelectSubset<T, FranchiseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3372,9 +3409,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Franchises and only return the `id`
-     * const franchiseWithIdOnly = await prisma.franchise.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Franchises and only return the `name`
+     * const franchiseWithNameOnly = await prisma.franchise.createManyAndReturn({
+     *   select: { name: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -3463,9 +3500,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Franchises and only return the `id`
-     * const franchiseWithIdOnly = await prisma.franchise.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Franchises and only return the `name`
+     * const franchiseWithNameOnly = await prisma.franchise.updateManyAndReturn({
+     *   select: { name: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3638,9 +3675,9 @@ export namespace Prisma {
    */
   export interface Prisma__FranchiseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    customers<T extends Franchise$customersArgs<ExtArgs> = {}>(args?: Subset<T, Franchise$customersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     creator<T extends Franchise$creatorArgs<ExtArgs> = {}>(args?: Subset<T, Franchise$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orders<T extends Franchise$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Franchise$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    customers<T extends Franchise$customersArgs<ExtArgs> = {}>(args?: Subset<T, Franchise$customersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3670,17 +3707,17 @@ export namespace Prisma {
    * Fields of the Franchise model
    */
   interface FranchiseFieldRefs {
-    readonly id: FieldRef<"Franchise", 'Int'>
     readonly name: FieldRef<"Franchise", 'String'>
     readonly code: FieldRef<"Franchise", 'String'>
-    readonly ownerName: FieldRef<"Franchise", 'String'>
-    readonly ownerEmail: FieldRef<"Franchise", 'String'>
-    readonly ownerPhone: FieldRef<"Franchise", 'String'>
     readonly address: FieldRef<"Franchise", 'String'>
-    readonly isActive: FieldRef<"Franchise", 'Boolean'>
-    readonly createdBy: FieldRef<"Franchise", 'Int'>
     readonly createdAt: FieldRef<"Franchise", 'DateTime'>
     readonly updatedAt: FieldRef<"Franchise", 'DateTime'>
+    readonly isActive: FieldRef<"Franchise", 'Boolean'>
+    readonly ownerEmail: FieldRef<"Franchise", 'String'>
+    readonly ownerName: FieldRef<"Franchise", 'String'>
+    readonly ownerPhone: FieldRef<"Franchise", 'String'>
+    readonly id: FieldRef<"Franchise", 'Int'>
+    readonly createdBy: FieldRef<"Franchise", 'Int'>
   }
     
 
@@ -4077,6 +4114,30 @@ export namespace Prisma {
   }
 
   /**
+   * Franchise.customers
+   */
+  export type Franchise$customersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    where?: CustomerWhereInput
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    cursor?: CustomerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
+  }
+
+  /**
    * Franchise.creator
    */
   export type Franchise$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4120,30 +4181,6 @@ export namespace Prisma {
   }
 
   /**
-   * Franchise.customers
-   */
-  export type Franchise$customersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Customer
-     */
-    select?: CustomerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Customer
-     */
-    omit?: CustomerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CustomerInclude<ExtArgs> | null
-    where?: CustomerWhereInput
-    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
-    cursor?: CustomerWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
-  }
-
-  /**
    * Franchise without action
    */
   export type FranchiseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4177,60 +4214,57 @@ export namespace Prisma {
   export type CustomerAvgAggregateOutputType = {
     id: number | null
     franchiseId: number | null
-    employeeId: number | null
     createdBy: number | null
+    employeeId: number | null
   }
 
   export type CustomerSumAggregateOutputType = {
     id: number | null
     franchiseId: number | null
-    employeeId: number | null
     createdBy: number | null
+    employeeId: number | null
   }
 
   export type CustomerMinAggregateOutputType = {
-    id: number | null
     name: string | null
     email: string | null
     phone: string | null
     address: string | null
-    isActive: boolean | null
-    customerType: string | null
-    franchiseId: number | null
-    employeeId: number | null
-    createdBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    customerType: string | null
+    id: number | null
+    franchiseId: number | null
+    createdBy: number | null
+    employeeId: number | null
   }
 
   export type CustomerMaxAggregateOutputType = {
-    id: number | null
     name: string | null
     email: string | null
     phone: string | null
     address: string | null
-    isActive: boolean | null
-    customerType: string | null
-    franchiseId: number | null
-    employeeId: number | null
-    createdBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    customerType: string | null
+    id: number | null
+    franchiseId: number | null
+    createdBy: number | null
+    employeeId: number | null
   }
 
   export type CustomerCountAggregateOutputType = {
-    id: number
     name: number
     email: number
     phone: number
     address: number
-    isActive: number
-    customerType: number
-    franchiseId: number
-    employeeId: number
-    createdBy: number
     createdAt: number
     updatedAt: number
+    customerType: number
+    id: number
+    franchiseId: number
+    createdBy: number
+    employeeId: number
     _all: number
   }
 
@@ -4238,60 +4272,57 @@ export namespace Prisma {
   export type CustomerAvgAggregateInputType = {
     id?: true
     franchiseId?: true
-    employeeId?: true
     createdBy?: true
+    employeeId?: true
   }
 
   export type CustomerSumAggregateInputType = {
     id?: true
     franchiseId?: true
-    employeeId?: true
     createdBy?: true
+    employeeId?: true
   }
 
   export type CustomerMinAggregateInputType = {
-    id?: true
     name?: true
     email?: true
     phone?: true
     address?: true
-    isActive?: true
-    customerType?: true
-    franchiseId?: true
-    employeeId?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    customerType?: true
+    id?: true
+    franchiseId?: true
+    createdBy?: true
+    employeeId?: true
   }
 
   export type CustomerMaxAggregateInputType = {
-    id?: true
     name?: true
     email?: true
     phone?: true
     address?: true
-    isActive?: true
-    customerType?: true
-    franchiseId?: true
-    employeeId?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    customerType?: true
+    id?: true
+    franchiseId?: true
+    createdBy?: true
+    employeeId?: true
   }
 
   export type CustomerCountAggregateInputType = {
-    id?: true
     name?: true
     email?: true
     phone?: true
     address?: true
-    isActive?: true
-    customerType?: true
-    franchiseId?: true
-    employeeId?: true
-    createdBy?: true
     createdAt?: true
     updatedAt?: true
+    customerType?: true
+    id?: true
+    franchiseId?: true
+    createdBy?: true
+    employeeId?: true
     _all?: true
   }
 
@@ -4382,18 +4413,17 @@ export namespace Prisma {
   }
 
   export type CustomerGroupByOutputType = {
-    id: number
     name: string
     email: string | null
     phone: string | null
     address: string | null
-    isActive: boolean
-    customerType: string | null
-    franchiseId: number | null
-    employeeId: number | null
-    createdBy: number | null
     createdAt: Date
     updatedAt: Date
+    customerType: string | null
+    id: number
+    franchiseId: number | null
+    createdBy: number | null
+    employeeId: number | null
     _count: CustomerCountAggregateOutputType | null
     _avg: CustomerAvgAggregateOutputType | null
     _sum: CustomerSumAggregateOutputType | null
@@ -4416,109 +4446,104 @@ export namespace Prisma {
 
 
   export type CustomerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     email?: boolean
     phone?: boolean
     address?: boolean
-    isActive?: boolean
-    customerType?: boolean
-    franchiseId?: boolean
-    employeeId?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
+    customerType?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    createdBy?: boolean
+    employeeId?: boolean
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
     orders?: boolean | Customer$ordersArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
   export type CustomerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     email?: boolean
     phone?: boolean
     address?: boolean
-    isActive?: boolean
-    customerType?: boolean
-    franchiseId?: boolean
-    employeeId?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
+    customerType?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    createdBy?: boolean
+    employeeId?: boolean
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
   export type CustomerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     email?: boolean
     phone?: boolean
     address?: boolean
-    isActive?: boolean
-    customerType?: boolean
-    franchiseId?: boolean
-    employeeId?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
+    customerType?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    createdBy?: boolean
+    employeeId?: boolean
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
   export type CustomerSelectScalar = {
-    id?: boolean
     name?: boolean
     email?: boolean
     phone?: boolean
     address?: boolean
-    isActive?: boolean
-    customerType?: boolean
-    franchiseId?: boolean
-    employeeId?: boolean
-    createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    customerType?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    createdBy?: boolean
+    employeeId?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "address" | "isActive" | "customerType" | "franchiseId" | "employeeId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "email" | "phone" | "address" | "createdAt" | "updatedAt" | "customerType" | "id" | "franchiseId" | "createdBy" | "employeeId", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
     orders?: boolean | Customer$ordersArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CustomerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
   }
   export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
     employee?: boolean | Customer$employeeArgs<ExtArgs>
+    franchise?: boolean | Customer$franchiseArgs<ExtArgs>
   }
 
   export type $CustomerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Customer"
     objects: {
-      franchise: Prisma.$FranchisePayload<ExtArgs> | null
       employee: Prisma.$UserPayload<ExtArgs> | null
+      franchise: Prisma.$FranchisePayload<ExtArgs> | null
       orders: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
       name: string
       email: string | null
       phone: string | null
       address: string | null
-      isActive: boolean
-      customerType: string | null
-      franchiseId: number | null
-      employeeId: number | null
-      createdBy: number | null
       createdAt: Date
       updatedAt: Date
+      customerType: string | null
+      id: number
+      franchiseId: number | null
+      createdBy: number | null
+      employeeId: number | null
     }, ExtArgs["result"]["customer"]>
     composites: {}
   }
@@ -4602,8 +4627,8 @@ export namespace Prisma {
      * // Get first 10 Customers
      * const customers = await prisma.customer.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const customerWithIdOnly = await prisma.customer.findMany({ select: { id: true } })
+     * // Only select the `name`
+     * const customerWithNameOnly = await prisma.customer.findMany({ select: { name: true } })
      * 
      */
     findMany<T extends CustomerFindManyArgs>(args?: SelectSubset<T, CustomerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4647,9 +4672,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Customers and only return the `id`
-     * const customerWithIdOnly = await prisma.customer.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Customers and only return the `name`
+     * const customerWithNameOnly = await prisma.customer.createManyAndReturn({
+     *   select: { name: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -4738,9 +4763,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Customers and only return the `id`
-     * const customerWithIdOnly = await prisma.customer.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Customers and only return the `name`
+     * const customerWithNameOnly = await prisma.customer.updateManyAndReturn({
+     *   select: { name: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4913,8 +4938,8 @@ export namespace Prisma {
    */
   export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    franchise<T extends Customer$franchiseArgs<ExtArgs> = {}>(args?: Subset<T, Customer$franchiseArgs<ExtArgs>>): Prisma__FranchiseClient<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     employee<T extends Customer$employeeArgs<ExtArgs> = {}>(args?: Subset<T, Customer$employeeArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    franchise<T extends Customer$franchiseArgs<ExtArgs> = {}>(args?: Subset<T, Customer$franchiseArgs<ExtArgs>>): Prisma__FranchiseClient<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orders<T extends Customer$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Customer$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4945,18 +4970,17 @@ export namespace Prisma {
    * Fields of the Customer model
    */
   interface CustomerFieldRefs {
-    readonly id: FieldRef<"Customer", 'Int'>
     readonly name: FieldRef<"Customer", 'String'>
     readonly email: FieldRef<"Customer", 'String'>
     readonly phone: FieldRef<"Customer", 'String'>
     readonly address: FieldRef<"Customer", 'String'>
-    readonly isActive: FieldRef<"Customer", 'Boolean'>
-    readonly customerType: FieldRef<"Customer", 'String'>
-    readonly franchiseId: FieldRef<"Customer", 'Int'>
-    readonly employeeId: FieldRef<"Customer", 'Int'>
-    readonly createdBy: FieldRef<"Customer", 'Int'>
     readonly createdAt: FieldRef<"Customer", 'DateTime'>
     readonly updatedAt: FieldRef<"Customer", 'DateTime'>
+    readonly customerType: FieldRef<"Customer", 'String'>
+    readonly id: FieldRef<"Customer", 'Int'>
+    readonly franchiseId: FieldRef<"Customer", 'Int'>
+    readonly createdBy: FieldRef<"Customer", 'Int'>
+    readonly employeeId: FieldRef<"Customer", 'Int'>
   }
     
 
@@ -5353,25 +5377,6 @@ export namespace Prisma {
   }
 
   /**
-   * Customer.franchise
-   */
-  export type Customer$franchiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Franchise
-     */
-    select?: FranchiseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Franchise
-     */
-    omit?: FranchiseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FranchiseInclude<ExtArgs> | null
-    where?: FranchiseWhereInput
-  }
-
-  /**
    * Customer.employee
    */
   export type Customer$employeeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5388,6 +5393,25 @@ export namespace Prisma {
      */
     include?: UserInclude<ExtArgs> | null
     where?: UserWhereInput
+  }
+
+  /**
+   * Customer.franchise
+   */
+  export type Customer$franchiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Franchise
+     */
+    select?: FranchiseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Franchise
+     */
+    omit?: FranchiseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FranchiseInclude<ExtArgs> | null
+    where?: FranchiseWhereInput
   }
 
   /**
@@ -5446,111 +5470,105 @@ export namespace Prisma {
   }
 
   export type ProductAvgAggregateOutputType = {
-    id: number | null
     price: number | null
     stock: number | null
+    id: number | null
     createdById: number | null
   }
 
   export type ProductSumAggregateOutputType = {
-    id: number | null
     price: number | null
     stock: number | null
+    id: number | null
     createdById: number | null
   }
 
   export type ProductMinAggregateOutputType = {
-    id: number | null
     name: string | null
     price: number | null
     stock: number | null
-    description: string | null
-    size: string | null
     isActive: boolean | null
-    createdById: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    size: string | null
+    id: number | null
+    createdById: number | null
   }
 
   export type ProductMaxAggregateOutputType = {
-    id: number | null
     name: string | null
     price: number | null
     stock: number | null
-    description: string | null
-    size: string | null
     isActive: boolean | null
-    createdById: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    size: string | null
+    id: number | null
+    createdById: number | null
   }
 
   export type ProductCountAggregateOutputType = {
-    id: number
     name: number
     price: number
     stock: number
-    description: number
-    size: number
     isActive: number
-    createdById: number
     createdAt: number
     updatedAt: number
+    size: number
+    id: number
+    createdById: number
     _all: number
   }
 
 
   export type ProductAvgAggregateInputType = {
-    id?: true
     price?: true
     stock?: true
+    id?: true
     createdById?: true
   }
 
   export type ProductSumAggregateInputType = {
-    id?: true
     price?: true
     stock?: true
+    id?: true
     createdById?: true
   }
 
   export type ProductMinAggregateInputType = {
-    id?: true
     name?: true
     price?: true
     stock?: true
-    description?: true
-    size?: true
     isActive?: true
-    createdById?: true
     createdAt?: true
     updatedAt?: true
+    size?: true
+    id?: true
+    createdById?: true
   }
 
   export type ProductMaxAggregateInputType = {
-    id?: true
     name?: true
     price?: true
     stock?: true
-    description?: true
-    size?: true
     isActive?: true
-    createdById?: true
     createdAt?: true
     updatedAt?: true
+    size?: true
+    id?: true
+    createdById?: true
   }
 
   export type ProductCountAggregateInputType = {
-    id?: true
     name?: true
     price?: true
     stock?: true
-    description?: true
-    size?: true
     isActive?: true
-    createdById?: true
     createdAt?: true
     updatedAt?: true
+    size?: true
+    id?: true
+    createdById?: true
     _all?: true
   }
 
@@ -5641,16 +5659,15 @@ export namespace Prisma {
   }
 
   export type ProductGroupByOutputType = {
-    id: number
     name: string
     price: number
     stock: number
-    description: string
-    size: string
     isActive: boolean
-    createdById: number | null
     createdAt: Date
     updatedAt: Date
+    size: string
+    id: number
+    createdById: number | null
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -5673,66 +5690,62 @@ export namespace Prisma {
 
 
   export type ProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     price?: boolean
     stock?: boolean
-    description?: boolean
-    size?: boolean
     isActive?: boolean
-    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    createdBy?: boolean | Product$createdByArgs<ExtArgs>
+    size?: boolean
+    id?: boolean
+    createdById?: boolean
     orders?: boolean | Product$ordersArgs<ExtArgs>
+    createdBy?: boolean | Product$createdByArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     price?: boolean
     stock?: boolean
-    description?: boolean
-    size?: boolean
     isActive?: boolean
-    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    size?: boolean
+    id?: boolean
+    createdById?: boolean
     createdBy?: boolean | Product$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     name?: boolean
     price?: boolean
     stock?: boolean
-    description?: boolean
-    size?: boolean
     isActive?: boolean
-    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    size?: boolean
+    id?: boolean
+    createdById?: boolean
     createdBy?: boolean | Product$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectScalar = {
-    id?: boolean
     name?: boolean
     price?: boolean
     stock?: boolean
-    description?: boolean
-    size?: boolean
     isActive?: boolean
-    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    size?: boolean
+    id?: boolean
+    createdById?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "price" | "stock" | "description" | "size" | "isActive" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "price" | "stock" | "isActive" | "createdAt" | "updatedAt" | "size" | "id" | "createdById", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    createdBy?: boolean | Product$createdByArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
+    createdBy?: boolean | Product$createdByArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5745,20 +5758,19 @@ export namespace Prisma {
   export type $ProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Product"
     objects: {
-      createdBy: Prisma.$UserPayload<ExtArgs> | null
       orders: Prisma.$OrderPayload<ExtArgs>[]
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
       name: string
       price: number
       stock: number
-      description: string
-      size: string
       isActive: boolean
-      createdById: number | null
       createdAt: Date
       updatedAt: Date
+      size: string
+      id: number
+      createdById: number | null
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -5842,8 +5854,8 @@ export namespace Prisma {
      * // Get first 10 Products
      * const products = await prisma.product.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const productWithIdOnly = await prisma.product.findMany({ select: { id: true } })
+     * // Only select the `name`
+     * const productWithNameOnly = await prisma.product.findMany({ select: { name: true } })
      * 
      */
     findMany<T extends ProductFindManyArgs>(args?: SelectSubset<T, ProductFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -5887,9 +5899,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Products and only return the `id`
-     * const productWithIdOnly = await prisma.product.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Products and only return the `name`
+     * const productWithNameOnly = await prisma.product.createManyAndReturn({
+     *   select: { name: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -5978,9 +5990,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Products and only return the `id`
-     * const productWithIdOnly = await prisma.product.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Products and only return the `name`
+     * const productWithNameOnly = await prisma.product.updateManyAndReturn({
+     *   select: { name: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6153,8 +6165,8 @@ export namespace Prisma {
    */
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    createdBy<T extends Product$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Product$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orders<T extends Product$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Product$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdBy<T extends Product$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Product$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6184,16 +6196,15 @@ export namespace Prisma {
    * Fields of the Product model
    */
   interface ProductFieldRefs {
-    readonly id: FieldRef<"Product", 'Int'>
     readonly name: FieldRef<"Product", 'String'>
     readonly price: FieldRef<"Product", 'Float'>
     readonly stock: FieldRef<"Product", 'Int'>
-    readonly description: FieldRef<"Product", 'String'>
-    readonly size: FieldRef<"Product", 'String'>
     readonly isActive: FieldRef<"Product", 'Boolean'>
-    readonly createdById: FieldRef<"Product", 'Int'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
+    readonly size: FieldRef<"Product", 'String'>
+    readonly id: FieldRef<"Product", 'Int'>
+    readonly createdById: FieldRef<"Product", 'Int'>
   }
     
 
@@ -6590,25 +6601,6 @@ export namespace Prisma {
   }
 
   /**
-   * Product.createdBy
-   */
-  export type Product$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
    * Product.orders
    */
   export type Product$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6630,6 +6622,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Product.createdBy
+   */
+  export type Product$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -6664,143 +6675,147 @@ export namespace Prisma {
   }
 
   export type OrderAvgAggregateOutputType = {
+    totalAmount: number | null
+    employeeId: number | null
+    createdBy: number | null
+    productId: number | null
     id: number | null
     franchiseId: number | null
     customerId: number | null
-    employeeId: number | null
-    productId: number | null
-    totalAmount: number | null
   }
 
   export type OrderSumAggregateOutputType = {
+    totalAmount: number | null
+    employeeId: number | null
+    createdBy: number | null
+    productId: number | null
     id: number | null
     franchiseId: number | null
     customerId: number | null
-    employeeId: number | null
-    productId: number | null
-    totalAmount: number | null
   }
 
   export type OrderMinAggregateOutputType = {
-    id: number | null
     orderNumber: string | null
-    franchiseId: number | null
-    customerId: number | null
-    employeeId: number | null
-    productId: number | null
-    climate: $Enums.Climate | null
-    terrain: $Enums.Terrain | null
     status: string | null
     expectedDeliveryDate: Date | null
     totalAmount: number | null
-    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    climate: $Enums.Climate | null
+    employeeId: number | null
+    createdBy: number | null
+    productId: number | null
+    terrain: $Enums.Terrain | null
+    id: number | null
+    franchiseId: number | null
+    customerId: number | null
   }
 
   export type OrderMaxAggregateOutputType = {
-    id: number | null
     orderNumber: string | null
-    franchiseId: number | null
-    customerId: number | null
-    employeeId: number | null
-    productId: number | null
-    climate: $Enums.Climate | null
-    terrain: $Enums.Terrain | null
     status: string | null
     expectedDeliveryDate: Date | null
     totalAmount: number | null
-    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    climate: $Enums.Climate | null
+    employeeId: number | null
+    createdBy: number | null
+    productId: number | null
+    terrain: $Enums.Terrain | null
+    id: number | null
+    franchiseId: number | null
+    customerId: number | null
   }
 
   export type OrderCountAggregateOutputType = {
-    id: number
     orderNumber: number
-    franchiseId: number
-    customerId: number
-    employeeId: number
-    productId: number
-    climate: number
-    terrain: number
     status: number
     expectedDeliveryDate: number
     totalAmount: number
-    isActive: number
     createdAt: number
     updatedAt: number
+    climate: number
+    employeeId: number
+    createdBy: number
+    productId: number
+    terrain: number
+    id: number
+    franchiseId: number
+    customerId: number
     _all: number
   }
 
 
   export type OrderAvgAggregateInputType = {
+    totalAmount?: true
+    employeeId?: true
+    createdBy?: true
+    productId?: true
     id?: true
     franchiseId?: true
     customerId?: true
-    employeeId?: true
-    productId?: true
-    totalAmount?: true
   }
 
   export type OrderSumAggregateInputType = {
+    totalAmount?: true
+    employeeId?: true
+    createdBy?: true
+    productId?: true
     id?: true
     franchiseId?: true
     customerId?: true
-    employeeId?: true
-    productId?: true
-    totalAmount?: true
   }
 
   export type OrderMinAggregateInputType = {
-    id?: true
     orderNumber?: true
-    franchiseId?: true
-    customerId?: true
-    employeeId?: true
-    productId?: true
-    climate?: true
-    terrain?: true
     status?: true
     expectedDeliveryDate?: true
     totalAmount?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
+    climate?: true
+    employeeId?: true
+    createdBy?: true
+    productId?: true
+    terrain?: true
+    id?: true
+    franchiseId?: true
+    customerId?: true
   }
 
   export type OrderMaxAggregateInputType = {
-    id?: true
     orderNumber?: true
-    franchiseId?: true
-    customerId?: true
-    employeeId?: true
-    productId?: true
-    climate?: true
-    terrain?: true
     status?: true
     expectedDeliveryDate?: true
     totalAmount?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
+    climate?: true
+    employeeId?: true
+    createdBy?: true
+    productId?: true
+    terrain?: true
+    id?: true
+    franchiseId?: true
+    customerId?: true
   }
 
   export type OrderCountAggregateInputType = {
-    id?: true
     orderNumber?: true
-    franchiseId?: true
-    customerId?: true
-    employeeId?: true
-    productId?: true
-    climate?: true
-    terrain?: true
     status?: true
     expectedDeliveryDate?: true
     totalAmount?: true
-    isActive?: true
     createdAt?: true
     updatedAt?: true
+    climate?: true
+    employeeId?: true
+    createdBy?: true
+    productId?: true
+    terrain?: true
+    id?: true
+    franchiseId?: true
+    customerId?: true
     _all?: true
   }
 
@@ -6891,20 +6906,20 @@ export namespace Prisma {
   }
 
   export type OrderGroupByOutputType = {
-    id: number
     orderNumber: string
-    franchiseId: number | null
-    customerId: number | null
-    employeeId: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status: string
     expectedDeliveryDate: Date | null
     totalAmount: number
-    isActive: boolean
     createdAt: Date
     updatedAt: Date
+    climate: $Enums.Climate
+    employeeId: number | null
+    createdBy: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id: number
+    franchiseId: number | null
+    customerId: number | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -6927,136 +6942,143 @@ export namespace Prisma {
 
 
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     orderNumber?: boolean
-    franchiseId?: boolean
-    customerId?: boolean
-    employeeId?: boolean
-    productId?: boolean
-    climate?: boolean
-    terrain?: boolean
     status?: boolean
     expectedDeliveryDate?: boolean
     totalAmount?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
+    climate?: boolean
+    employeeId?: boolean
+    createdBy?: boolean
+    productId?: boolean
+    terrain?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    customerId?: boolean
+    factory?: boolean | Order$factoryArgs<ExtArgs>
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
-    factory?: boolean | Order$factoryArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
     payments?: boolean | Order$paymentsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     orderNumber?: boolean
-    franchiseId?: boolean
-    customerId?: boolean
-    employeeId?: boolean
-    productId?: boolean
-    climate?: boolean
-    terrain?: boolean
     status?: boolean
     expectedDeliveryDate?: boolean
     totalAmount?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
+    climate?: boolean
+    employeeId?: boolean
+    createdBy?: boolean
+    productId?: boolean
+    terrain?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    customerId?: boolean
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     orderNumber?: boolean
-    franchiseId?: boolean
-    customerId?: boolean
-    employeeId?: boolean
-    productId?: boolean
-    climate?: boolean
-    terrain?: boolean
     status?: boolean
     expectedDeliveryDate?: boolean
     totalAmount?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
+    climate?: boolean
+    employeeId?: boolean
+    createdBy?: boolean
+    productId?: boolean
+    terrain?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    customerId?: boolean
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
-    id?: boolean
     orderNumber?: boolean
-    franchiseId?: boolean
-    customerId?: boolean
-    employeeId?: boolean
-    productId?: boolean
-    climate?: boolean
-    terrain?: boolean
     status?: boolean
     expectedDeliveryDate?: boolean
     totalAmount?: boolean
-    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    climate?: boolean
+    employeeId?: boolean
+    createdBy?: boolean
+    productId?: boolean
+    terrain?: boolean
+    id?: boolean
+    franchiseId?: boolean
+    customerId?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "franchiseId" | "customerId" | "employeeId" | "productId" | "climate" | "terrain" | "status" | "expectedDeliveryDate" | "totalAmount" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"orderNumber" | "status" | "expectedDeliveryDate" | "totalAmount" | "createdAt" | "updatedAt" | "climate" | "employeeId" | "createdBy" | "productId" | "terrain" | "id" | "franchiseId" | "customerId", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
+    factory?: boolean | Order$factoryArgs<ExtArgs>
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
-    factory?: boolean | Order$factoryArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
     payments?: boolean | Order$paymentsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     customer?: boolean | Order$customerArgs<ExtArgs>
     employee?: boolean | Order$employeeArgs<ExtArgs>
+    franchise?: boolean | Order$franchiseArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    createdByUser?: boolean | Order$createdByUserArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
     objects: {
-      franchise: Prisma.$FranchisePayload<ExtArgs> | null
+      factory: Prisma.$FactoryPayload<ExtArgs> | null
       customer: Prisma.$CustomerPayload<ExtArgs> | null
       employee: Prisma.$UserPayload<ExtArgs> | null
+      franchise: Prisma.$FranchisePayload<ExtArgs> | null
       product: Prisma.$ProductPayload<ExtArgs>
-      factory: Prisma.$FactoryPayload<ExtArgs> | null
+      createdByUser: Prisma.$UserPayload<ExtArgs> | null
       payments: Prisma.$PaymentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
       orderNumber: string
-      franchiseId: number | null
-      customerId: number | null
-      employeeId: number | null
-      productId: number
-      climate: $Enums.Climate
-      terrain: $Enums.Terrain
       status: string
       expectedDeliveryDate: Date | null
       totalAmount: number
-      isActive: boolean
       createdAt: Date
       updatedAt: Date
+      climate: $Enums.Climate
+      employeeId: number | null
+      createdBy: number | null
+      productId: number
+      terrain: $Enums.Terrain
+      id: number
+      franchiseId: number | null
+      customerId: number | null
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -7140,8 +7162,8 @@ export namespace Prisma {
      * // Get first 10 Orders
      * const orders = await prisma.order.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const orderWithIdOnly = await prisma.order.findMany({ select: { id: true } })
+     * // Only select the `orderNumber`
+     * const orderWithOrderNumberOnly = await prisma.order.findMany({ select: { orderNumber: true } })
      * 
      */
     findMany<T extends OrderFindManyArgs>(args?: SelectSubset<T, OrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -7185,9 +7207,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Orders and only return the `id`
-     * const orderWithIdOnly = await prisma.order.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Orders and only return the `orderNumber`
+     * const orderWithOrderNumberOnly = await prisma.order.createManyAndReturn({
+     *   select: { orderNumber: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -7276,9 +7298,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Orders and only return the `id`
-     * const orderWithIdOnly = await prisma.order.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Orders and only return the `orderNumber`
+     * const orderWithOrderNumberOnly = await prisma.order.updateManyAndReturn({
+     *   select: { orderNumber: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7451,11 +7473,12 @@ export namespace Prisma {
    */
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    franchise<T extends Order$franchiseArgs<ExtArgs> = {}>(args?: Subset<T, Order$franchiseArgs<ExtArgs>>): Prisma__FranchiseClient<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    factory<T extends Order$factoryArgs<ExtArgs> = {}>(args?: Subset<T, Order$factoryArgs<ExtArgs>>): Prisma__FactoryClient<$Result.GetResult<Prisma.$FactoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     customer<T extends Order$customerArgs<ExtArgs> = {}>(args?: Subset<T, Order$customerArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     employee<T extends Order$employeeArgs<ExtArgs> = {}>(args?: Subset<T, Order$employeeArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    franchise<T extends Order$franchiseArgs<ExtArgs> = {}>(args?: Subset<T, Order$franchiseArgs<ExtArgs>>): Prisma__FranchiseClient<$Result.GetResult<Prisma.$FranchisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    factory<T extends Order$factoryArgs<ExtArgs> = {}>(args?: Subset<T, Order$factoryArgs<ExtArgs>>): Prisma__FactoryClient<$Result.GetResult<Prisma.$FactoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdByUser<T extends Order$createdByUserArgs<ExtArgs> = {}>(args?: Subset<T, Order$createdByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     payments<T extends Order$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Order$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7486,20 +7509,20 @@ export namespace Prisma {
    * Fields of the Order model
    */
   interface OrderFieldRefs {
-    readonly id: FieldRef<"Order", 'Int'>
     readonly orderNumber: FieldRef<"Order", 'String'>
-    readonly franchiseId: FieldRef<"Order", 'Int'>
-    readonly customerId: FieldRef<"Order", 'Int'>
-    readonly employeeId: FieldRef<"Order", 'Int'>
-    readonly productId: FieldRef<"Order", 'Int'>
-    readonly climate: FieldRef<"Order", 'Climate'>
-    readonly terrain: FieldRef<"Order", 'Terrain'>
     readonly status: FieldRef<"Order", 'String'>
     readonly expectedDeliveryDate: FieldRef<"Order", 'DateTime'>
     readonly totalAmount: FieldRef<"Order", 'Float'>
-    readonly isActive: FieldRef<"Order", 'Boolean'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
     readonly updatedAt: FieldRef<"Order", 'DateTime'>
+    readonly climate: FieldRef<"Order", 'Climate'>
+    readonly employeeId: FieldRef<"Order", 'Int'>
+    readonly createdBy: FieldRef<"Order", 'Int'>
+    readonly productId: FieldRef<"Order", 'Int'>
+    readonly terrain: FieldRef<"Order", 'Terrain'>
+    readonly id: FieldRef<"Order", 'Int'>
+    readonly franchiseId: FieldRef<"Order", 'Int'>
+    readonly customerId: FieldRef<"Order", 'Int'>
   }
     
 
@@ -7896,22 +7919,22 @@ export namespace Prisma {
   }
 
   /**
-   * Order.franchise
+   * Order.factory
    */
-  export type Order$franchiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Order$factoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Franchise
+     * Select specific fields to fetch from the Factory
      */
-    select?: FranchiseSelect<ExtArgs> | null
+    select?: FactorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Franchise
+     * Omit specific fields from the Factory
      */
-    omit?: FranchiseOmit<ExtArgs> | null
+    omit?: FactoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: FranchiseInclude<ExtArgs> | null
-    where?: FranchiseWhereInput
+    include?: FactoryInclude<ExtArgs> | null
+    where?: FactoryWhereInput
   }
 
   /**
@@ -7953,22 +7976,41 @@ export namespace Prisma {
   }
 
   /**
-   * Order.factory
+   * Order.franchise
    */
-  export type Order$factoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Order$franchiseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Factory
+     * Select specific fields to fetch from the Franchise
      */
-    select?: FactorySelect<ExtArgs> | null
+    select?: FranchiseSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Factory
+     * Omit specific fields from the Franchise
      */
-    omit?: FactoryOmit<ExtArgs> | null
+    omit?: FranchiseOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: FactoryInclude<ExtArgs> | null
-    where?: FactoryWhereInput
+    include?: FranchiseInclude<ExtArgs> | null
+    where?: FranchiseWhereInput
+  }
+
+  /**
+   * Order.createdByUser
+   */
+  export type Order$createdByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -8041,7 +8083,6 @@ export namespace Prisma {
     orderId: number | null
     orderStatus: string | null
     deliveryDate: Date | null
-    isActive: boolean | null
     createdAt: Date | null
   }
 
@@ -8050,7 +8091,6 @@ export namespace Prisma {
     orderId: number | null
     orderStatus: string | null
     deliveryDate: Date | null
-    isActive: boolean | null
     createdAt: Date | null
   }
 
@@ -8059,7 +8099,6 @@ export namespace Prisma {
     orderId: number
     orderStatus: number
     deliveryDate: number
-    isActive: number
     createdAt: number
     _all: number
   }
@@ -8080,7 +8119,6 @@ export namespace Prisma {
     orderId?: true
     orderStatus?: true
     deliveryDate?: true
-    isActive?: true
     createdAt?: true
   }
 
@@ -8089,7 +8127,6 @@ export namespace Prisma {
     orderId?: true
     orderStatus?: true
     deliveryDate?: true
-    isActive?: true
     createdAt?: true
   }
 
@@ -8098,7 +8135,6 @@ export namespace Prisma {
     orderId?: true
     orderStatus?: true
     deliveryDate?: true
-    isActive?: true
     createdAt?: true
     _all?: true
   }
@@ -8194,7 +8230,6 @@ export namespace Prisma {
     orderId: number
     orderStatus: string
     deliveryDate: Date | null
-    isActive: boolean
     createdAt: Date
     _count: FactoryCountAggregateOutputType | null
     _avg: FactoryAvgAggregateOutputType | null
@@ -8222,7 +8257,6 @@ export namespace Prisma {
     orderId?: boolean
     orderStatus?: boolean
     deliveryDate?: boolean
-    isActive?: boolean
     createdAt?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["factory"]>
@@ -8232,7 +8266,6 @@ export namespace Prisma {
     orderId?: boolean
     orderStatus?: boolean
     deliveryDate?: boolean
-    isActive?: boolean
     createdAt?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["factory"]>
@@ -8242,7 +8275,6 @@ export namespace Prisma {
     orderId?: boolean
     orderStatus?: boolean
     deliveryDate?: boolean
-    isActive?: boolean
     createdAt?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["factory"]>
@@ -8252,11 +8284,10 @@ export namespace Prisma {
     orderId?: boolean
     orderStatus?: boolean
     deliveryDate?: boolean
-    isActive?: boolean
     createdAt?: boolean
   }
 
-  export type FactoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "orderStatus" | "deliveryDate" | "isActive" | "createdAt", ExtArgs["result"]["factory"]>
+  export type FactoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "orderStatus" | "deliveryDate" | "createdAt", ExtArgs["result"]["factory"]>
   export type FactoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }
@@ -8277,7 +8308,6 @@ export namespace Prisma {
       orderId: number
       orderStatus: string
       deliveryDate: Date | null
-      isActive: boolean
       createdAt: Date
     }, ExtArgs["result"]["factory"]>
     composites: {}
@@ -8707,7 +8737,6 @@ export namespace Prisma {
     readonly orderId: FieldRef<"Factory", 'Int'>
     readonly orderStatus: FieldRef<"Factory", 'String'>
     readonly deliveryDate: FieldRef<"Factory", 'DateTime'>
-    readonly isActive: FieldRef<"Factory", 'Boolean'>
     readonly createdAt: FieldRef<"Factory", 'DateTime'>
   }
     
@@ -9137,94 +9166,88 @@ export namespace Prisma {
 
   export type PaymentAvgAggregateOutputType = {
     id: number | null
-    orderId: number | null
     amount: number | null
+    orderId: number | null
   }
 
   export type PaymentSumAggregateOutputType = {
     id: number | null
-    orderId: number | null
     amount: number | null
+    orderId: number | null
   }
 
   export type PaymentMinAggregateOutputType = {
     id: number | null
-    orderId: number | null
     amount: number | null
-    method: string | null
-    status: string | null
-    isActive: boolean | null
+    orderId: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
+    method: string | null
   }
 
   export type PaymentMaxAggregateOutputType = {
     id: number | null
-    orderId: number | null
     amount: number | null
-    method: string | null
-    status: string | null
-    isActive: boolean | null
+    orderId: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
+    method: string | null
   }
 
   export type PaymentCountAggregateOutputType = {
     id: number
-    orderId: number
     amount: number
-    method: number
-    status: number
-    isActive: number
+    orderId: number
     createdAt: number
     updatedAt: number
+    status: number
+    method: number
     _all: number
   }
 
 
   export type PaymentAvgAggregateInputType = {
     id?: true
-    orderId?: true
     amount?: true
+    orderId?: true
   }
 
   export type PaymentSumAggregateInputType = {
     id?: true
-    orderId?: true
     amount?: true
+    orderId?: true
   }
 
   export type PaymentMinAggregateInputType = {
     id?: true
-    orderId?: true
     amount?: true
-    method?: true
-    status?: true
-    isActive?: true
+    orderId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    method?: true
   }
 
   export type PaymentMaxAggregateInputType = {
     id?: true
-    orderId?: true
     amount?: true
-    method?: true
-    status?: true
-    isActive?: true
+    orderId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    method?: true
   }
 
   export type PaymentCountAggregateInputType = {
     id?: true
-    orderId?: true
     amount?: true
-    method?: true
-    status?: true
-    isActive?: true
+    orderId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
+    method?: true
     _all?: true
   }
 
@@ -9316,13 +9339,12 @@ export namespace Prisma {
 
   export type PaymentGroupByOutputType = {
     id: number
-    orderId: number
     amount: number
-    method: string
-    status: string
-    isActive: boolean
+    orderId: number
     createdAt: Date
     updatedAt: Date
+    status: string
+    method: string
     _count: PaymentCountAggregateOutputType | null
     _avg: PaymentAvgAggregateOutputType | null
     _sum: PaymentSumAggregateOutputType | null
@@ -9346,52 +9368,48 @@ export namespace Prisma {
 
   export type PaymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    orderId?: boolean
     amount?: boolean
-    method?: boolean
-    status?: boolean
-    isActive?: boolean
+    orderId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    method?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    orderId?: boolean
     amount?: boolean
-    method?: boolean
-    status?: boolean
-    isActive?: boolean
+    orderId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    method?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    orderId?: boolean
     amount?: boolean
-    method?: boolean
-    status?: boolean
-    isActive?: boolean
+    orderId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    method?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectScalar = {
     id?: boolean
-    orderId?: boolean
     amount?: boolean
-    method?: boolean
-    status?: boolean
-    isActive?: boolean
+    orderId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
+    method?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "amount" | "method" | "status" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "orderId" | "createdAt" | "updatedAt" | "status" | "method", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }
@@ -9409,13 +9427,12 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      orderId: number
       amount: number
-      method: string
-      status: string
-      isActive: boolean
+      orderId: number
       createdAt: Date
       updatedAt: Date
+      status: string
+      method: string
     }, ExtArgs["result"]["payment"]>
     composites: {}
   }
@@ -9841,13 +9858,12 @@ export namespace Prisma {
    */
   interface PaymentFieldRefs {
     readonly id: FieldRef<"Payment", 'Int'>
-    readonly orderId: FieldRef<"Payment", 'Int'>
     readonly amount: FieldRef<"Payment", 'Float'>
-    readonly method: FieldRef<"Payment", 'String'>
-    readonly status: FieldRef<"Payment", 'String'>
-    readonly isActive: FieldRef<"Payment", 'Boolean'>
+    readonly orderId: FieldRef<"Payment", 'Int'>
     readonly createdAt: FieldRef<"Payment", 'DateTime'>
     readonly updatedAt: FieldRef<"Payment", 'DateTime'>
+    readonly status: FieldRef<"Payment", 'String'>
+    readonly method: FieldRef<"Payment", 'String'>
   }
     
 
@@ -10277,8 +10293,6 @@ export namespace Prisma {
 
 
   export const UserScalarFieldEnum: {
-    id: 'id',
-    loginUserId: 'loginUserId',
     email: 'email',
     password: 'password',
     fullName: 'fullName',
@@ -10286,78 +10300,78 @@ export namespace Prisma {
     role: 'role',
     isActive: 'isActive',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    loginUserId: 'loginUserId',
+    id: 'id'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   export const FranchiseScalarFieldEnum: {
-    id: 'id',
     name: 'name',
     code: 'code',
-    ownerName: 'ownerName',
-    ownerEmail: 'ownerEmail',
-    ownerPhone: 'ownerPhone',
     address: 'address',
-    isActive: 'isActive',
-    createdBy: 'createdBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    isActive: 'isActive',
+    ownerEmail: 'ownerEmail',
+    ownerName: 'ownerName',
+    ownerPhone: 'ownerPhone',
+    id: 'id',
+    createdBy: 'createdBy'
   };
 
   export type FranchiseScalarFieldEnum = (typeof FranchiseScalarFieldEnum)[keyof typeof FranchiseScalarFieldEnum]
 
 
   export const CustomerScalarFieldEnum: {
-    id: 'id',
     name: 'name',
     email: 'email',
     phone: 'phone',
     address: 'address',
-    isActive: 'isActive',
-    customerType: 'customerType',
-    franchiseId: 'franchiseId',
-    employeeId: 'employeeId',
-    createdBy: 'createdBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    customerType: 'customerType',
+    id: 'id',
+    franchiseId: 'franchiseId',
+    createdBy: 'createdBy',
+    employeeId: 'employeeId'
   };
 
   export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
   export const ProductScalarFieldEnum: {
-    id: 'id',
     name: 'name',
     price: 'price',
     stock: 'stock',
-    description: 'description',
-    size: 'size',
     isActive: 'isActive',
-    createdById: 'createdById',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    size: 'size',
+    id: 'id',
+    createdById: 'createdById'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
   export const OrderScalarFieldEnum: {
-    id: 'id',
     orderNumber: 'orderNumber',
-    franchiseId: 'franchiseId',
-    customerId: 'customerId',
-    employeeId: 'employeeId',
-    productId: 'productId',
-    climate: 'climate',
-    terrain: 'terrain',
     status: 'status',
     expectedDeliveryDate: 'expectedDeliveryDate',
     totalAmount: 'totalAmount',
-    isActive: 'isActive',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    climate: 'climate',
+    employeeId: 'employeeId',
+    createdBy: 'createdBy',
+    productId: 'productId',
+    terrain: 'terrain',
+    id: 'id',
+    franchiseId: 'franchiseId',
+    customerId: 'customerId'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -10368,7 +10382,6 @@ export namespace Prisma {
     orderId: 'orderId',
     orderStatus: 'orderStatus',
     deliveryDate: 'deliveryDate',
-    isActive: 'isActive',
     createdAt: 'createdAt'
   };
 
@@ -10377,13 +10390,12 @@ export namespace Prisma {
 
   export const PaymentScalarFieldEnum: {
     id: 'id',
-    orderId: 'orderId',
     amount: 'amount',
-    method: 'method',
-    status: 'status',
-    isActive: 'isActive',
+    orderId: 'orderId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    status: 'status',
+    method: 'method'
   };
 
   export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -10416,20 +10428,6 @@ export namespace Prisma {
   /**
    * Field references
    */
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
 
 
   /**
@@ -10482,6 +10480,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -10530,8 +10542,6 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    id?: IntFilter<"User"> | number
-    loginUserId?: StringNullableFilter<"User"> | string | null
     email?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
     fullName?: StringNullableFilter<"User"> | string | null
@@ -10540,15 +10550,16 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    products?: ProductListRelationFilter
-    ordersPlaced?: OrderListRelationFilter
+    loginUserId?: StringNullableFilter<"User"> | string | null
+    id?: IntFilter<"User"> | number
     customers?: CustomerListRelationFilter
     franchises?: FranchiseListRelationFilter
+    ordersPlaced?: OrderListRelationFilter
+    products?: ProductListRelationFilter
+    ordersCreated?: OrderListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    loginUserId?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
     fullName?: SortOrderInput | SortOrder
@@ -10557,16 +10568,19 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    products?: ProductOrderByRelationAggregateInput
-    ordersPlaced?: OrderOrderByRelationAggregateInput
+    loginUserId?: SortOrderInput | SortOrder
+    id?: SortOrder
     customers?: CustomerOrderByRelationAggregateInput
     franchises?: FranchiseOrderByRelationAggregateInput
+    ordersPlaced?: OrderOrderByRelationAggregateInput
+    products?: ProductOrderByRelationAggregateInput
+    ordersCreated?: OrderOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    loginUserId?: string
     email?: string
+    loginUserId?: string
+    id?: number
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -10577,15 +10591,14 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    products?: ProductListRelationFilter
-    ordersPlaced?: OrderListRelationFilter
     customers?: CustomerListRelationFilter
     franchises?: FranchiseListRelationFilter
-  }, "id" | "loginUserId" | "email">
+    ordersPlaced?: OrderListRelationFilter
+    products?: ProductListRelationFilter
+    ordersCreated?: OrderListRelationFilter
+  }, "id" | "email" | "loginUserId">
 
   export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    loginUserId?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
     fullName?: SortOrderInput | SortOrder
@@ -10594,6 +10607,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    loginUserId?: SortOrderInput | SortOrder
+    id?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -10605,8 +10620,6 @@ export namespace Prisma {
     AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"User"> | number
-    loginUserId?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     fullName?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -10615,77 +10628,79 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    loginUserId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    id?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type FranchiseWhereInput = {
     AND?: FranchiseWhereInput | FranchiseWhereInput[]
     OR?: FranchiseWhereInput[]
     NOT?: FranchiseWhereInput | FranchiseWhereInput[]
-    id?: IntFilter<"Franchise"> | number
     name?: StringFilter<"Franchise"> | string
     code?: StringFilter<"Franchise"> | string
-    ownerName?: StringNullableFilter<"Franchise"> | string | null
-    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
-    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
     address?: StringNullableFilter<"Franchise"> | string | null
-    isActive?: BoolFilter<"Franchise"> | boolean
-    createdBy?: IntNullableFilter<"Franchise"> | number | null
     createdAt?: DateTimeFilter<"Franchise"> | Date | string
     updatedAt?: DateTimeFilter<"Franchise"> | Date | string
+    isActive?: BoolFilter<"Franchise"> | boolean
+    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
+    ownerName?: StringNullableFilter<"Franchise"> | string | null
+    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
+    id?: IntFilter<"Franchise"> | number
+    createdBy?: IntNullableFilter<"Franchise"> | number | null
+    customers?: CustomerListRelationFilter
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orders?: OrderListRelationFilter
-    customers?: CustomerListRelationFilter
   }
 
   export type FranchiseOrderByWithRelationInput = {
-    id?: SortOrder
     name?: SortOrder
     code?: SortOrder
-    ownerName?: SortOrderInput | SortOrder
-    ownerEmail?: SortOrderInput | SortOrder
-    ownerPhone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isActive?: SortOrder
+    ownerEmail?: SortOrderInput | SortOrder
+    ownerName?: SortOrderInput | SortOrder
+    ownerPhone?: SortOrderInput | SortOrder
+    id?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    customers?: CustomerOrderByRelationAggregateInput
     creator?: UserOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
-    customers?: CustomerOrderByRelationAggregateInput
   }
 
   export type FranchiseWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
     code?: string
+    id?: number
     AND?: FranchiseWhereInput | FranchiseWhereInput[]
     OR?: FranchiseWhereInput[]
     NOT?: FranchiseWhereInput | FranchiseWhereInput[]
     name?: StringFilter<"Franchise"> | string
-    ownerName?: StringNullableFilter<"Franchise"> | string | null
-    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
-    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
     address?: StringNullableFilter<"Franchise"> | string | null
-    isActive?: BoolFilter<"Franchise"> | boolean
-    createdBy?: IntNullableFilter<"Franchise"> | number | null
     createdAt?: DateTimeFilter<"Franchise"> | Date | string
     updatedAt?: DateTimeFilter<"Franchise"> | Date | string
+    isActive?: BoolFilter<"Franchise"> | boolean
+    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
+    ownerName?: StringNullableFilter<"Franchise"> | string | null
+    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
+    createdBy?: IntNullableFilter<"Franchise"> | number | null
+    customers?: CustomerListRelationFilter
     creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orders?: OrderListRelationFilter
-    customers?: CustomerListRelationFilter
   }, "id" | "code">
 
   export type FranchiseOrderByWithAggregationInput = {
-    id?: SortOrder
     name?: SortOrder
     code?: SortOrder
-    ownerName?: SortOrderInput | SortOrder
-    ownerEmail?: SortOrderInput | SortOrder
-    ownerPhone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isActive?: SortOrder
+    ownerEmail?: SortOrderInput | SortOrder
+    ownerName?: SortOrderInput | SortOrder
+    ownerPhone?: SortOrderInput | SortOrder
+    id?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
     _count?: FranchiseCountOrderByAggregateInput
     _avg?: FranchiseAvgOrderByAggregateInput
     _max?: FranchiseMaxOrderByAggregateInput
@@ -10697,55 +10712,53 @@ export namespace Prisma {
     AND?: FranchiseScalarWhereWithAggregatesInput | FranchiseScalarWhereWithAggregatesInput[]
     OR?: FranchiseScalarWhereWithAggregatesInput[]
     NOT?: FranchiseScalarWhereWithAggregatesInput | FranchiseScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Franchise"> | number
     name?: StringWithAggregatesFilter<"Franchise"> | string
     code?: StringWithAggregatesFilter<"Franchise"> | string
-    ownerName?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
-    ownerEmail?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
-    ownerPhone?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
     address?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
-    isActive?: BoolWithAggregatesFilter<"Franchise"> | boolean
-    createdBy?: IntNullableWithAggregatesFilter<"Franchise"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Franchise"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Franchise"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"Franchise"> | boolean
+    ownerEmail?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
+    ownerName?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
+    ownerPhone?: StringNullableWithAggregatesFilter<"Franchise"> | string | null
+    id?: IntWithAggregatesFilter<"Franchise"> | number
+    createdBy?: IntNullableWithAggregatesFilter<"Franchise"> | number | null
   }
 
   export type CustomerWhereInput = {
     AND?: CustomerWhereInput | CustomerWhereInput[]
     OR?: CustomerWhereInput[]
     NOT?: CustomerWhereInput | CustomerWhereInput[]
-    id?: IntFilter<"Customer"> | number
     name?: StringFilter<"Customer"> | string
     email?: StringNullableFilter<"Customer"> | string | null
     phone?: StringNullableFilter<"Customer"> | string | null
     address?: StringNullableFilter<"Customer"> | string | null
-    isActive?: BoolFilter<"Customer"> | boolean
-    customerType?: StringNullableFilter<"Customer"> | string | null
-    franchiseId?: IntNullableFilter<"Customer"> | number | null
-    employeeId?: IntNullableFilter<"Customer"> | number | null
-    createdBy?: IntNullableFilter<"Customer"> | number | null
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
-    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
+    customerType?: StringNullableFilter<"Customer"> | string | null
+    id?: IntFilter<"Customer"> | number
+    franchiseId?: IntNullableFilter<"Customer"> | number | null
+    createdBy?: IntNullableFilter<"Customer"> | number | null
+    employeeId?: IntNullableFilter<"Customer"> | number | null
     employee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
     orders?: OrderListRelationFilter
   }
 
   export type CustomerOrderByWithRelationInput = {
-    id?: SortOrder
     name?: SortOrder
     email?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    customerType?: SortOrderInput | SortOrder
-    franchiseId?: SortOrderInput | SortOrder
-    employeeId?: SortOrderInput | SortOrder
-    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    franchise?: FranchiseOrderByWithRelationInput
+    customerType?: SortOrderInput | SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    employeeId?: SortOrderInput | SortOrder
     employee?: UserOrderByWithRelationInput
+    franchise?: FranchiseOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
   }
 
@@ -10758,31 +10771,29 @@ export namespace Prisma {
     email?: StringNullableFilter<"Customer"> | string | null
     phone?: StringNullableFilter<"Customer"> | string | null
     address?: StringNullableFilter<"Customer"> | string | null
-    isActive?: BoolFilter<"Customer"> | boolean
-    customerType?: StringNullableFilter<"Customer"> | string | null
-    franchiseId?: IntNullableFilter<"Customer"> | number | null
-    employeeId?: IntNullableFilter<"Customer"> | number | null
-    createdBy?: IntNullableFilter<"Customer"> | number | null
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
-    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
+    customerType?: StringNullableFilter<"Customer"> | string | null
+    franchiseId?: IntNullableFilter<"Customer"> | number | null
+    createdBy?: IntNullableFilter<"Customer"> | number | null
+    employeeId?: IntNullableFilter<"Customer"> | number | null
     employee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
     orders?: OrderListRelationFilter
   }, "id">
 
   export type CustomerOrderByWithAggregationInput = {
-    id?: SortOrder
     name?: SortOrder
     email?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    customerType?: SortOrderInput | SortOrder
-    franchiseId?: SortOrderInput | SortOrder
-    employeeId?: SortOrderInput | SortOrder
-    createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    customerType?: SortOrderInput | SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    employeeId?: SortOrderInput | SortOrder
     _count?: CustomerCountOrderByAggregateInput
     _avg?: CustomerAvgOrderByAggregateInput
     _max?: CustomerMaxOrderByAggregateInput
@@ -10794,51 +10805,48 @@ export namespace Prisma {
     AND?: CustomerScalarWhereWithAggregatesInput | CustomerScalarWhereWithAggregatesInput[]
     OR?: CustomerScalarWhereWithAggregatesInput[]
     NOT?: CustomerScalarWhereWithAggregatesInput | CustomerScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Customer"> | number
     name?: StringWithAggregatesFilter<"Customer"> | string
     email?: StringNullableWithAggregatesFilter<"Customer"> | string | null
     phone?: StringNullableWithAggregatesFilter<"Customer"> | string | null
     address?: StringNullableWithAggregatesFilter<"Customer"> | string | null
-    isActive?: BoolWithAggregatesFilter<"Customer"> | boolean
-    customerType?: StringNullableWithAggregatesFilter<"Customer"> | string | null
-    franchiseId?: IntNullableWithAggregatesFilter<"Customer"> | number | null
-    employeeId?: IntNullableWithAggregatesFilter<"Customer"> | number | null
-    createdBy?: IntNullableWithAggregatesFilter<"Customer"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+    customerType?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    id?: IntWithAggregatesFilter<"Customer"> | number
+    franchiseId?: IntNullableWithAggregatesFilter<"Customer"> | number | null
+    createdBy?: IntNullableWithAggregatesFilter<"Customer"> | number | null
+    employeeId?: IntNullableWithAggregatesFilter<"Customer"> | number | null
   }
 
   export type ProductWhereInput = {
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
-    id?: IntFilter<"Product"> | number
     name?: StringFilter<"Product"> | string
     price?: FloatFilter<"Product"> | number
     stock?: IntFilter<"Product"> | number
-    description?: StringFilter<"Product"> | string
-    size?: StringFilter<"Product"> | string
     isActive?: BoolFilter<"Product"> | boolean
-    createdById?: IntNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
-    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    size?: StringFilter<"Product"> | string
+    id?: IntFilter<"Product"> | number
+    createdById?: IntNullableFilter<"Product"> | number | null
     orders?: OrderListRelationFilter
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type ProductOrderByWithRelationInput = {
-    id?: SortOrder
     name?: SortOrder
     price?: SortOrder
     stock?: SortOrder
-    description?: SortOrder
-    size?: SortOrder
     isActive?: SortOrder
-    createdById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: UserOrderByWithRelationInput
+    size?: SortOrder
+    id?: SortOrder
+    createdById?: SortOrderInput | SortOrder
     orders?: OrderOrderByRelationAggregateInput
+    createdBy?: UserOrderByWithRelationInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -10849,27 +10857,25 @@ export namespace Prisma {
     name?: StringFilter<"Product"> | string
     price?: FloatFilter<"Product"> | number
     stock?: IntFilter<"Product"> | number
-    description?: StringFilter<"Product"> | string
-    size?: StringFilter<"Product"> | string
     isActive?: BoolFilter<"Product"> | boolean
-    createdById?: IntNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
-    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    size?: StringFilter<"Product"> | string
+    createdById?: IntNullableFilter<"Product"> | number | null
     orders?: OrderListRelationFilter
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type ProductOrderByWithAggregationInput = {
-    id?: SortOrder
     name?: SortOrder
     price?: SortOrder
     stock?: SortOrder
-    description?: SortOrder
-    size?: SortOrder
     isActive?: SortOrder
-    createdById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    size?: SortOrder
+    id?: SortOrder
+    createdById?: SortOrderInput | SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -10881,108 +10887,110 @@ export namespace Prisma {
     AND?: ProductScalarWhereWithAggregatesInput | ProductScalarWhereWithAggregatesInput[]
     OR?: ProductScalarWhereWithAggregatesInput[]
     NOT?: ProductScalarWhereWithAggregatesInput | ProductScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Product"> | number
     name?: StringWithAggregatesFilter<"Product"> | string
     price?: FloatWithAggregatesFilter<"Product"> | number
     stock?: IntWithAggregatesFilter<"Product"> | number
-    description?: StringWithAggregatesFilter<"Product"> | string
-    size?: StringWithAggregatesFilter<"Product"> | string
     isActive?: BoolWithAggregatesFilter<"Product"> | boolean
-    createdById?: IntNullableWithAggregatesFilter<"Product"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    size?: StringWithAggregatesFilter<"Product"> | string
+    id?: IntWithAggregatesFilter<"Product"> | number
+    createdById?: IntNullableWithAggregatesFilter<"Product"> | number | null
   }
 
   export type OrderWhereInput = {
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
-    id?: IntFilter<"Order"> | number
     orderNumber?: StringFilter<"Order"> | string
-    franchiseId?: IntNullableFilter<"Order"> | number | null
-    customerId?: IntNullableFilter<"Order"> | number | null
-    employeeId?: IntNullableFilter<"Order"> | number | null
-    productId?: IntFilter<"Order"> | number
-    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
-    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
     status?: StringFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
     totalAmount?: FloatFilter<"Order"> | number
-    isActive?: BoolFilter<"Order"> | boolean
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
-    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
+    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
+    employeeId?: IntNullableFilter<"Order"> | number | null
+    createdBy?: IntNullableFilter<"Order"> | number | null
+    productId?: IntFilter<"Order"> | number
+    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
+    id?: IntFilter<"Order"> | number
+    franchiseId?: IntNullableFilter<"Order"> | number | null
+    customerId?: IntNullableFilter<"Order"> | number | null
+    factory?: XOR<FactoryNullableScalarRelationFilter, FactoryWhereInput> | null
     customer?: XOR<CustomerNullableScalarRelationFilter, CustomerWhereInput> | null
     employee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    factory?: XOR<FactoryNullableScalarRelationFilter, FactoryWhereInput> | null
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     payments?: PaymentListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
-    id?: SortOrder
     orderNumber?: SortOrder
-    franchiseId?: SortOrderInput | SortOrder
-    customerId?: SortOrderInput | SortOrder
-    employeeId?: SortOrderInput | SortOrder
-    productId?: SortOrder
-    climate?: SortOrder
-    terrain?: SortOrder
     status?: SortOrder
     expectedDeliveryDate?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    franchise?: FranchiseOrderByWithRelationInput
+    climate?: SortOrder
+    employeeId?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    productId?: SortOrder
+    terrain?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrderInput | SortOrder
+    customerId?: SortOrderInput | SortOrder
+    factory?: FactoryOrderByWithRelationInput
     customer?: CustomerOrderByWithRelationInput
     employee?: UserOrderByWithRelationInput
+    franchise?: FranchiseOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
-    factory?: FactoryOrderByWithRelationInput
+    createdByUser?: UserOrderByWithRelationInput
     payments?: PaymentOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
     orderNumber?: string
+    id?: number
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
-    franchiseId?: IntNullableFilter<"Order"> | number | null
-    customerId?: IntNullableFilter<"Order"> | number | null
-    employeeId?: IntNullableFilter<"Order"> | number | null
-    productId?: IntFilter<"Order"> | number
-    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
-    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
     status?: StringFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
     totalAmount?: FloatFilter<"Order"> | number
-    isActive?: BoolFilter<"Order"> | boolean
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
-    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
+    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
+    employeeId?: IntNullableFilter<"Order"> | number | null
+    createdBy?: IntNullableFilter<"Order"> | number | null
+    productId?: IntFilter<"Order"> | number
+    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
+    franchiseId?: IntNullableFilter<"Order"> | number | null
+    customerId?: IntNullableFilter<"Order"> | number | null
+    factory?: XOR<FactoryNullableScalarRelationFilter, FactoryWhereInput> | null
     customer?: XOR<CustomerNullableScalarRelationFilter, CustomerWhereInput> | null
     employee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    franchise?: XOR<FranchiseNullableScalarRelationFilter, FranchiseWhereInput> | null
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    factory?: XOR<FactoryNullableScalarRelationFilter, FactoryWhereInput> | null
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     payments?: PaymentListRelationFilter
   }, "id" | "orderNumber">
 
   export type OrderOrderByWithAggregationInput = {
-    id?: SortOrder
     orderNumber?: SortOrder
-    franchiseId?: SortOrderInput | SortOrder
-    customerId?: SortOrderInput | SortOrder
-    employeeId?: SortOrderInput | SortOrder
-    productId?: SortOrder
-    climate?: SortOrder
-    terrain?: SortOrder
     status?: SortOrder
     expectedDeliveryDate?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    climate?: SortOrder
+    employeeId?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    productId?: SortOrder
+    terrain?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrderInput | SortOrder
+    customerId?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -10994,20 +11002,20 @@ export namespace Prisma {
     AND?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     OR?: OrderScalarWhereWithAggregatesInput[]
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Order"> | number
     orderNumber?: StringWithAggregatesFilter<"Order"> | string
-    franchiseId?: IntNullableWithAggregatesFilter<"Order"> | number | null
-    customerId?: IntNullableWithAggregatesFilter<"Order"> | number | null
-    employeeId?: IntNullableWithAggregatesFilter<"Order"> | number | null
-    productId?: IntWithAggregatesFilter<"Order"> | number
-    climate?: EnumClimateWithAggregatesFilter<"Order"> | $Enums.Climate
-    terrain?: EnumTerrainWithAggregatesFilter<"Order"> | $Enums.Terrain
     status?: StringWithAggregatesFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     totalAmount?: FloatWithAggregatesFilter<"Order"> | number
-    isActive?: BoolWithAggregatesFilter<"Order"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    climate?: EnumClimateWithAggregatesFilter<"Order"> | $Enums.Climate
+    employeeId?: IntNullableWithAggregatesFilter<"Order"> | number | null
+    createdBy?: IntNullableWithAggregatesFilter<"Order"> | number | null
+    productId?: IntWithAggregatesFilter<"Order"> | number
+    terrain?: EnumTerrainWithAggregatesFilter<"Order"> | $Enums.Terrain
+    id?: IntWithAggregatesFilter<"Order"> | number
+    franchiseId?: IntNullableWithAggregatesFilter<"Order"> | number | null
+    customerId?: IntNullableWithAggregatesFilter<"Order"> | number | null
   }
 
   export type FactoryWhereInput = {
@@ -11018,7 +11026,6 @@ export namespace Prisma {
     orderId?: IntFilter<"Factory"> | number
     orderStatus?: StringFilter<"Factory"> | string
     deliveryDate?: DateTimeNullableFilter<"Factory"> | Date | string | null
-    isActive?: BoolFilter<"Factory"> | boolean
     createdAt?: DateTimeFilter<"Factory"> | Date | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }
@@ -11028,7 +11035,6 @@ export namespace Prisma {
     orderId?: SortOrder
     orderStatus?: SortOrder
     deliveryDate?: SortOrderInput | SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     order?: OrderOrderByWithRelationInput
   }
@@ -11041,7 +11047,6 @@ export namespace Prisma {
     NOT?: FactoryWhereInput | FactoryWhereInput[]
     orderStatus?: StringFilter<"Factory"> | string
     deliveryDate?: DateTimeNullableFilter<"Factory"> | Date | string | null
-    isActive?: BoolFilter<"Factory"> | boolean
     createdAt?: DateTimeFilter<"Factory"> | Date | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }, "id" | "orderId">
@@ -11051,7 +11056,6 @@ export namespace Prisma {
     orderId?: SortOrder
     orderStatus?: SortOrder
     deliveryDate?: SortOrderInput | SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     _count?: FactoryCountOrderByAggregateInput
     _avg?: FactoryAvgOrderByAggregateInput
@@ -11068,7 +11072,6 @@ export namespace Prisma {
     orderId?: IntWithAggregatesFilter<"Factory"> | number
     orderStatus?: StringWithAggregatesFilter<"Factory"> | string
     deliveryDate?: DateTimeNullableWithAggregatesFilter<"Factory"> | Date | string | null
-    isActive?: BoolWithAggregatesFilter<"Factory"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Factory"> | Date | string
   }
 
@@ -11077,25 +11080,23 @@ export namespace Prisma {
     OR?: PaymentWhereInput[]
     NOT?: PaymentWhereInput | PaymentWhereInput[]
     id?: IntFilter<"Payment"> | number
-    orderId?: IntFilter<"Payment"> | number
     amount?: FloatFilter<"Payment"> | number
-    method?: StringFilter<"Payment"> | string
-    status?: StringFilter<"Payment"> | string
-    isActive?: BoolFilter<"Payment"> | boolean
+    orderId?: IntFilter<"Payment"> | number
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    status?: StringFilter<"Payment"> | string
+    method?: StringFilter<"Payment"> | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }
 
   export type PaymentOrderByWithRelationInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
-    isActive?: SortOrder
+    orderId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    method?: SortOrder
     order?: OrderOrderByWithRelationInput
   }
 
@@ -11104,25 +11105,23 @@ export namespace Prisma {
     AND?: PaymentWhereInput | PaymentWhereInput[]
     OR?: PaymentWhereInput[]
     NOT?: PaymentWhereInput | PaymentWhereInput[]
-    orderId?: IntFilter<"Payment"> | number
     amount?: FloatFilter<"Payment"> | number
-    method?: StringFilter<"Payment"> | string
-    status?: StringFilter<"Payment"> | string
-    isActive?: BoolFilter<"Payment"> | boolean
+    orderId?: IntFilter<"Payment"> | number
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    status?: StringFilter<"Payment"> | string
+    method?: StringFilter<"Payment"> | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }, "id">
 
   export type PaymentOrderByWithAggregationInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
-    isActive?: SortOrder
+    orderId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    method?: SortOrder
     _count?: PaymentCountOrderByAggregateInput
     _avg?: PaymentAvgOrderByAggregateInput
     _max?: PaymentMaxOrderByAggregateInput
@@ -11135,17 +11134,15 @@ export namespace Prisma {
     OR?: PaymentScalarWhereWithAggregatesInput[]
     NOT?: PaymentScalarWhereWithAggregatesInput | PaymentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Payment"> | number
-    orderId?: IntWithAggregatesFilter<"Payment"> | number
     amount?: FloatWithAggregatesFilter<"Payment"> | number
-    method?: StringWithAggregatesFilter<"Payment"> | string
-    status?: StringWithAggregatesFilter<"Payment"> | string
-    isActive?: BoolWithAggregatesFilter<"Payment"> | boolean
+    orderId?: IntWithAggregatesFilter<"Payment"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
+    status?: StringWithAggregatesFilter<"Payment"> | string
+    method?: StringWithAggregatesFilter<"Payment"> | string
   }
 
   export type UserCreateInput = {
-    loginUserId?: string | null
     email?: string | null
     password?: string | null
     fullName?: string | null
@@ -11154,15 +11151,15 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    products?: ProductCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    loginUserId?: string | null
     customers?: CustomerCreateNestedManyWithoutEmployeeInput
     franchises?: FranchiseCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    products?: ProductCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUncheckedCreateInput = {
-    id?: number
-    loginUserId?: string | null
     email?: string | null
     password?: string | null
     fullName?: string | null
@@ -11171,14 +11168,16 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    loginUserId?: string | null
+    id?: number
     customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
     franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderUncheckedCreateNestedManyWithoutCreatedByUserInput
   }
 
   export type UserUpdateInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11187,15 +11186,15 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     customers?: CustomerUpdateManyWithoutEmployeeNestedInput
     franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11204,15 +11203,16 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
     customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
     franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserCreateManyInput = {
-    id?: number
-    loginUserId?: string | null
     email?: string | null
     password?: string | null
     fullName?: string | null
@@ -11221,10 +11221,11 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
   }
 
   export type UserUpdateManyMutationInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11233,11 +11234,10 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11246,108 +11246,110 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
   }
 
   export type FranchiseCreateInput = {
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    customers?: CustomerCreateNestedManyWithoutFranchiseInput
     creator?: UserCreateNestedOneWithoutFranchisesInput
     orders?: OrderCreateNestedManyWithoutFranchiseInput
-    customers?: CustomerCreateNestedManyWithoutFranchiseInput
   }
 
   export type FranchiseUncheckedCreateInput = {
-    id?: number
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    orders?: OrderUncheckedCreateNestedManyWithoutFranchiseInput
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
+    createdBy?: number | null
     customers?: CustomerUncheckedCreateNestedManyWithoutFranchiseInput
+    orders?: OrderUncheckedCreateNestedManyWithoutFranchiseInput
   }
 
   export type FranchiseUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    customers?: CustomerUpdateManyWithoutFranchiseNestedInput
     creator?: UserUpdateOneWithoutFranchisesNestedInput
     orders?: OrderUpdateManyWithoutFranchiseNestedInput
-    customers?: CustomerUpdateManyWithoutFranchiseNestedInput
   }
 
   export type FranchiseUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     customers?: CustomerUncheckedUpdateManyWithoutFranchiseNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
   }
 
   export type FranchiseCreateManyInput = {
-    id?: number
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
+    createdBy?: number | null
   }
 
   export type FranchiseUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FranchiseUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type CustomerCreateInput = {
@@ -11355,29 +11357,27 @@ export namespace Prisma {
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutCustomersInput
+    customerType?: string | null
+    createdBy?: number | null
     employee?: UserCreateNestedOneWithoutCustomersInput
+    franchise?: FranchiseCreateNestedOneWithoutCustomersInput
     orders?: OrderCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUncheckedCreateInput = {
-    id?: number
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    franchiseId?: number | null
-    employeeId?: number | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    franchiseId?: number | null
+    createdBy?: number | null
+    employeeId?: number | null
     orders?: OrderUncheckedCreateNestedManyWithoutCustomerInput
   }
 
@@ -11386,45 +11386,42 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutCustomersNestedInput
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     employee?: UserUpdateOneWithoutCustomersNestedInput
+    franchise?: FranchiseUpdateOneWithoutCustomersNestedInput
     orders?: OrderUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
     orders?: OrderUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerCreateManyInput = {
-    id?: number
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    franchiseId?: number | null
-    employeeId?: number | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    franchiseId?: number | null
+    createdBy?: number | null
+    employeeId?: number | null
   }
 
   export type CustomerUpdateManyMutationInput = {
@@ -11432,52 +11429,48 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type CustomerUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ProductCreateInput = {
     name: string
     price: number
     stock?: number
-    description: string
-    size: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy?: UserCreateNestedOneWithoutProductsInput
+    size: string
     orders?: OrderCreateNestedManyWithoutProductInput
+    createdBy?: UserCreateNestedOneWithoutProductsInput
   }
 
   export type ProductUncheckedCreateInput = {
-    id?: number
     name: string
     price: number
     stock?: number
-    description: string
-    size: string
     isActive?: boolean
-    createdById?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    size: string
+    id?: number
+    createdById?: number | null
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -11485,190 +11478,183 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: UserUpdateOneWithoutProductsNestedInput
+    size?: StringFieldUpdateOperationsInput | string
     orders?: OrderUpdateManyWithoutProductNestedInput
+    createdBy?: UserUpdateOneWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdById?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
-    id?: number
     name: string
     price: number
     stock?: number
-    description: string
-    size: string
     isActive?: boolean
-    createdById?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    size: string
+    id?: number
+    createdById?: number | null
   }
 
   export type ProductUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
   }
 
   export type ProductUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdById?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type OrderCreateInput = {
     orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
     customer?: CustomerCreateNestedOneWithoutOrdersInput
     employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
-    factory?: FactoryCreateNestedOneWithoutOrderInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
     factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    factory?: FactoryUpdateOneWithoutOrderNestedInput
     customer?: CustomerUpdateOneWithoutOrdersNestedInput
     employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    factory?: FactoryUpdateOneWithoutOrderNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
     factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
   }
 
   export type OrderUpdateManyMutationInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
   }
 
   export type OrderUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type FactoryCreateInput = {
     orderStatus?: string
     deliveryDate?: Date | string | null
-    isActive?: boolean
     createdAt?: Date | string
     order: OrderCreateNestedOneWithoutFactoryInput
   }
@@ -11678,14 +11664,12 @@ export namespace Prisma {
     orderId: number
     orderStatus?: string
     deliveryDate?: Date | string | null
-    isActive?: boolean
     createdAt?: Date | string
   }
 
   export type FactoryUpdateInput = {
     orderStatus?: StringFieldUpdateOperationsInput | string
     deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: OrderUpdateOneRequiredWithoutFactoryNestedInput
   }
@@ -11695,7 +11679,6 @@ export namespace Prisma {
     orderId?: IntFieldUpdateOperationsInput | number
     orderStatus?: StringFieldUpdateOperationsInput | string
     deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11704,14 +11687,12 @@ export namespace Prisma {
     orderId: number
     orderStatus?: string
     deliveryDate?: Date | string | null
-    isActive?: boolean
     createdAt?: Date | string
   }
 
   export type FactoryUpdateManyMutationInput = {
     orderStatus?: StringFieldUpdateOperationsInput | string
     deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11720,92 +11701,73 @@ export namespace Prisma {
     orderId?: IntFieldUpdateOperationsInput | number
     orderStatus?: StringFieldUpdateOperationsInput | string
     deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaymentCreateInput = {
     amount: number
-    method: string
-    status?: string
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+    method: string
     order: OrderCreateNestedOneWithoutPaymentsInput
   }
 
   export type PaymentUncheckedCreateInput = {
     id?: number
-    orderId: number
     amount: number
-    method: string
-    status?: string
-    isActive?: boolean
+    orderId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+    method: string
   }
 
   export type PaymentUpdateInput = {
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
     order?: OrderUpdateOneRequiredWithoutPaymentsNestedInput
   }
 
   export type PaymentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    orderId?: IntFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    orderId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaymentCreateManyInput = {
     id?: number
-    orderId: number
     amount: number
-    method: string
-    status?: string
-    isActive?: boolean
+    orderId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+    method: string
   }
 
   export type PaymentUpdateManyMutationInput = {
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaymentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    orderId?: IntFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    orderId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -11846,16 +11808,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type ProductListRelationFilter = {
-    every?: ProductWhereInput
-    some?: ProductWhereInput
-    none?: ProductWhereInput
-  }
-
-  export type OrderListRelationFilter = {
-    every?: OrderWhereInput
-    some?: OrderWhereInput
-    none?: OrderWhereInput
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type CustomerListRelationFilter = {
@@ -11870,17 +11831,21 @@ export namespace Prisma {
     none?: FranchiseWhereInput
   }
 
+  export type OrderListRelationFilter = {
+    every?: OrderWhereInput
+    some?: OrderWhereInput
+    none?: OrderWhereInput
+  }
+
+  export type ProductListRelationFilter = {
+    every?: ProductWhereInput
+    some?: ProductWhereInput
+    none?: ProductWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type ProductOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrderOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type CustomerOrderByRelationAggregateInput = {
@@ -11891,9 +11856,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type OrderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    loginUserId?: SortOrder
     email?: SortOrder
     password?: SortOrder
     fullName?: SortOrder
@@ -11902,6 +11873,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    loginUserId?: SortOrder
+    id?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -11909,8 +11882,6 @@ export namespace Prisma {
   }
 
   export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    loginUserId?: SortOrder
     email?: SortOrder
     password?: SortOrder
     fullName?: SortOrder
@@ -11919,11 +11890,11 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    loginUserId?: SortOrder
+    id?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    loginUserId?: SortOrder
     email?: SortOrder
     password?: SortOrder
     fullName?: SortOrder
@@ -11932,26 +11903,12 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    loginUserId?: SortOrder
+    id?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12004,6 +11961,22 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12036,17 +12009,17 @@ export namespace Prisma {
   }
 
   export type FranchiseCountOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     code?: SortOrder
-    ownerName?: SortOrder
-    ownerEmail?: SortOrder
-    ownerPhone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isActive?: SortOrder
+    ownerEmail?: SortOrder
+    ownerName?: SortOrder
+    ownerPhone?: SortOrder
+    id?: SortOrder
+    createdBy?: SortOrder
   }
 
   export type FranchiseAvgOrderByAggregateInput = {
@@ -12055,31 +12028,31 @@ export namespace Prisma {
   }
 
   export type FranchiseMaxOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     code?: SortOrder
-    ownerName?: SortOrder
-    ownerEmail?: SortOrder
-    ownerPhone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isActive?: SortOrder
+    ownerEmail?: SortOrder
+    ownerName?: SortOrder
+    ownerPhone?: SortOrder
+    id?: SortOrder
+    createdBy?: SortOrder
   }
 
   export type FranchiseMinOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     code?: SortOrder
-    ownerName?: SortOrder
-    ownerEmail?: SortOrder
-    ownerPhone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isActive?: SortOrder
+    ownerEmail?: SortOrder
+    ownerName?: SortOrder
+    ownerPhone?: SortOrder
+    id?: SortOrder
+    createdBy?: SortOrder
   }
 
   export type FranchiseSumOrderByAggregateInput = {
@@ -12127,62 +12100,59 @@ export namespace Prisma {
   }
 
   export type CustomerCountOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    customerType?: SortOrder
-    franchiseId?: SortOrder
-    employeeId?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    customerType?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    createdBy?: SortOrder
+    employeeId?: SortOrder
   }
 
   export type CustomerAvgOrderByAggregateInput = {
     id?: SortOrder
     franchiseId?: SortOrder
-    employeeId?: SortOrder
     createdBy?: SortOrder
+    employeeId?: SortOrder
   }
 
   export type CustomerMaxOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    customerType?: SortOrder
-    franchiseId?: SortOrder
-    employeeId?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    customerType?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    createdBy?: SortOrder
+    employeeId?: SortOrder
   }
 
   export type CustomerMinOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
     address?: SortOrder
-    isActive?: SortOrder
-    customerType?: SortOrder
-    franchiseId?: SortOrder
-    employeeId?: SortOrder
-    createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    customerType?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    createdBy?: SortOrder
+    employeeId?: SortOrder
   }
 
   export type CustomerSumOrderByAggregateInput = {
     id?: SortOrder
     franchiseId?: SortOrder
-    employeeId?: SortOrder
     createdBy?: SortOrder
+    employeeId?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -12197,55 +12167,52 @@ export namespace Prisma {
   }
 
   export type ProductCountOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     price?: SortOrder
     stock?: SortOrder
-    description?: SortOrder
-    size?: SortOrder
     isActive?: SortOrder
-    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    size?: SortOrder
+    id?: SortOrder
+    createdById?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
-    id?: SortOrder
     price?: SortOrder
     stock?: SortOrder
+    id?: SortOrder
     createdById?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     price?: SortOrder
     stock?: SortOrder
-    description?: SortOrder
-    size?: SortOrder
     isActive?: SortOrder
-    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    size?: SortOrder
+    id?: SortOrder
+    createdById?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
-    id?: SortOrder
     name?: SortOrder
     price?: SortOrder
     stock?: SortOrder
-    description?: SortOrder
-    size?: SortOrder
     isActive?: SortOrder
-    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    size?: SortOrder
+    id?: SortOrder
+    createdById?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
-    id?: SortOrder
     price?: SortOrder
     stock?: SortOrder
+    id?: SortOrder
     createdById?: SortOrder
   }
 
@@ -12265,6 +12232,17 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type EnumClimateFilter<$PrismaModel = never> = {
     equals?: $Enums.Climate | EnumClimateFieldRefInput<$PrismaModel>
     in?: $Enums.Climate[] | ListEnumClimateFieldRefInput<$PrismaModel>
@@ -12279,15 +12257,9 @@ export namespace Prisma {
     not?: NestedEnumTerrainFilter<$PrismaModel> | $Enums.Terrain
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type FactoryNullableScalarRelationFilter = {
+    is?: FactoryWhereInput | null
+    isNot?: FactoryWhereInput | null
   }
 
   export type CustomerNullableScalarRelationFilter = {
@@ -12298,11 +12270,6 @@ export namespace Prisma {
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
-  }
-
-  export type FactoryNullableScalarRelationFilter = {
-    is?: FactoryWhereInput | null
-    isNot?: FactoryWhereInput | null
   }
 
   export type PaymentListRelationFilter = {
@@ -12316,72 +12283,88 @@ export namespace Prisma {
   }
 
   export type OrderCountOrderByAggregateInput = {
-    id?: SortOrder
     orderNumber?: SortOrder
-    franchiseId?: SortOrder
-    customerId?: SortOrder
-    employeeId?: SortOrder
-    productId?: SortOrder
-    climate?: SortOrder
-    terrain?: SortOrder
     status?: SortOrder
     expectedDeliveryDate?: SortOrder
     totalAmount?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    climate?: SortOrder
+    employeeId?: SortOrder
+    createdBy?: SortOrder
+    productId?: SortOrder
+    terrain?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    customerId?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    employeeId?: SortOrder
+    createdBy?: SortOrder
+    productId?: SortOrder
     id?: SortOrder
     franchiseId?: SortOrder
     customerId?: SortOrder
-    employeeId?: SortOrder
-    productId?: SortOrder
-    totalAmount?: SortOrder
   }
 
   export type OrderMaxOrderByAggregateInput = {
-    id?: SortOrder
     orderNumber?: SortOrder
-    franchiseId?: SortOrder
-    customerId?: SortOrder
-    employeeId?: SortOrder
-    productId?: SortOrder
-    climate?: SortOrder
-    terrain?: SortOrder
     status?: SortOrder
     expectedDeliveryDate?: SortOrder
     totalAmount?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    climate?: SortOrder
+    employeeId?: SortOrder
+    createdBy?: SortOrder
+    productId?: SortOrder
+    terrain?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    customerId?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
-    id?: SortOrder
     orderNumber?: SortOrder
-    franchiseId?: SortOrder
-    customerId?: SortOrder
-    employeeId?: SortOrder
-    productId?: SortOrder
-    climate?: SortOrder
-    terrain?: SortOrder
     status?: SortOrder
     expectedDeliveryDate?: SortOrder
     totalAmount?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type OrderSumOrderByAggregateInput = {
+    climate?: SortOrder
+    employeeId?: SortOrder
+    createdBy?: SortOrder
+    productId?: SortOrder
+    terrain?: SortOrder
     id?: SortOrder
     franchiseId?: SortOrder
     customerId?: SortOrder
-    employeeId?: SortOrder
-    productId?: SortOrder
+  }
+
+  export type OrderSumOrderByAggregateInput = {
     totalAmount?: SortOrder
+    employeeId?: SortOrder
+    createdBy?: SortOrder
+    productId?: SortOrder
+    id?: SortOrder
+    franchiseId?: SortOrder
+    customerId?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumClimateWithAggregatesFilter<$PrismaModel = never> = {
@@ -12404,20 +12387,6 @@ export namespace Prisma {
     _max?: NestedEnumTerrainFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type OrderScalarRelationFilter = {
     is?: OrderWhereInput
     isNot?: OrderWhereInput
@@ -12428,7 +12397,6 @@ export namespace Prisma {
     orderId?: SortOrder
     orderStatus?: SortOrder
     deliveryDate?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -12442,7 +12410,6 @@ export namespace Prisma {
     orderId?: SortOrder
     orderStatus?: SortOrder
     deliveryDate?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -12451,7 +12418,6 @@ export namespace Prisma {
     orderId?: SortOrder
     orderStatus?: SortOrder
     deliveryDate?: SortOrder
-    isActive?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -12462,61 +12428,44 @@ export namespace Prisma {
 
   export type PaymentCountOrderByAggregateInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
-    isActive?: SortOrder
+    orderId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    method?: SortOrder
   }
 
   export type PaymentAvgOrderByAggregateInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
+    orderId?: SortOrder
   }
 
   export type PaymentMaxOrderByAggregateInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
-    isActive?: SortOrder
+    orderId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    method?: SortOrder
   }
 
   export type PaymentMinOrderByAggregateInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
-    isActive?: SortOrder
+    orderId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
+    method?: SortOrder
   }
 
   export type PaymentSumOrderByAggregateInput = {
     id?: SortOrder
-    orderId?: SortOrder
     amount?: SortOrder
-  }
-
-  export type ProductCreateNestedManyWithoutCreatedByInput = {
-    create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
-    createMany?: ProductCreateManyCreatedByInputEnvelope
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-  }
-
-  export type OrderCreateNestedManyWithoutEmployeeInput = {
-    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
-    createMany?: OrderCreateManyEmployeeInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    orderId?: SortOrder
   }
 
   export type CustomerCreateNestedManyWithoutEmployeeInput = {
@@ -12533,17 +12482,24 @@ export namespace Prisma {
     connect?: FranchiseWhereUniqueInput | FranchiseWhereUniqueInput[]
   }
 
-  export type ProductUncheckedCreateNestedManyWithoutCreatedByInput = {
+  export type OrderCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
+    createMany?: OrderCreateManyEmployeeInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type ProductCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
     createMany?: ProductCreateManyCreatedByInputEnvelope
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
-  export type OrderUncheckedCreateNestedManyWithoutEmployeeInput = {
-    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
-    createMany?: OrderCreateManyEmployeeInputEnvelope
+  export type OrderCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput> | OrderCreateWithoutCreatedByUserInput[] | OrderUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCreatedByUserInput | OrderCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: OrderCreateManyCreatedByUserInputEnvelope
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
@@ -12561,6 +12517,27 @@ export namespace Prisma {
     connect?: FranchiseWhereUniqueInput | FranchiseWhereUniqueInput[]
   }
 
+  export type OrderUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
+    createMany?: OrderCreateManyEmployeeInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type ProductUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
+    createMany?: ProductCreateManyCreatedByInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput> | OrderCreateWithoutCreatedByUserInput[] | OrderUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCreatedByUserInput | OrderCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: OrderCreateManyCreatedByUserInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -12575,34 +12552,6 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
-  }
-
-  export type ProductUpdateManyWithoutCreatedByNestedInput = {
-    create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
-    upsert?: ProductUpsertWithWhereUniqueWithoutCreatedByInput | ProductUpsertWithWhereUniqueWithoutCreatedByInput[]
-    createMany?: ProductCreateManyCreatedByInputEnvelope
-    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    update?: ProductUpdateWithWhereUniqueWithoutCreatedByInput | ProductUpdateWithWhereUniqueWithoutCreatedByInput[]
-    updateMany?: ProductUpdateManyWithWhereWithoutCreatedByInput | ProductUpdateManyWithWhereWithoutCreatedByInput[]
-    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
-  }
-
-  export type OrderUpdateManyWithoutEmployeeNestedInput = {
-    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutEmployeeInput | OrderUpsertWithWhereUniqueWithoutEmployeeInput[]
-    createMany?: OrderCreateManyEmployeeInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutEmployeeInput | OrderUpdateWithWhereUniqueWithoutEmployeeInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutEmployeeInput | OrderUpdateManyWithWhereWithoutEmployeeInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type CustomerUpdateManyWithoutEmployeeNestedInput = {
@@ -12633,15 +12582,21 @@ export namespace Prisma {
     deleteMany?: FranchiseScalarWhereInput | FranchiseScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type OrderUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutEmployeeInput | OrderUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: OrderCreateManyEmployeeInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutEmployeeInput | OrderUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutEmployeeInput | OrderUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type ProductUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  export type ProductUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
     upsert?: ProductUpsertWithWhereUniqueWithoutCreatedByInput | ProductUpsertWithWhereUniqueWithoutCreatedByInput[]
@@ -12655,18 +12610,26 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
-  export type OrderUncheckedUpdateManyWithoutEmployeeNestedInput = {
-    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutEmployeeInput | OrderUpsertWithWhereUniqueWithoutEmployeeInput[]
-    createMany?: OrderCreateManyEmployeeInputEnvelope
+  export type OrderUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput> | OrderCreateWithoutCreatedByUserInput[] | OrderUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCreatedByUserInput | OrderCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutCreatedByUserInput | OrderUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: OrderCreateManyCreatedByUserInputEnvelope
     set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
     disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
     delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutEmployeeInput | OrderUpdateWithWhereUniqueWithoutEmployeeInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutEmployeeInput | OrderUpdateManyWithWhereWithoutEmployeeInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutCreatedByUserInput | OrderUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutCreatedByUserInput | OrderUpdateManyWithWhereWithoutCreatedByUserInput[]
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CustomerUncheckedUpdateManyWithoutEmployeeNestedInput = {
@@ -12697,6 +12660,55 @@ export namespace Prisma {
     deleteMany?: FranchiseScalarWhereInput | FranchiseScalarWhereInput[]
   }
 
+  export type OrderUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput> | OrderCreateWithoutEmployeeInput[] | OrderUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutEmployeeInput | OrderCreateOrConnectWithoutEmployeeInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutEmployeeInput | OrderUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: OrderCreateManyEmployeeInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutEmployeeInput | OrderUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutEmployeeInput | OrderUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type ProductUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput> | ProductCreateWithoutCreatedByInput[] | ProductUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutCreatedByInput | ProductCreateOrConnectWithoutCreatedByInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutCreatedByInput | ProductUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: ProductCreateManyCreatedByInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutCreatedByInput | ProductUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutCreatedByInput | ProductUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput> | OrderCreateWithoutCreatedByUserInput[] | OrderUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCreatedByUserInput | OrderCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutCreatedByUserInput | OrderUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: OrderCreateManyCreatedByUserInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutCreatedByUserInput | OrderUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutCreatedByUserInput | OrderUpdateManyWithWhereWithoutCreatedByUserInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type CustomerCreateNestedManyWithoutFranchiseInput = {
+    create?: XOR<CustomerCreateWithoutFranchiseInput, CustomerUncheckedCreateWithoutFranchiseInput> | CustomerCreateWithoutFranchiseInput[] | CustomerUncheckedCreateWithoutFranchiseInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutFranchiseInput | CustomerCreateOrConnectWithoutFranchiseInput[]
+    createMany?: CustomerCreateManyFranchiseInputEnvelope
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutFranchisesInput = {
     create?: XOR<UserCreateWithoutFranchisesInput, UserUncheckedCreateWithoutFranchisesInput>
     connectOrCreate?: UserCreateOrConnectWithoutFranchisesInput
@@ -12710,7 +12722,7 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
-  export type CustomerCreateNestedManyWithoutFranchiseInput = {
+  export type CustomerUncheckedCreateNestedManyWithoutFranchiseInput = {
     create?: XOR<CustomerCreateWithoutFranchiseInput, CustomerUncheckedCreateWithoutFranchiseInput> | CustomerCreateWithoutFranchiseInput[] | CustomerUncheckedCreateWithoutFranchiseInput[]
     connectOrCreate?: CustomerCreateOrConnectWithoutFranchiseInput | CustomerCreateOrConnectWithoutFranchiseInput[]
     createMany?: CustomerCreateManyFranchiseInputEnvelope
@@ -12724,15 +12736,22 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
-  export type CustomerUncheckedCreateNestedManyWithoutFranchiseInput = {
-    create?: XOR<CustomerCreateWithoutFranchiseInput, CustomerUncheckedCreateWithoutFranchiseInput> | CustomerCreateWithoutFranchiseInput[] | CustomerUncheckedCreateWithoutFranchiseInput[]
-    connectOrCreate?: CustomerCreateOrConnectWithoutFranchiseInput | CustomerCreateOrConnectWithoutFranchiseInput[]
-    createMany?: CustomerCreateManyFranchiseInputEnvelope
-    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type CustomerUpdateManyWithoutFranchiseNestedInput = {
+    create?: XOR<CustomerCreateWithoutFranchiseInput, CustomerUncheckedCreateWithoutFranchiseInput> | CustomerCreateWithoutFranchiseInput[] | CustomerUncheckedCreateWithoutFranchiseInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutFranchiseInput | CustomerCreateOrConnectWithoutFranchiseInput[]
+    upsert?: CustomerUpsertWithWhereUniqueWithoutFranchiseInput | CustomerUpsertWithWhereUniqueWithoutFranchiseInput[]
+    createMany?: CustomerCreateManyFranchiseInputEnvelope
+    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    update?: CustomerUpdateWithWhereUniqueWithoutFranchiseInput | CustomerUpdateWithWhereUniqueWithoutFranchiseInput[]
+    updateMany?: CustomerUpdateManyWithWhereWithoutFranchiseInput | CustomerUpdateManyWithWhereWithoutFranchiseInput[]
+    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
   }
 
   export type UserUpdateOneWithoutFranchisesNestedInput = {
@@ -12759,40 +12778,12 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type CustomerUpdateManyWithoutFranchiseNestedInput = {
-    create?: XOR<CustomerCreateWithoutFranchiseInput, CustomerUncheckedCreateWithoutFranchiseInput> | CustomerCreateWithoutFranchiseInput[] | CustomerUncheckedCreateWithoutFranchiseInput[]
-    connectOrCreate?: CustomerCreateOrConnectWithoutFranchiseInput | CustomerCreateOrConnectWithoutFranchiseInput[]
-    upsert?: CustomerUpsertWithWhereUniqueWithoutFranchiseInput | CustomerUpsertWithWhereUniqueWithoutFranchiseInput[]
-    createMany?: CustomerCreateManyFranchiseInputEnvelope
-    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
-    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
-    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
-    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
-    update?: CustomerUpdateWithWhereUniqueWithoutFranchiseInput | CustomerUpdateWithWhereUniqueWithoutFranchiseInput[]
-    updateMany?: CustomerUpdateManyWithWhereWithoutFranchiseInput | CustomerUpdateManyWithWhereWithoutFranchiseInput[]
-    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type OrderUncheckedUpdateManyWithoutFranchiseNestedInput = {
-    create?: XOR<OrderCreateWithoutFranchiseInput, OrderUncheckedCreateWithoutFranchiseInput> | OrderCreateWithoutFranchiseInput[] | OrderUncheckedCreateWithoutFranchiseInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutFranchiseInput | OrderCreateOrConnectWithoutFranchiseInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutFranchiseInput | OrderUpsertWithWhereUniqueWithoutFranchiseInput[]
-    createMany?: OrderCreateManyFranchiseInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutFranchiseInput | OrderUpdateWithWhereUniqueWithoutFranchiseInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutFranchiseInput | OrderUpdateManyWithWhereWithoutFranchiseInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type CustomerUncheckedUpdateManyWithoutFranchiseNestedInput = {
@@ -12809,16 +12800,30 @@ export namespace Prisma {
     deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
   }
 
-  export type FranchiseCreateNestedOneWithoutCustomersInput = {
-    create?: XOR<FranchiseCreateWithoutCustomersInput, FranchiseUncheckedCreateWithoutCustomersInput>
-    connectOrCreate?: FranchiseCreateOrConnectWithoutCustomersInput
-    connect?: FranchiseWhereUniqueInput
+  export type OrderUncheckedUpdateManyWithoutFranchiseNestedInput = {
+    create?: XOR<OrderCreateWithoutFranchiseInput, OrderUncheckedCreateWithoutFranchiseInput> | OrderCreateWithoutFranchiseInput[] | OrderUncheckedCreateWithoutFranchiseInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutFranchiseInput | OrderCreateOrConnectWithoutFranchiseInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutFranchiseInput | OrderUpsertWithWhereUniqueWithoutFranchiseInput[]
+    createMany?: OrderCreateManyFranchiseInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutFranchiseInput | OrderUpdateWithWhereUniqueWithoutFranchiseInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutFranchiseInput | OrderUpdateManyWithWhereWithoutFranchiseInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCustomersInput = {
     create?: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
     connectOrCreate?: UserCreateOrConnectWithoutCustomersInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type FranchiseCreateNestedOneWithoutCustomersInput = {
+    create?: XOR<FranchiseCreateWithoutCustomersInput, FranchiseUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: FranchiseCreateOrConnectWithoutCustomersInput
+    connect?: FranchiseWhereUniqueInput
   }
 
   export type OrderCreateNestedManyWithoutCustomerInput = {
@@ -12835,16 +12840,6 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
-  export type FranchiseUpdateOneWithoutCustomersNestedInput = {
-    create?: XOR<FranchiseCreateWithoutCustomersInput, FranchiseUncheckedCreateWithoutCustomersInput>
-    connectOrCreate?: FranchiseCreateOrConnectWithoutCustomersInput
-    upsert?: FranchiseUpsertWithoutCustomersInput
-    disconnect?: FranchiseWhereInput | boolean
-    delete?: FranchiseWhereInput | boolean
-    connect?: FranchiseWhereUniqueInput
-    update?: XOR<XOR<FranchiseUpdateToOneWithWhereWithoutCustomersInput, FranchiseUpdateWithoutCustomersInput>, FranchiseUncheckedUpdateWithoutCustomersInput>
-  }
-
   export type UserUpdateOneWithoutCustomersNestedInput = {
     create?: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
     connectOrCreate?: UserCreateOrConnectWithoutCustomersInput
@@ -12853,6 +12848,16 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCustomersInput, UserUpdateWithoutCustomersInput>, UserUncheckedUpdateWithoutCustomersInput>
+  }
+
+  export type FranchiseUpdateOneWithoutCustomersNestedInput = {
+    create?: XOR<FranchiseCreateWithoutCustomersInput, FranchiseUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: FranchiseCreateOrConnectWithoutCustomersInput
+    upsert?: FranchiseUpsertWithoutCustomersInput
+    disconnect?: FranchiseWhereInput | boolean
+    delete?: FranchiseWhereInput | boolean
+    connect?: FranchiseWhereUniqueInput
+    update?: XOR<XOR<FranchiseUpdateToOneWithWhereWithoutCustomersInput, FranchiseUpdateWithoutCustomersInput>, FranchiseUncheckedUpdateWithoutCustomersInput>
   }
 
   export type OrderUpdateManyWithoutCustomerNestedInput = {
@@ -12883,17 +12888,17 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutProductsInput = {
-    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type OrderCreateNestedManyWithoutProductInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
     createMany?: OrderCreateManyProductInputEnvelope
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutProductsInput = {
+    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type OrderUncheckedCreateNestedManyWithoutProductInput = {
@@ -12911,16 +12916,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneWithoutProductsNestedInput = {
-    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
-    upsert?: UserUpsertWithoutProductsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProductsInput, UserUpdateWithoutProductsInput>, UserUncheckedUpdateWithoutProductsInput>
-  }
-
   export type OrderUpdateManyWithoutProductNestedInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
@@ -12933,6 +12928,16 @@ export namespace Prisma {
     update?: OrderUpdateWithWhereUniqueWithoutProductInput | OrderUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: OrderUpdateManyWithWhereWithoutProductInput | OrderUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutProductsNestedInput = {
+    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
+    upsert?: UserUpsertWithoutProductsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProductsInput, UserUpdateWithoutProductsInput>, UserUncheckedUpdateWithoutProductsInput>
   }
 
   export type OrderUncheckedUpdateManyWithoutProductNestedInput = {
@@ -12949,10 +12954,10 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type FranchiseCreateNestedOneWithoutOrdersInput = {
-    create?: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: FranchiseCreateOrConnectWithoutOrdersInput
-    connect?: FranchiseWhereUniqueInput
+  export type FactoryCreateNestedOneWithoutOrderInput = {
+    create?: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: FactoryCreateOrConnectWithoutOrderInput
+    connect?: FactoryWhereUniqueInput
   }
 
   export type CustomerCreateNestedOneWithoutOrdersInput = {
@@ -12967,16 +12972,22 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type FranchiseCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: FranchiseCreateOrConnectWithoutOrdersInput
+    connect?: FranchiseWhereUniqueInput
+  }
+
   export type ProductCreateNestedOneWithoutOrdersInput = {
     create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
     connect?: ProductWhereUniqueInput
   }
 
-  export type FactoryCreateNestedOneWithoutOrderInput = {
-    create?: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
-    connectOrCreate?: FactoryCreateOrConnectWithoutOrderInput
-    connect?: FactoryWhereUniqueInput
+  export type UserCreateNestedOneWithoutOrdersCreatedInput = {
+    create?: XOR<UserCreateWithoutOrdersCreatedInput, UserUncheckedCreateWithoutOrdersCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersCreatedInput
+    connect?: UserWhereUniqueInput
   }
 
   export type PaymentCreateNestedManyWithoutOrderInput = {
@@ -12999,6 +13010,10 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type EnumClimateFieldUpdateOperationsInput = {
     set?: $Enums.Climate
   }
@@ -13007,18 +13022,14 @@ export namespace Prisma {
     set?: $Enums.Terrain
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type FranchiseUpdateOneWithoutOrdersNestedInput = {
-    create?: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: FranchiseCreateOrConnectWithoutOrdersInput
-    upsert?: FranchiseUpsertWithoutOrdersInput
-    disconnect?: FranchiseWhereInput | boolean
-    delete?: FranchiseWhereInput | boolean
-    connect?: FranchiseWhereUniqueInput
-    update?: XOR<XOR<FranchiseUpdateToOneWithWhereWithoutOrdersInput, FranchiseUpdateWithoutOrdersInput>, FranchiseUncheckedUpdateWithoutOrdersInput>
+  export type FactoryUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: FactoryCreateOrConnectWithoutOrderInput
+    upsert?: FactoryUpsertWithoutOrderInput
+    disconnect?: FactoryWhereInput | boolean
+    delete?: FactoryWhereInput | boolean
+    connect?: FactoryWhereUniqueInput
+    update?: XOR<XOR<FactoryUpdateToOneWithWhereWithoutOrderInput, FactoryUpdateWithoutOrderInput>, FactoryUncheckedUpdateWithoutOrderInput>
   }
 
   export type CustomerUpdateOneWithoutOrdersNestedInput = {
@@ -13041,6 +13052,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrdersPlacedInput, UserUpdateWithoutOrdersPlacedInput>, UserUncheckedUpdateWithoutOrdersPlacedInput>
   }
 
+  export type FranchiseUpdateOneWithoutOrdersNestedInput = {
+    create?: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: FranchiseCreateOrConnectWithoutOrdersInput
+    upsert?: FranchiseUpsertWithoutOrdersInput
+    disconnect?: FranchiseWhereInput | boolean
+    delete?: FranchiseWhereInput | boolean
+    connect?: FranchiseWhereUniqueInput
+    update?: XOR<XOR<FranchiseUpdateToOneWithWhereWithoutOrdersInput, FranchiseUpdateWithoutOrdersInput>, FranchiseUncheckedUpdateWithoutOrdersInput>
+  }
+
   export type ProductUpdateOneRequiredWithoutOrdersNestedInput = {
     create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
@@ -13049,14 +13070,14 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type FactoryUpdateOneWithoutOrderNestedInput = {
-    create?: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
-    connectOrCreate?: FactoryCreateOrConnectWithoutOrderInput
-    upsert?: FactoryUpsertWithoutOrderInput
-    disconnect?: FactoryWhereInput | boolean
-    delete?: FactoryWhereInput | boolean
-    connect?: FactoryWhereUniqueInput
-    update?: XOR<XOR<FactoryUpdateToOneWithWhereWithoutOrderInput, FactoryUpdateWithoutOrderInput>, FactoryUncheckedUpdateWithoutOrderInput>
+  export type UserUpdateOneWithoutOrdersCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutOrdersCreatedInput, UserUncheckedCreateWithoutOrdersCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersCreatedInput
+    upsert?: UserUpsertWithoutOrdersCreatedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrdersCreatedInput, UserUpdateWithoutOrdersCreatedInput>, UserUncheckedUpdateWithoutOrdersCreatedInput>
   }
 
   export type PaymentUpdateManyWithoutOrderNestedInput = {
@@ -13125,17 +13146,6 @@ export namespace Prisma {
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutPaymentsInput, OrderUpdateWithoutPaymentsInput>, OrderUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -13173,7 +13183,7 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+  export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -13181,23 +13191,7 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13258,6 +13252,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -13334,6 +13355,17 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumClimateFilter<$PrismaModel = never> = {
     equals?: $Enums.Climate | EnumClimateFieldRefInput<$PrismaModel>
     in?: $Enums.Climate[] | ListEnumClimateFieldRefInput<$PrismaModel>
@@ -13348,7 +13380,7 @@ export namespace Prisma {
     not?: NestedEnumTerrainFilter<$PrismaModel> | $Enums.Terrain
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -13356,7 +13388,10 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumClimateWithAggregatesFilter<$PrismaModel = never> = {
@@ -13379,126 +13414,30 @@ export namespace Prisma {
     _max?: NestedEnumTerrainFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type ProductCreateWithoutCreatedByInput = {
-    name: string
-    price: number
-    stock?: number
-    description: string
-    size: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    orders?: OrderCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutCreatedByInput = {
-    id?: number
-    name: string
-    price: number
-    stock?: number
-    description: string
-    size: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutCreatedByInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput>
-  }
-
-  export type ProductCreateManyCreatedByInputEnvelope = {
-    data: ProductCreateManyCreatedByInput | ProductCreateManyCreatedByInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type OrderCreateWithoutEmployeeInput = {
-    orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
-    customer?: CustomerCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    factory?: FactoryCreateNestedOneWithoutOrderInput
-    payments?: PaymentCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutEmployeeInput = {
-    id?: number
-    orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutEmployeeInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput>
-  }
-
-  export type OrderCreateManyEmployeeInputEnvelope = {
-    data: OrderCreateManyEmployeeInput | OrderCreateManyEmployeeInput[]
-    skipDuplicates?: boolean
-  }
-
   export type CustomerCreateWithoutEmployeeInput = {
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    createdBy?: number | null
     franchise?: FranchiseCreateNestedOneWithoutCustomersInput
     orders?: OrderCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUncheckedCreateWithoutEmployeeInput = {
-    id?: number
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    franchiseId?: number | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    franchiseId?: number | null
+    createdBy?: number | null
     orders?: OrderUncheckedCreateNestedManyWithoutCustomerInput
   }
 
@@ -13515,30 +13454,30 @@ export namespace Prisma {
   export type FranchiseCreateWithoutCreatorInput = {
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    orders?: OrderCreateNestedManyWithoutFranchiseInput
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
     customers?: CustomerCreateNestedManyWithoutFranchiseInput
+    orders?: OrderCreateNestedManyWithoutFranchiseInput
   }
 
   export type FranchiseUncheckedCreateWithoutCreatorInput = {
-    id?: number
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    orders?: OrderUncheckedCreateNestedManyWithoutFranchiseInput
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
     customers?: CustomerUncheckedCreateNestedManyWithoutFranchiseInput
+    orders?: OrderUncheckedCreateNestedManyWithoutFranchiseInput
   }
 
   export type FranchiseCreateOrConnectWithoutCreatorInput = {
@@ -13551,72 +13490,127 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProductUpsertWithWhereUniqueWithoutCreatedByInput = {
-    where: ProductWhereUniqueInput
-    update: XOR<ProductUpdateWithoutCreatedByInput, ProductUncheckedUpdateWithoutCreatedByInput>
-    create: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput>
+  export type OrderCreateWithoutEmployeeInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
+    customer?: CustomerCreateNestedOneWithoutOrdersInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
+    payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
-  export type ProductUpdateWithWhereUniqueWithoutCreatedByInput = {
-    where: ProductWhereUniqueInput
-    data: XOR<ProductUpdateWithoutCreatedByInput, ProductUncheckedUpdateWithoutCreatedByInput>
+  export type OrderUncheckedCreateWithoutEmployeeInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
+    factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
 
-  export type ProductUpdateManyWithWhereWithoutCreatedByInput = {
-    where: ProductScalarWhereInput
-    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutCreatedByInput>
-  }
-
-  export type ProductScalarWhereInput = {
-    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
-    OR?: ProductScalarWhereInput[]
-    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
-    id?: IntFilter<"Product"> | number
-    name?: StringFilter<"Product"> | string
-    price?: FloatFilter<"Product"> | number
-    stock?: IntFilter<"Product"> | number
-    description?: StringFilter<"Product"> | string
-    size?: StringFilter<"Product"> | string
-    isActive?: BoolFilter<"Product"> | boolean
-    createdById?: IntNullableFilter<"Product"> | number | null
-    createdAt?: DateTimeFilter<"Product"> | Date | string
-    updatedAt?: DateTimeFilter<"Product"> | Date | string
-  }
-
-  export type OrderUpsertWithWhereUniqueWithoutEmployeeInput = {
+  export type OrderCreateOrConnectWithoutEmployeeInput = {
     where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutEmployeeInput, OrderUncheckedUpdateWithoutEmployeeInput>
     create: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput>
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutEmployeeInput = {
+  export type OrderCreateManyEmployeeInputEnvelope = {
+    data: OrderCreateManyEmployeeInput | OrderCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductCreateWithoutCreatedByInput = {
+    name: string
+    price: number
+    stock?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    size: string
+    orders?: OrderCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutCreatedByInput = {
+    name: string
+    price: number
+    stock?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    size: string
+    id?: number
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutCreatedByInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type ProductCreateManyCreatedByInputEnvelope = {
+    data: ProductCreateManyCreatedByInput | ProductCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutCreatedByUserInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
+    customer?: CustomerCreateNestedOneWithoutOrdersInput
+    employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    payments?: PaymentCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutCreatedByUserInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
+    factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutCreatedByUserInput = {
     where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutEmployeeInput, OrderUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput>
   }
 
-  export type OrderUpdateManyWithWhereWithoutEmployeeInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutEmployeeInput>
-  }
-
-  export type OrderScalarWhereInput = {
-    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    OR?: OrderScalarWhereInput[]
-    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    id?: IntFilter<"Order"> | number
-    orderNumber?: StringFilter<"Order"> | string
-    franchiseId?: IntNullableFilter<"Order"> | number | null
-    customerId?: IntNullableFilter<"Order"> | number | null
-    employeeId?: IntNullableFilter<"Order"> | number | null
-    productId?: IntFilter<"Order"> | number
-    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
-    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
-    status?: StringFilter<"Order"> | string
-    expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
-    totalAmount?: FloatFilter<"Order"> | number
-    isActive?: BoolFilter<"Order"> | boolean
-    createdAt?: DateTimeFilter<"Order"> | Date | string
-    updatedAt?: DateTimeFilter<"Order"> | Date | string
+  export type OrderCreateManyCreatedByUserInputEnvelope = {
+    data: OrderCreateManyCreatedByUserInput | OrderCreateManyCreatedByUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type CustomerUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -13639,18 +13633,17 @@ export namespace Prisma {
     AND?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
     OR?: CustomerScalarWhereInput[]
     NOT?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
-    id?: IntFilter<"Customer"> | number
     name?: StringFilter<"Customer"> | string
     email?: StringNullableFilter<"Customer"> | string | null
     phone?: StringNullableFilter<"Customer"> | string | null
     address?: StringNullableFilter<"Customer"> | string | null
-    isActive?: BoolFilter<"Customer"> | boolean
-    customerType?: StringNullableFilter<"Customer"> | string | null
-    franchiseId?: IntNullableFilter<"Customer"> | number | null
-    employeeId?: IntNullableFilter<"Customer"> | number | null
-    createdBy?: IntNullableFilter<"Customer"> | number | null
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    customerType?: StringNullableFilter<"Customer"> | string | null
+    id?: IntFilter<"Customer"> | number
+    franchiseId?: IntNullableFilter<"Customer"> | number | null
+    createdBy?: IntNullableFilter<"Customer"> | number | null
+    employeeId?: IntNullableFilter<"Customer"> | number | null
   }
 
   export type FranchiseUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -13673,98 +13666,100 @@ export namespace Prisma {
     AND?: FranchiseScalarWhereInput | FranchiseScalarWhereInput[]
     OR?: FranchiseScalarWhereInput[]
     NOT?: FranchiseScalarWhereInput | FranchiseScalarWhereInput[]
-    id?: IntFilter<"Franchise"> | number
     name?: StringFilter<"Franchise"> | string
     code?: StringFilter<"Franchise"> | string
-    ownerName?: StringNullableFilter<"Franchise"> | string | null
-    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
-    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
     address?: StringNullableFilter<"Franchise"> | string | null
-    isActive?: BoolFilter<"Franchise"> | boolean
-    createdBy?: IntNullableFilter<"Franchise"> | number | null
     createdAt?: DateTimeFilter<"Franchise"> | Date | string
     updatedAt?: DateTimeFilter<"Franchise"> | Date | string
+    isActive?: BoolFilter<"Franchise"> | boolean
+    ownerEmail?: StringNullableFilter<"Franchise"> | string | null
+    ownerName?: StringNullableFilter<"Franchise"> | string | null
+    ownerPhone?: StringNullableFilter<"Franchise"> | string | null
+    id?: IntFilter<"Franchise"> | number
+    createdBy?: IntNullableFilter<"Franchise"> | number | null
   }
 
-  export type UserCreateWithoutFranchisesInput = {
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
-    customers?: CustomerCreateNestedManyWithoutEmployeeInput
-  }
-
-  export type UserUncheckedCreateWithoutFranchisesInput = {
-    id?: number
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
-    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
-  }
-
-  export type UserCreateOrConnectWithoutFranchisesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutFranchisesInput, UserUncheckedCreateWithoutFranchisesInput>
-  }
-
-  export type OrderCreateWithoutFranchiseInput = {
-    orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    customer?: CustomerCreateNestedOneWithoutOrdersInput
-    employee?: UserCreateNestedOneWithoutOrdersPlacedInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    factory?: FactoryCreateNestedOneWithoutOrderInput
-    payments?: PaymentCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutFranchiseInput = {
-    id?: number
-    orderNumber: string
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutFranchiseInput = {
+  export type OrderUpsertWithWhereUniqueWithoutEmployeeInput = {
     where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutFranchiseInput, OrderUncheckedCreateWithoutFranchiseInput>
+    update: XOR<OrderUpdateWithoutEmployeeInput, OrderUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<OrderCreateWithoutEmployeeInput, OrderUncheckedCreateWithoutEmployeeInput>
   }
 
-  export type OrderCreateManyFranchiseInputEnvelope = {
-    data: OrderCreateManyFranchiseInput | OrderCreateManyFranchiseInput[]
-    skipDuplicates?: boolean
+  export type OrderUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutEmployeeInput, OrderUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutEmployeeInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type OrderScalarWhereInput = {
+    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    OR?: OrderScalarWhereInput[]
+    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    orderNumber?: StringFilter<"Order"> | string
+    status?: StringFilter<"Order"> | string
+    expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
+    totalAmount?: FloatFilter<"Order"> | number
+    createdAt?: DateTimeFilter<"Order"> | Date | string
+    updatedAt?: DateTimeFilter<"Order"> | Date | string
+    climate?: EnumClimateFilter<"Order"> | $Enums.Climate
+    employeeId?: IntNullableFilter<"Order"> | number | null
+    createdBy?: IntNullableFilter<"Order"> | number | null
+    productId?: IntFilter<"Order"> | number
+    terrain?: EnumTerrainFilter<"Order"> | $Enums.Terrain
+    id?: IntFilter<"Order"> | number
+    franchiseId?: IntNullableFilter<"Order"> | number | null
+    customerId?: IntNullableFilter<"Order"> | number | null
+  }
+
+  export type ProductUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: ProductWhereUniqueInput
+    update: XOR<ProductUpdateWithoutCreatedByInput, ProductUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<ProductCreateWithoutCreatedByInput, ProductUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type ProductUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: ProductWhereUniqueInput
+    data: XOR<ProductUpdateWithoutCreatedByInput, ProductUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type ProductUpdateManyWithWhereWithoutCreatedByInput = {
+    where: ProductScalarWhereInput
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type ProductScalarWhereInput = {
+    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    OR?: ProductScalarWhereInput[]
+    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    name?: StringFilter<"Product"> | string
+    price?: FloatFilter<"Product"> | number
+    stock?: IntFilter<"Product"> | number
+    isActive?: BoolFilter<"Product"> | boolean
+    createdAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    size?: StringFilter<"Product"> | string
+    id?: IntFilter<"Product"> | number
+    createdById?: IntNullableFilter<"Product"> | number | null
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutCreatedByUserInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutCreatedByUserInput, OrderUncheckedUpdateWithoutCreatedByUserInput>
+    create: XOR<OrderCreateWithoutCreatedByUserInput, OrderUncheckedCreateWithoutCreatedByUserInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutCreatedByUserInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutCreatedByUserInput, OrderUncheckedUpdateWithoutCreatedByUserInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutCreatedByUserInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutCreatedByUserInput>
   }
 
   export type CustomerCreateWithoutFranchiseInput = {
@@ -13772,27 +13767,25 @@ export namespace Prisma {
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    createdBy?: number | null
     employee?: UserCreateNestedOneWithoutCustomersInput
     orders?: OrderCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUncheckedCreateWithoutFranchiseInput = {
-    id?: number
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    employeeId?: number | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    createdBy?: number | null
+    employeeId?: number | null
     orders?: OrderUncheckedCreateNestedManyWithoutCustomerInput
   }
 
@@ -13806,62 +13799,87 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutFranchisesInput = {
-    update: XOR<UserUpdateWithoutFranchisesInput, UserUncheckedUpdateWithoutFranchisesInput>
+  export type UserCreateWithoutFranchisesInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    customers?: CustomerCreateNestedManyWithoutEmployeeInput
+    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    products?: ProductCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFranchisesInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
+    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
+    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderUncheckedCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFranchisesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutFranchisesInput, UserUncheckedCreateWithoutFranchisesInput>
-    where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutFranchisesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutFranchisesInput, UserUncheckedUpdateWithoutFranchisesInput>
+  export type OrderCreateWithoutFranchiseInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
+    customer?: CustomerCreateNestedOneWithoutOrdersInput
+    employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
+    payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
-  export type UserUpdateWithoutFranchisesInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
-    customers?: CustomerUpdateManyWithoutEmployeeNestedInput
+  export type OrderUncheckedCreateWithoutFranchiseInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    customerId?: number | null
+    factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
 
-  export type UserUncheckedUpdateWithoutFranchisesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
-    customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
-  }
-
-  export type OrderUpsertWithWhereUniqueWithoutFranchiseInput = {
+  export type OrderCreateOrConnectWithoutFranchiseInput = {
     where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutFranchiseInput, OrderUncheckedUpdateWithoutFranchiseInput>
     create: XOR<OrderCreateWithoutFranchiseInput, OrderUncheckedCreateWithoutFranchiseInput>
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutFranchiseInput = {
-    where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutFranchiseInput, OrderUncheckedUpdateWithoutFranchiseInput>
-  }
-
-  export type OrderUpdateManyWithWhereWithoutFranchiseInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutFranchiseInput>
+  export type OrderCreateManyFranchiseInputEnvelope = {
+    data: OrderCreateManyFranchiseInput | OrderCreateManyFranchiseInput[]
+    skipDuplicates?: boolean
   }
 
   export type CustomerUpsertWithWhereUniqueWithoutFranchiseInput = {
@@ -13880,32 +13898,130 @@ export namespace Prisma {
     data: XOR<CustomerUpdateManyMutationInput, CustomerUncheckedUpdateManyWithoutFranchiseInput>
   }
 
-  export type FranchiseCreateWithoutCustomersInput = {
-    name: string
-    code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
-    address?: string | null
+  export type UserUpsertWithoutFranchisesInput = {
+    update: XOR<UserUpdateWithoutFranchisesInput, UserUncheckedUpdateWithoutFranchisesInput>
+    create: XOR<UserCreateWithoutFranchisesInput, UserUncheckedCreateWithoutFranchisesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFranchisesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFranchisesInput, UserUncheckedUpdateWithoutFranchisesInput>
+  }
+
+  export type UserUpdateWithoutFranchisesInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    customers?: CustomerUpdateManyWithoutEmployeeNestedInput
+    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUpdateManyWithoutCreatedByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFranchisesInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
+    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutFranchiseInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutFranchiseInput, OrderUncheckedUpdateWithoutFranchiseInput>
+    create: XOR<OrderCreateWithoutFranchiseInput, OrderUncheckedCreateWithoutFranchiseInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutFranchiseInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutFranchiseInput, OrderUncheckedUpdateWithoutFranchiseInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutFranchiseInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutFranchiseInput>
+  }
+
+  export type UserCreateWithoutCustomersInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    loginUserId?: string | null
+    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    products?: ProductCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCustomersInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
+    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderUncheckedCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCustomersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
+  }
+
+  export type FranchiseCreateWithoutCustomersInput = {
+    name: string
+    code: string
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
     creator?: UserCreateNestedOneWithoutFranchisesInput
     orders?: OrderCreateNestedManyWithoutFranchiseInput
   }
 
   export type FranchiseUncheckedCreateWithoutCustomersInput = {
-    id?: number
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
-    isActive?: boolean
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
+    createdBy?: number | null
     orders?: OrderUncheckedCreateNestedManyWithoutFranchiseInput
   }
 
@@ -13914,73 +14030,37 @@ export namespace Prisma {
     create: XOR<FranchiseCreateWithoutCustomersInput, FranchiseUncheckedCreateWithoutCustomersInput>
   }
 
-  export type UserCreateWithoutCustomersInput = {
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserUncheckedCreateWithoutCustomersInput = {
-    id?: number
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
-    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserCreateOrConnectWithoutCustomersInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
-  }
-
   export type OrderCreateWithoutCustomerInput = {
     orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
-    employee?: UserCreateNestedOneWithoutOrdersPlacedInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
     factory?: FactoryCreateNestedOneWithoutOrderInput
+    employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutCustomerInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
     factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -13993,6 +14073,50 @@ export namespace Prisma {
   export type OrderCreateManyCustomerInputEnvelope = {
     data: OrderCreateManyCustomerInput | OrderCreateManyCustomerInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCustomersInput = {
+    update: XOR<UserUpdateWithoutCustomersInput, UserUncheckedUpdateWithoutCustomersInput>
+    create: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCustomersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCustomersInput, UserUncheckedUpdateWithoutCustomersInput>
+  }
+
+  export type UserUpdateWithoutCustomersInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUpdateManyWithoutCreatedByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCustomersInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type FranchiseUpsertWithoutCustomersInput = {
@@ -14009,72 +14133,30 @@ export namespace Prisma {
   export type FranchiseUpdateWithoutCustomersInput = {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     creator?: UserUpdateOneWithoutFranchisesNestedInput
     orders?: OrderUpdateManyWithoutFranchiseNestedInput
   }
 
   export type FranchiseUncheckedUpdateWithoutCustomersInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
-  }
-
-  export type UserUpsertWithoutCustomersInput = {
-    update: XOR<UserUpdateWithoutCustomersInput, UserUncheckedUpdateWithoutCustomersInput>
-    create: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCustomersInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCustomersInput, UserUncheckedUpdateWithoutCustomersInput>
-  }
-
-  export type UserUpdateWithoutCustomersInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
-    franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCustomersInput = {
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
-    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
-    franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
   }
 
   export type OrderUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -14093,73 +14175,37 @@ export namespace Prisma {
     data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutCustomerInput>
   }
 
-  export type UserCreateWithoutProductsInput = {
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
-    customers?: CustomerCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserUncheckedCreateWithoutProductsInput = {
-    id?: number
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
-    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserCreateOrConnectWithoutProductsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-  }
-
   export type OrderCreateWithoutProductInput = {
     orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
     customer?: CustomerCreateNestedOneWithoutOrdersInput
     employee?: UserCreateNestedOneWithoutOrdersPlacedInput
-    factory?: FactoryCreateNestedOneWithoutOrderInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutProductInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
     factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -14174,46 +14220,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutProductsInput = {
-    update: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
+  export type UserCreateWithoutProductsInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    customers?: CustomerCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    ordersCreated?: OrderCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProductsInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
+    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    ordersCreated?: OrderUncheckedCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProductsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutProductsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
-  }
-
-  export type UserUpdateWithoutProductsInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
-    customers?: CustomerUpdateManyWithoutEmployeeNestedInput
-    franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutProductsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    fullName?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
-    customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
-    franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type OrderUpsertWithWhereUniqueWithoutProductInput = {
@@ -14232,144 +14274,53 @@ export namespace Prisma {
     data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutProductInput>
   }
 
-  export type FranchiseCreateWithoutOrdersInput = {
-    name: string
-    code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
-    address?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    creator?: UserCreateNestedOneWithoutFranchisesInput
-    customers?: CustomerCreateNestedManyWithoutFranchiseInput
+  export type UserUpsertWithoutProductsInput = {
+    update: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
+    create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+    where?: UserWhereInput
   }
 
-  export type FranchiseUncheckedCreateWithoutOrdersInput = {
-    id?: number
-    name: string
-    code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
-    address?: string | null
-    isActive?: boolean
-    createdBy?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    customers?: CustomerUncheckedCreateNestedManyWithoutFranchiseInput
+  export type UserUpdateToOneWithWhereWithoutProductsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
   }
 
-  export type FranchiseCreateOrConnectWithoutOrdersInput = {
-    where: FranchiseWhereUniqueInput
-    create: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
+  export type UserUpdateWithoutProductsInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    customers?: CustomerUpdateManyWithoutEmployeeNestedInput
+    franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    ordersCreated?: OrderUpdateManyWithoutCreatedByUserNestedInput
   }
 
-  export type CustomerCreateWithoutOrdersInput = {
-    name: string
-    email?: string | null
-    phone?: string | null
-    address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    createdBy?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutCustomersInput
-    employee?: UserCreateNestedOneWithoutCustomersInput
-  }
-
-  export type CustomerUncheckedCreateWithoutOrdersInput = {
-    id?: number
-    name: string
-    email?: string | null
-    phone?: string | null
-    address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    franchiseId?: number | null
-    employeeId?: number | null
-    createdBy?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CustomerCreateOrConnectWithoutOrdersInput = {
-    where: CustomerWhereUniqueInput
-    create: XOR<CustomerCreateWithoutOrdersInput, CustomerUncheckedCreateWithoutOrdersInput>
-  }
-
-  export type UserCreateWithoutOrdersPlacedInput = {
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductCreateNestedManyWithoutCreatedByInput
-    customers?: CustomerCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserUncheckedCreateWithoutOrdersPlacedInput = {
-    id?: number
-    loginUserId?: string | null
-    email?: string | null
-    password?: string | null
-    fullName?: string | null
-    phone?: string | null
-    role: $Enums.Role
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
-    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
-    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
-  }
-
-  export type UserCreateOrConnectWithoutOrdersPlacedInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOrdersPlacedInput, UserUncheckedCreateWithoutOrdersPlacedInput>
-  }
-
-  export type ProductCreateWithoutOrdersInput = {
-    name: string
-    price: number
-    stock?: number
-    description: string
-    size: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    createdBy?: UserCreateNestedOneWithoutProductsInput
-  }
-
-  export type ProductUncheckedCreateWithoutOrdersInput = {
-    id?: number
-    name: string
-    price: number
-    stock?: number
-    description: string
-    size: string
-    isActive?: boolean
-    createdById?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ProductCreateOrConnectWithoutOrdersInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+  export type UserUncheckedUpdateWithoutProductsInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
+    franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    ordersCreated?: OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type FactoryCreateWithoutOrderInput = {
     orderStatus?: string
     deliveryDate?: Date | string | null
-    isActive?: boolean
     createdAt?: Date | string
   }
 
@@ -14377,7 +14328,6 @@ export namespace Prisma {
     id?: number
     orderStatus?: string
     deliveryDate?: Date | string | null
-    isActive?: boolean
     createdAt?: Date | string
   }
 
@@ -14386,23 +14336,191 @@ export namespace Prisma {
     create: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
   }
 
-  export type PaymentCreateWithoutOrderInput = {
-    amount: number
-    method: string
-    status?: string
+  export type CustomerCreateWithoutOrdersInput = {
+    name: string
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customerType?: string | null
+    createdBy?: number | null
+    employee?: UserCreateNestedOneWithoutCustomersInput
+    franchise?: FranchiseCreateNestedOneWithoutCustomersInput
+  }
+
+  export type CustomerUncheckedCreateWithoutOrdersInput = {
+    name: string
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    franchiseId?: number | null
+    createdBy?: number | null
+    employeeId?: number | null
+  }
+
+  export type CustomerCreateOrConnectWithoutOrdersInput = {
+    where: CustomerWhereUniqueInput
+    create: XOR<CustomerCreateWithoutOrdersInput, CustomerUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type UserCreateWithoutOrdersPlacedInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    loginUserId?: string | null
+    customers?: CustomerCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
+    products?: ProductCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOrdersPlacedInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
+    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
+    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
+    ordersCreated?: OrderUncheckedCreateNestedManyWithoutCreatedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOrdersPlacedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrdersPlacedInput, UserUncheckedCreateWithoutOrdersPlacedInput>
+  }
+
+  export type FranchiseCreateWithoutOrdersInput = {
+    name: string
+    code: string
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    customers?: CustomerCreateNestedManyWithoutFranchiseInput
+    creator?: UserCreateNestedOneWithoutFranchisesInput
+  }
+
+  export type FranchiseUncheckedCreateWithoutOrdersInput = {
+    name: string
+    code: string
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
+    createdBy?: number | null
+    customers?: CustomerUncheckedCreateNestedManyWithoutFranchiseInput
+  }
+
+  export type FranchiseCreateOrConnectWithoutOrdersInput = {
+    where: FranchiseWhereUniqueInput
+    create: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type ProductCreateWithoutOrdersInput = {
+    name: string
+    price: number
+    stock?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    size: string
+    createdBy?: UserCreateNestedOneWithoutProductsInput
+  }
+
+  export type ProductUncheckedCreateWithoutOrdersInput = {
+    name: string
+    price: number
+    stock?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    size: string
+    id?: number
+    createdById?: number | null
+  }
+
+  export type ProductCreateOrConnectWithoutOrdersInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type UserCreateWithoutOrdersCreatedInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    customers?: CustomerCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderCreateNestedManyWithoutEmployeeInput
+    products?: ProductCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutOrdersCreatedInput = {
+    email?: string | null
+    password?: string | null
+    fullName?: string | null
+    phone?: string | null
+    role: $Enums.Role
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginUserId?: string | null
+    id?: number
+    customers?: CustomerUncheckedCreateNestedManyWithoutEmployeeInput
+    franchises?: FranchiseUncheckedCreateNestedManyWithoutCreatorInput
+    ordersPlaced?: OrderUncheckedCreateNestedManyWithoutEmployeeInput
+    products?: ProductUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutOrdersCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrdersCreatedInput, UserUncheckedCreateWithoutOrdersCreatedInput>
+  }
+
+  export type PaymentCreateWithoutOrderInput = {
+    amount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    status?: string
+    method: string
   }
 
   export type PaymentUncheckedCreateWithoutOrderInput = {
     id?: number
     amount: number
-    method: string
-    status?: string
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+    method: string
   }
 
   export type PaymentCreateOrConnectWithoutOrderInput = {
@@ -14415,44 +14533,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FranchiseUpsertWithoutOrdersInput = {
-    update: XOR<FranchiseUpdateWithoutOrdersInput, FranchiseUncheckedUpdateWithoutOrdersInput>
-    create: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
-    where?: FranchiseWhereInput
+  export type FactoryUpsertWithoutOrderInput = {
+    update: XOR<FactoryUpdateWithoutOrderInput, FactoryUncheckedUpdateWithoutOrderInput>
+    create: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
+    where?: FactoryWhereInput
   }
 
-  export type FranchiseUpdateToOneWithWhereWithoutOrdersInput = {
-    where?: FranchiseWhereInput
-    data: XOR<FranchiseUpdateWithoutOrdersInput, FranchiseUncheckedUpdateWithoutOrdersInput>
+  export type FactoryUpdateToOneWithWhereWithoutOrderInput = {
+    where?: FactoryWhereInput
+    data: XOR<FactoryUpdateWithoutOrderInput, FactoryUncheckedUpdateWithoutOrderInput>
   }
 
-  export type FranchiseUpdateWithoutOrdersInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+  export type FactoryUpdateWithoutOrderInput = {
+    orderStatus?: StringFieldUpdateOperationsInput | string
+    deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneWithoutFranchisesNestedInput
-    customers?: CustomerUpdateManyWithoutFranchiseNestedInput
   }
 
-  export type FranchiseUncheckedUpdateWithoutOrdersInput = {
+  export type FactoryUncheckedUpdateWithoutOrderInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    orderStatus?: StringFieldUpdateOperationsInput | string
+    deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    customers?: CustomerUncheckedUpdateManyWithoutFranchiseNestedInput
   }
 
   export type CustomerUpsertWithoutOrdersInput = {
@@ -14471,28 +14573,26 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutCustomersNestedInput
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     employee?: UserUpdateOneWithoutCustomersNestedInput
+    franchise?: FranchiseUpdateOneWithoutCustomersNestedInput
   }
 
   export type CustomerUncheckedUpdateWithoutOrdersInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUpsertWithoutOrdersPlacedInput = {
@@ -14507,7 +14607,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutOrdersPlacedInput = {
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14516,14 +14615,14 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutCreatedByNestedInput
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     customers?: CustomerUpdateManyWithoutEmployeeNestedInput
     franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
+    products?: ProductUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUpdateManyWithoutCreatedByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersPlacedInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14532,9 +14631,52 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
     customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
     franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
+    ordersCreated?: OrderUncheckedUpdateManyWithoutCreatedByUserNestedInput
+  }
+
+  export type FranchiseUpsertWithoutOrdersInput = {
+    update: XOR<FranchiseUpdateWithoutOrdersInput, FranchiseUncheckedUpdateWithoutOrdersInput>
+    create: XOR<FranchiseCreateWithoutOrdersInput, FranchiseUncheckedCreateWithoutOrdersInput>
+    where?: FranchiseWhereInput
+  }
+
+  export type FranchiseUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: FranchiseWhereInput
+    data: XOR<FranchiseUpdateWithoutOrdersInput, FranchiseUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type FranchiseUpdateWithoutOrdersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    customers?: CustomerUpdateManyWithoutFranchiseNestedInput
+    creator?: UserUpdateOneWithoutFranchisesNestedInput
+  }
+
+  export type FranchiseUncheckedUpdateWithoutOrdersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    customers?: CustomerUncheckedUpdateManyWithoutFranchiseNestedInput
   }
 
   export type ProductUpsertWithoutOrdersInput = {
@@ -14552,51 +14694,67 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
     createdBy?: UserUpdateOneWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrdersInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdById?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FactoryUpsertWithoutOrderInput = {
-    update: XOR<FactoryUpdateWithoutOrderInput, FactoryUncheckedUpdateWithoutOrderInput>
-    create: XOR<FactoryCreateWithoutOrderInput, FactoryUncheckedCreateWithoutOrderInput>
-    where?: FactoryWhereInput
-  }
-
-  export type FactoryUpdateToOneWithWhereWithoutOrderInput = {
-    where?: FactoryWhereInput
-    data: XOR<FactoryUpdateWithoutOrderInput, FactoryUncheckedUpdateWithoutOrderInput>
-  }
-
-  export type FactoryUpdateWithoutOrderInput = {
-    orderStatus?: StringFieldUpdateOperationsInput | string
-    deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FactoryUncheckedUpdateWithoutOrderInput = {
+    size?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
-    orderStatus?: StringFieldUpdateOperationsInput | string
-    deliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UserUpsertWithoutOrdersCreatedInput = {
+    update: XOR<UserUpdateWithoutOrdersCreatedInput, UserUncheckedUpdateWithoutOrdersCreatedInput>
+    create: XOR<UserCreateWithoutOrdersCreatedInput, UserUncheckedCreateWithoutOrdersCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrdersCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrdersCreatedInput, UserUncheckedUpdateWithoutOrdersCreatedInput>
+  }
+
+  export type UserUpdateWithoutOrdersCreatedInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    customers?: CustomerUpdateManyWithoutEmployeeNestedInput
+    franchises?: FranchiseUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrdersCreatedInput = {
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    customers?: CustomerUncheckedUpdateManyWithoutEmployeeNestedInput
+    franchises?: FranchiseUncheckedUpdateManyWithoutCreatorNestedInput
+    ordersPlaced?: OrderUncheckedUpdateManyWithoutEmployeeNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutOrderInput = {
@@ -14620,47 +14778,46 @@ export namespace Prisma {
     OR?: PaymentScalarWhereInput[]
     NOT?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
     id?: IntFilter<"Payment"> | number
-    orderId?: IntFilter<"Payment"> | number
     amount?: FloatFilter<"Payment"> | number
-    method?: StringFilter<"Payment"> | string
-    status?: StringFilter<"Payment"> | string
-    isActive?: BoolFilter<"Payment"> | boolean
+    orderId?: IntFilter<"Payment"> | number
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    status?: StringFilter<"Payment"> | string
+    method?: StringFilter<"Payment"> | string
   }
 
   export type OrderCreateWithoutFactoryInput = {
     orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
     customer?: CustomerCreateNestedOneWithoutOrdersInput
     employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutFactoryInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -14682,71 +14839,71 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutFactoryInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     customer?: CustomerUpdateOneWithoutOrdersNestedInput
     employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutFactoryInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateWithoutPaymentsInput = {
     orderNumber: string
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
+    climate: $Enums.Climate
+    terrain: $Enums.Terrain
+    factory?: FactoryCreateNestedOneWithoutOrderInput
     customer?: CustomerCreateNestedOneWithoutOrdersInput
     employee?: UserCreateNestedOneWithoutOrdersPlacedInput
+    franchise?: FranchiseCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
-    factory?: FactoryCreateNestedOneWithoutOrderInput
+    createdByUser?: UserCreateNestedOneWithoutOrdersCreatedInput
   }
 
   export type OrderUncheckedCreateWithoutPaymentsInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
     factory?: FactoryUncheckedCreateNestedOneWithoutOrderInput
   }
 
@@ -14768,180 +14925,106 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutPaymentsInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    factory?: FactoryUpdateOneWithoutOrderNestedInput
     customer?: CustomerUpdateOneWithoutOrdersNestedInput
     employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    factory?: FactoryUpdateOneWithoutOrderNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutPaymentsInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
     factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
   }
 
-  export type ProductCreateManyCreatedByInput = {
-    id?: number
-    name: string
-    price: number
-    stock?: number
-    description: string
-    size: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type OrderCreateManyEmployeeInput = {
-    id?: number
-    orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type CustomerCreateManyEmployeeInput = {
-    id?: number
     name: string
     email?: string | null
     phone?: string | null
     address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    franchiseId?: number | null
-    createdBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    franchiseId?: number | null
+    createdBy?: number | null
   }
 
   export type FranchiseCreateManyCreatorInput = {
-    id?: number
     name: string
     code: string
-    ownerName?: string | null
-    ownerEmail?: string | null
-    ownerPhone?: string | null
     address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    ownerEmail?: string | null
+    ownerName?: string | null
+    ownerPhone?: string | null
+    id?: number
+  }
+
+  export type OrderCreateManyEmployeeInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
+  }
+
+  export type ProductCreateManyCreatedByInput = {
+    name: string
+    price: number
+    stock?: number
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    size: string
+    id?: number
   }
 
-  export type ProductUpdateWithoutCreatedByInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutCreatedByInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateManyWithoutCreatedByInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    price?: FloatFieldUpdateOperationsInput | number
-    stock?: IntFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrderUpdateWithoutEmployeeInput = {
-    orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
-    status?: StringFieldUpdateOperationsInput | string
-    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
-    customer?: CustomerUpdateOneWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    factory?: FactoryUpdateOneWithoutOrderNestedInput
-    payments?: PaymentUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutEmployeeInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
-    status?: StringFieldUpdateOperationsInput | string
-    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateManyWithoutEmployeeInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
-    status?: StringFieldUpdateOperationsInput | string
-    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OrderCreateManyCreatedByUserInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
   }
 
   export type CustomerUpdateWithoutEmployeeInput = {
@@ -14949,165 +15032,246 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     franchise?: FranchiseUpdateOneWithoutCustomersNestedInput
     orders?: OrderUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateWithoutEmployeeInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     orders?: OrderUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateManyWithoutEmployeeInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type FranchiseUpdateWithoutCreatorInput = {
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUpdateManyWithoutFranchiseNestedInput
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customers?: CustomerUpdateManyWithoutFranchiseNestedInput
+    orders?: OrderUpdateManyWithoutFranchiseNestedInput
   }
 
   export type FranchiseUncheckedUpdateWithoutCreatorInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
     customers?: CustomerUncheckedUpdateManyWithoutFranchiseNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutFranchiseNestedInput
   }
 
   export type FranchiseUncheckedUpdateManyWithoutCreatorInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
-    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    ownerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type OrderCreateManyFranchiseInput = {
-    id?: number
-    orderNumber: string
-    customerId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
-    status?: string
-    expectedDeliveryDate?: Date | string | null
-    totalAmount?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CustomerCreateManyFranchiseInput = {
-    id?: number
-    name: string
-    email?: string | null
-    phone?: string | null
-    address?: string | null
-    isActive?: boolean
-    customerType?: string | null
-    employeeId?: number | null
-    createdBy?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type OrderUpdateWithoutFranchiseInput = {
+  export type OrderUpdateWithoutEmployeeInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    customer?: CustomerUpdateOneWithoutOrdersNestedInput
-    employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     factory?: FactoryUpdateOneWithoutOrderNestedInput
+    customer?: CustomerUpdateOneWithoutOrdersNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
   }
 
-  export type OrderUncheckedUpdateWithoutFranchiseInput = {
-    id?: IntFieldUpdateOperationsInput | number
+  export type OrderUncheckedUpdateWithoutEmployeeInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
     factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
-  export type OrderUncheckedUpdateManyWithoutFranchiseInput = {
-    id?: IntFieldUpdateOperationsInput | number
+  export type OrderUncheckedUpdateManyWithoutEmployeeInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ProductUpdateWithoutCreatedByInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    stock?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
+    orders?: OrderUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutCreatedByInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    stock?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateManyWithoutCreatedByInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    stock?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    size?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type OrderUpdateWithoutCreatedByUserInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    factory?: FactoryUpdateOneWithoutOrderNestedInput
+    customer?: CustomerUpdateOneWithoutOrdersNestedInput
+    employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    payments?: PaymentUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutCreatedByUserInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
+    factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCreatedByUserInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type CustomerCreateManyFranchiseInput = {
+    name: string
+    email?: string | null
+    phone?: string | null
+    address?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customerType?: string | null
+    id?: number
+    createdBy?: number | null
+    employeeId?: number | null
+  }
+
+  export type OrderCreateManyFranchiseInput = {
+    orderNumber: string
+    status?: string
+    expectedDeliveryDate?: Date | string | null
+    totalAmount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    customerId?: number | null
   }
 
   export type CustomerUpdateWithoutFranchiseInput = {
@@ -15115,215 +15279,259 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     employee?: UserUpdateOneWithoutCustomersNestedInput
     orders?: OrderUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateWithoutFranchiseInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
     orders?: OrderUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateManyWithoutFranchiseInput = {
-    id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    customerType?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customerType?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type OrderUpdateWithoutFranchiseInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    factory?: FactoryUpdateOneWithoutOrderNestedInput
+    customer?: CustomerUpdateOneWithoutOrdersNestedInput
+    employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
+    payments?: PaymentUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutFranchiseInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
+    factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutFranchiseInput = {
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type OrderCreateManyCustomerInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    employeeId?: number | null
-    productId: number
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    productId: number
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
   }
 
   export type OrderUpdateWithoutCustomerInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
-    employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     factory?: FactoryUpdateOneWithoutOrderNestedInput
+    employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutCustomerInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
     factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutCustomerInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    productId?: IntFieldUpdateOperationsInput | number
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    productId?: IntFieldUpdateOperationsInput | number
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type OrderCreateManyProductInput = {
-    id?: number
     orderNumber: string
-    franchiseId?: number | null
-    customerId?: number | null
-    employeeId?: number | null
-    climate: $Enums.Climate
-    terrain: $Enums.Terrain
     status?: string
     expectedDeliveryDate?: Date | string | null
     totalAmount?: number
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    climate: $Enums.Climate
+    employeeId?: number | null
+    createdBy?: number | null
+    terrain: $Enums.Terrain
+    id?: number
+    franchiseId?: number | null
+    customerId?: number | null
   }
 
   export type OrderUpdateWithoutProductInput = {
     orderNumber?: StringFieldUpdateOperationsInput | string
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    factory?: FactoryUpdateOneWithoutOrderNestedInput
     customer?: CustomerUpdateOneWithoutOrdersNestedInput
     employee?: UserUpdateOneWithoutOrdersPlacedNestedInput
-    factory?: FactoryUpdateOneWithoutOrderNestedInput
+    franchise?: FranchiseUpdateOneWithoutOrdersNestedInput
+    createdByUser?: UserUpdateOneWithoutOrdersCreatedNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutProductInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
     factory?: FactoryUncheckedUpdateOneWithoutOrderNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutProductInput = {
-    id?: IntFieldUpdateOperationsInput | number
     orderNumber?: StringFieldUpdateOperationsInput | string
-    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
-    customerId?: NullableIntFieldUpdateOperationsInput | number | null
-    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
-    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
-    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalAmount?: FloatFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climate?: EnumClimateFieldUpdateOperationsInput | $Enums.Climate
+    employeeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    terrain?: EnumTerrainFieldUpdateOperationsInput | $Enums.Terrain
+    id?: IntFieldUpdateOperationsInput | number
+    franchiseId?: NullableIntFieldUpdateOperationsInput | number | null
+    customerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PaymentCreateManyOrderInput = {
     id?: number
     amount: number
-    method: string
-    status?: string
-    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+    method: string
   }
 
   export type PaymentUpdateWithoutOrderInput = {
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaymentUncheckedUpdateWithoutOrderInput = {
     id?: IntFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
   export type PaymentUncheckedUpdateManyWithoutOrderInput = {
     id?: IntFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
   }
 
 

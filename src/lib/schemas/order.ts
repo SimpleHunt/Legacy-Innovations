@@ -11,6 +11,7 @@ export const createOrderSchema = z.object({
 
   climate: z.enum(["HOT", "COLD", "NORMAL", "RAINY"]),
   terrain: z.enum(["FLAT", "HILL"]),
+  createdBy: z.coerce.number().optional(),
 
   status: z
     .enum(["PENDING", "PROCESSING", "COMPLETED", "CANCELLED"])

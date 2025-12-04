@@ -9,73 +9,56 @@ function parseId(s: string) {
   return n;
 }
 
-export async function GET(_req: NextRequest, { params }: Params) {
-  try {
-    const id = parseId(params.id);
-    const customer = await prisma.customer.findUnique({ where: { id } });
-    if (!customer) return NextResponse.json({ message: "Not found" }, { status: 404 });
-    return NextResponse.json(customer);
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
-  }
-}
-
+// ---------------------- PUT: Update Customer ----------------------
 export async function PUT(req: NextRequest, { params }: Params) {
   try {
     const id = parseId(params.id);
     const body = await req.json();
-    if (body.franchiseId) body.franchiseId = Number(body.franchiseId);
-    if (body.employeeId) body.employeeId = Number(body.employeeId);
-    delete body.id;
-    const updated = await prisma.customer.update({ where: { id }, data: body });
+
+    // Connect relations if provided
+    const updateData: any = { ...body };
+    if (body.employeeId) updateData.employee = { connect: { id: Number(body.employeeId) } };
+    if (body.franchiseId) updateData.franchise = { connect: { id: Number(body.franchiseId) } };
+
+    delete updateData.employeeId;
+    delete updateData.franchiseId;
+    delete updateData.id;
+
+    const updated = await prisma.customer.update({
+      where: { id },
+      data: updateData,
+    });
+
     return NextResponse.json(updated);
-  } catch (err) {
+  } catch (err: any) {
     return NextResponse.json({ error: String(err) }, { status: 400 });
   }
 }
 
-export async function DELETE(
-  req: Request,
-  context: { params: Promise<{ id: string }> }
-) {
+// ---------------------- DELETE: Soft Delete Customer ----------------------
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-
-    //console.log("RAW ID:", id);
-
     const customerId = Number(id);
     if (isNaN(customerId)) {
-      return NextResponse.json(
-        { error: "Invalid ID. Expected a number." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid ID. Expected a number." }, { status: 400 });
     }
 
-    const existing = await prisma.product.findUnique({
-      where: { id: customerId },
-    });
-
+    const existing = await prisma.customer.findUnique({ where: { id: customerId } });
     if (!existing) {
-      return NextResponse.json(
-        { error: `Product with ID ${customerId} not found` },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: `Customer with ID ${customerId} not found` }, { status: 404 });
     }
 
-    const updated = await prisma.product.update({
-      where: { id: customerId },
-      data: { isActive: false },
-    });
+    
+    const deleted = await prisma.customer.delete({ where: { id: customerId } });
+
+   
 
     return NextResponse.json({
-      message: "Product deactivated",
-      product: updated,
+      message: "Customer deleted",
+      customer: deleted,
     });
   } catch (err: any) {
-    console.error("DELETE ERROR:", err);
-    return NextResponse.json(
-      { error: err.message || String(err) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err.message || String(err) }, { status: 500 });
   }
 }

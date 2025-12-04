@@ -24,14 +24,14 @@ export default function FiltersBar({ params, table }: any) {
     ],
     customer: [
       { key: "id", label: "ID" },
-      { key: "name", label: "Customer Name" },
-      { key: "phone", label: "Phone" },
-      { key: "city", label: "City" },
+      { key: "name", label: "Name" },
+      { key: "phone", label: "Mobile" },
+      { key: "email", label: "Email" },
+      { key: "address", label: "Address" },
     ],
     order: [
       { key: "id", label: "ID" },
-      { key: "orderDate", label: "Date" },
-      { key: "totalAmount", label: "Amount" },
+      { key: "orderNumber", label: "OrderNumber" },
       { key: "status", label: "Status" },
     ],
     franchise: [
@@ -49,6 +49,40 @@ export default function FiltersBar({ params, table }: any) {
     ],
   };
 
+  // DYNAMIC FILTER OPTIONS BASED ON PAGE
+  const filterOptions: any = {
+    products: [
+      { label: "All", value: "" },
+      { label: "Active", value: "true" },
+      { label: "Inactive", value: "false" },
+    ],
+
+    customers: [
+      { label: "All", value: "" },
+      { label: "Active", value: "true" },
+      { label: "Inactive", value: "false" },
+    ],
+
+    order: [
+      { label: "All", value: "" },
+      { label: "Pending", value: "PENDING" },
+      { label: "Processing", value: "Processing" },
+      { label: "Completed", value: "Completed" },
+    ],
+
+    franchiseOrder: [
+      { label: "All", value: "" },
+      { label: "New", value: "NEW" },
+      { label: "Approved", value: "APPROVED" },
+      { label: "Shipped", value: "SHIPPED" },
+    ],
+  };
+
+  // FALLBACK → if table not found, use simple All
+  const currentOptions = filterOptions[table] || [
+    { label: "All", value: "" },
+  ];
+
   return (
     <div className="flex items-center gap-4">
 
@@ -64,13 +98,26 @@ export default function FiltersBar({ params, table }: any) {
           <Image src="/filter.png" alt="filter" width={14} height={14} />
         </button>
 
-        {openFilter && (
+        {/* {openFilter && (
           <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md p-2 w-32 z-50">
             <div className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" onClick={() => onChangeParam("isActive", "")}>All</div>
             <div className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" onClick={() => onChangeParam("isActive", "true")}>Active</div>
             <div className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" onClick={() => onChangeParam("isActive", "false")}>Inactive</div>
           </div>
-        )}
+        )} */}
+        {openFilter && (
+        <div className="absolute top-10 right-0 bg-white shadow-xl rounded-md p-2 w-48 z-[9999] border overflow-visible">
+          {currentOptions.map((opt) => (
+            <div
+              key={opt.label}
+              className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+              onClick={() => onChangeParam("status" in params ? "status" : "status", opt.value)}
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
       </div>
 
       {/* SORT BUTTON */}
@@ -86,7 +133,7 @@ export default function FiltersBar({ params, table }: any) {
         </button>
 
         {openSort && (
-          <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md p-2 w-40 z-50">
+          <div className="absolute top-10 right-0 bg-white shadow-xl rounded-md p-2 w-48 z-[9999] border overflow-visible">
 
             <span className="block px-3 py-1 text-xs text-gray-400">Sort By</span>
 

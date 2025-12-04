@@ -1,11 +1,13 @@
+"use client";
+
 import FormModal from '@/components/FromModel';
 import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
 import TableSearch from '@/components/TableSearch'
-import { role, franchisesData } from "@/lib/data1";
+import { getSessionUser } from '@/lib/getSessionUser';
 import Image from "next/image";
 import Link from 'next/link';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 type Product = {
   id: number;
@@ -62,6 +64,14 @@ const columns = [
 ];
 
 const FranchiseListPage = () => {
+   const [role, setRole] = useState("");
+
+   useEffect(() => {
+     const user = getSessionUser();
+   setRole(user.role);
+   }, []);
+
+
     const renderRow = (item: Product) => (
     <tr
       key={item.id}
@@ -126,7 +136,7 @@ const FranchiseListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={franchisesData} />
+     {/* <Table columns={columns} renderRow={renderRow} data={franchisesData} /> */}
       {/* PAGINATION */}
       <Pagination page={0} count={0} />
     </div>

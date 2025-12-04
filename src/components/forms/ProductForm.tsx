@@ -9,19 +9,16 @@ import { productSchema, ProductSchema } from "@/lib/formValidationSchema";
 import TextAreaField from "../TextAreaField";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {  useRouter } from "next/navigation";
-import { describe } from "node:test";
+import { useRouter } from "next/navigation";
 
-
-//const router = useRouter();
 const ProductForm = ({
   type,
   data,
-  onClose, 
+  onClose,
 }: {
   type: "create" | "update";
   data?: any;
-  onClose?: () => void; 
+  onClose?: () => void;
 }) => {
   const {
     register,
@@ -32,34 +29,34 @@ const ProductForm = ({
     defaultValues: data || {},
   });
 
-  const router = useRouter(); 
+  const router = useRouter();
 
+  const onSubmit = handleSubmit(async (formData) => {
+    try {
+      // ⬇️ Get logged user from sessionStorage
+      const sessionUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+      const createdById = sessionUser.id;
 
-const onSubmit = handleSubmit(async (formData) => {
-  try {
-    const payload = {
-      name: formData.productName,
-      price: Number(formData.productPrice),
-      stock: Number(formData.productStock),
-      size: formData.productSize,
-      description: formData.productDesc,
-      isActive: true,
-      createdById: 1,
-    };
+      const payload = {
+        name: formData.productName,
+        price: Number(formData.productPrice),
+        stock: Number(formData.productStock),
+        size: formData.productSize,
+        isActive: true,
+        createdById: createdById || null, // ⬅️ Important
+      };
 
-    //console.log("PAYLOAD:", payload);
+      console.log("PAYLOAD:", payload);
 
-    const res = await axios.post("/api/products", payload);
+      const res = await axios.post("/api/products", payload);
 
-    toast.success("Product created successfully!");
-    router.refresh();
-    onClose?.();  
-
-  } catch (error: any) {
-    toast.error(error?.response?.data?.error || "Something went wrong");
-  }
-});
-
+      toast.success("Product created successfully!");
+      router.refresh();
+      onClose?.();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error || "Something went wrong");
+    }
+  });
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -67,6 +64,7 @@ const onSubmit = handleSubmit(async (formData) => {
       <span className="text-xs text-gray-400 font-medium">
         Product Information
       </span>
+
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="Product Name"
@@ -76,7 +74,6 @@ const onSubmit = handleSubmit(async (formData) => {
           error={errors?.productName}
         />
 
-         
         <InputField
           label="Product Size"
           name="productSize"
@@ -84,6 +81,7 @@ const onSubmit = handleSubmit(async (formData) => {
           register={register}
           error={errors?.productSize}
         />
+
         <InputField
           label="Product Price"
           name="productPrice"
@@ -92,17 +90,8 @@ const onSubmit = handleSubmit(async (formData) => {
           error={errors?.productPrice}
         />
       </div>
-      
+
       <div className="flex justify-between flex-wrap gap-4">
-       
-        <TextAreaField
-          label="Product Description"
-          name="productDesc"
-          defaultValue={data?.productDesc}
-          register={register}
-          error={errors.productDesc}
-        />
-          
         <InputField
           label="Product Stock"
           name="productStock"
@@ -110,10 +99,8 @@ const onSubmit = handleSubmit(async (formData) => {
           register={register}
           error={errors?.productStock}
         />
-        
-        
-        
       </div>
+
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
@@ -122,3 +109,4 @@ const onSubmit = handleSubmit(async (formData) => {
 };
 
 export default ProductForm;
+

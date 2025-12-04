@@ -6,14 +6,126 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  //directUrl = env("DIRECT_DATABASE_URL")
+}
+
+model User {
+  email         String?     @unique
+  password      String?
+  fullName      String?
+  phone         String?
+  role          Role
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  loginUserId   String?     @unique
+  id            Int         @id @default(autoincrement())
+  customers     Customer[]
+  franchises    Franchise[]
+  ordersPlaced  Order[]     @relation("UserOrdersPlaced")
+  products      Product[]
+  ordersCreated Order[]     @relation("OrderCreatedBy") // <--- ADD THIS
+}
+
+model Franchise {
+  name       String
+  code       String     @unique
+  address    String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  isActive   Boolean    @default(true)
+  ownerEmail String?
+  ownerName  String?
+  ownerPhone String?
+  id         Int        @id @default(autoincrement())
+  createdBy  Int?
+  customers  Customer[]
+  creator    User?      @relation(fields: [createdBy], references: [id])
+  orders     Order[]
+}
+
+model Customer {
+  name         String
+  email        String?
+  phone        String?
+  address      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  customerType String?
+  id           Int        @id @default(autoincrement())
+  franchiseId  Int?
+  createdBy    Int?
+  employeeId   Int?
+  employee     User?      @relation(fields: [employeeId], references: [id])
+  franchise    Franchise? @relation(fields: [franchiseId], references: [id])
+  orders       Order[]
+}
+
+model Product {
+  name        String
+  price       Float
+  stock       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  size        String
+  id          Int      @id @default(autoincrement())
+  createdById Int?
+  orders      Order[]
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+}
+
+model Order {
+  orderNumber          String     @unique
+  status               String     @default("PENDING")
+  expectedDeliveryDate DateTime?
+  totalAmount          Float      @default(0)
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  climate              Climate
+  employeeId           Int?
+  createdBy            Int? // <--- field
+  productId            Int
+  terrain              Terrain
+  id                   Int        @id @default(autoincrement())
+  franchiseId          Int?
+  customerId           Int?
+  factory              Factory?
+  customer             Customer?  @relation(fields: [customerId], references: [id])
+  employee             User?      @relation("UserOrdersPlaced", fields: [employeeId], references: [id])
+  franchise            Franchise? @relation(fields: [franchiseId], references: [id])
+  product              Product    @relation(fields: [productId], references: [id])
+
+  // ✅ ADD THIS RELATION
+  createdByUser User? @relation("OrderCreatedBy", fields: [createdBy], references: [id])
+
+  payments Payment[]
+}
+
+model Factory {
+  id           Int       @id @default(autoincrement())
+  orderId      Int       @unique
+  orderStatus  String    @default("PROCESSING")
+  deliveryDate DateTime?
+  createdAt    DateTime  @default(now())
+  order        Order     @relation(fields: [orderId], references: [id])
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  orderId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String   @default("PENDING")
+  method    String
+  order     Order    @relation(fields: [orderId], references: [id])
 }
 
 enum Role {
   SUPER_ADMIN
   ADMIN
   FACTORY
-  INSALES
+  EMPLOYEE
   FRANCHISE
   CUSTOMER
 }
@@ -21,8 +133,8 @@ enum Role {
 enum Climate {
   HOT
   COLD
-  NORMAL
   RAINY
+  NORMAL
 }
 
 enum Terrain {
@@ -35,139 +147,4 @@ enum PaymentMethod {
   CARD
   UPI
   BANK_TRANSFER
-}
-
-model User {
-  id          Int      @id @default(autoincrement())
-  loginUserId String?  @unique
-  email       String?  @unique
-  password    String?
-  fullName    String?
-  phone       String?
-  role        Role
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  products     Product[]
-  ordersPlaced Order[]     @relation("UserOrdersPlaced")
-  customers    Customer[]
-  franchises   Franchise[]
-}
-
-model Franchise {
-  id         Int     @id @default(autoincrement())
-  name       String
-  code       String  @unique
-  ownerName  String?
-  ownerEmail String?
-  ownerPhone String?
-  address    String?
-  isActive   Boolean @default(true)
-
-  createdBy Int?
-  creator   User? @relation(fields: [createdBy], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders    Order[]
-  customers Customer[]
-}
-
-model Customer {
-  id       Int     @id @default(autoincrement())
-  name     String
-  email    String?
-  phone    String?
-  address  String?
-  isActive Boolean @default(true)
-
-  customerType String?
-
-  franchiseId Int?
-  franchise   Franchise? @relation(fields: [franchiseId], references: [id])
-
-  employeeId Int?
-  employee   User? @relation(fields: [employeeId], references: [id])
-
-  createdBy Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders Order[]
-}
-
-model Product {
-  id          Int    @id @default(autoincrement())
-  name        String
-  price       Float
-  stock       Int    @default(0)
-  description String
-
-  size     String
-  isActive Boolean @default(true)
-
-  createdById Int?
-  createdBy   User? @relation(fields: [createdById], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders Order[]
-}
-
-model Order {
-  id          Int    @id @default(autoincrement())
-  orderNumber String @unique
-
-  franchiseId Int?
-  franchise   Franchise? @relation(fields: [franchiseId], references: [id])
-
-  customerId Int?
-  customer   Customer? @relation(fields: [customerId], references: [id])
-
-  employeeId Int?
-  employee   User? @relation("UserOrdersPlaced", fields: [employeeId], references: [id])
-
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
-
-  climate              Climate
-  terrain              Terrain
-  status               String    @default("PENDING")
-  expectedDeliveryDate DateTime?
-  totalAmount          Float     @default(0)
-  isActive             Boolean   @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  factory  Factory?
-  payments Payment[]
-}
-
-model Factory {
-  id           Int       @id @default(autoincrement())
-  orderId      Int       @unique
-  order        Order     @relation(fields: [orderId], references: [id])
-  orderStatus  String    @default("PROCESSING")
-  deliveryDate DateTime?
-  isActive     Boolean   @default(true)
-
-  createdAt DateTime @default(now())
-}
-
-model Payment {
-  id      Int   @id @default(autoincrement())
-  orderId Int
-  order   Order @relation(fields: [orderId], references: [id])
-
-  amount   Float
-  method   String // CASH | UPI | CARD
-  status   String  @default("PENDING")
-  isActive Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

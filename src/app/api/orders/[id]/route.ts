@@ -23,24 +23,60 @@ export async function GET(_req: NextRequest, { params }: Params) {
   }
 }
 
-export async function PUT(req: NextRequest, { params }: Params) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = parseId(params.id);
+    // 👇 REQUIRED by Next.js — unwrap the params Promise
+    const { id } = await context.params;
+
+    const orderId = Number(id);
+    if (isNaN(orderId)) {
+      return NextResponse.json(
+        { error: "Invalid order ID" },
+        { status: 400 }
+      );
+    }
+
     const body = await req.json();
+    console.log("🟦 Incoming Update Body:", body);
 
-    if (body.productId) body.productId = Number(body.productId);
-    if (body.customerId) body.customerId = Number(body.customerId);
-    if (body.franchiseId) body.franchiseId = Number(body.franchiseId);
-    if (body.employeeId) body.employeeId = Number(body.employeeId);
+    const updateData: any = {};
 
-    delete body.id;
-    const updated = await prisma.order.update({ where: { id }, data: body });
-    return NextResponse.json(updated);
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
+    
+    // DATE
+    if (body.expectedDeliveryDate) {
+      updateData.expectedDeliveryDate = new Date(body.expectedDeliveryDate);
+    }
+
+    // STATUS
+    if (body.status) updateData.status = body.status;
+
+    // AUDITS
+    if (body.employeeId) updateData.employeeId = Number(body.employeeId);
+    if (body.franchiseId) updateData.franchiseId = Number(body.franchiseId);
+
+    console.log("📦 Final Data to Update:", updateData);
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: updateData,
+    });
+
+    return NextResponse.json(updatedOrder, { status: 200 });
+  } catch (err: any) {
+    console.error("❌ ORDER UPDATE ERROR:", err);
+
+    return NextResponse.json(
+      {
+        error: "Order update failed",
+        details: err?.message || err,
+      },
+      { status: 400 }
+    );
   }
 }
-
 // If you want DELETE (hard) — uncomment below. Usually orders are kept for records.
 
 

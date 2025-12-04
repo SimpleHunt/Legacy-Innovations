@@ -1,72 +1,130 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    // PAGINATION
     const page = Number(searchParams.get("page")) || 1;
     const take = Number(searchParams.get("take")) || 10;
-
-    // SEARCH
     const search = searchParams.get("search") || "";
-
-    // FILTERS
-    const isActive = searchParams.get("isActive"); // "true" | "false" | null
-
-    // SORTING
     const sortBy = searchParams.get("sortBy") || "id";
     const sortOrder = searchParams.get("sortOrder") || "desc";
+    const status = searchParams.get("status"); 
+
+    const createdBy = searchParams.get("createdBy");  // FRANCHISE
+    const customerId = searchParams.get("customerId"); // CUSTOMER
+    const role = searchParams.get("role");             // ROLE
 
     const where: any = {};
 
-    // SEARCH LOGIC
-    if (search) {
-      where.OR = [
-        { name: { contains: search, mode: "insensitive" } },
-        { size: { contains: search, mode: "insensitive" } }
-      ];
+    // =============================
+    // ROLE BASED FILTERING
+    // =============================
+
+    // 1️⃣ CUSTOMER → filter by customerId
+    if (role === "CUSTOMER" && customerId) {
+      where.customerId = Number(customerId);
+    }
+
+    // 2️⃣ FRANCHISE → filter by createdBy
+    else if (role === "FRANCHISE" && createdBy) {
+      where.createdBy = Number(createdBy);
+    }
+
+    // 3️⃣ FACTORY → show full list (unless you want filter)
+    else if (role === "FACTORY") {
+      // no where filters
+    }
+
+    // 4️⃣ ADMIN / SUPER_ADMIN → show all
+    else if (role === "ADMIN" || role === "SUPER_ADMIN") {
+      // no where filters
+    }
+
+    // 5️⃣ Default safety (other roles)
+    else if (createdBy) {
+      where.createdBy = Number(createdBy);
     }
 
     // FILTER LOGIC
-    if (isActive === "true") where.isActive = true;
-    if (isActive === "false") where.isActive = false;
+    if (status && status !== "All") {
+      where.status = status; // Pending / Processing / Completed
+    }
 
-    const [order, count] = await prisma.$transaction([
+    // =============================
+    // SEARCH FILTERS
+    // =============================
+
+    if (search) {
+      where.OR = [
+        { orderNumber: { contains: search, mode: "insensitive" } },
+        { customer: { name: { contains: search, mode: "insensitive" } } },
+        { product: { name: { contains: search, mode: "insensitive" } } },
+      ];
+    }
+
+    // =============================
+    // FETCH DATA
+    // =============================
+
+    const [orders, count] = await prisma.$transaction([
       prisma.order.findMany({
         where,
         orderBy: { [sortBy]: sortOrder },
+        skip: (page - 1) * take,
         take,
-        skip: take * (page - 1),
+        include: {
+          customer: true,
+          product: true,
+        },
       }),
-
       prisma.order.count({ where }),
     ]);
 
-    return NextResponse.json({ order, count });
+    return NextResponse.json({ orders, count });
 
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  } catch (err: any) {
+    console.error("🔴 ORDER API ERROR:", err);
+    return NextResponse.json(
+      { error: "Server error", details: err.message },
+      { status: 500 }
+    );
   }
 }
-
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // convert integer relation ids
-    if (body.productId) body.productId = Number(body.productId);
-    if (body.customerId) body.customerId = Number(body.customerId);
-    if (body.franchiseId) body.franchiseId = Number(body.franchiseId);
-    if (body.employeeId) body.employeeId = Number(body.employeeId);
+    const required = ["orderNumber", "customerId", "productId", "totalAmount"];
+    const missing = required.filter((key) => !body[key]);
 
-    delete body.id;
+    if (missing.length > 0) {
+      return NextResponse.json(
+        { error: `Missing fields: ${missing.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Convert to numbers
+    body.customerId = Number(body.customerId);
+    body.productId = Number(body.productId);
+    if (body.createdBy) body.createdBy = Number(body.createdBy);
+
+    // Date conversion
+    if (body.expectedDeliveryDate) {
+      body.expectedDeliveryDate = new Date(body.expectedDeliveryDate);
+    }
+
+    delete body.id; // important for create()
+
     const created = await prisma.order.create({ data: body });
+
     return NextResponse.json(created, { status: 201 });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
+
+  } catch (err: any) {
+    console.error("❌ Error creating order:", err);
+    return NextResponse.json({ error: err.message }, { status: 400 });
   }
 }
