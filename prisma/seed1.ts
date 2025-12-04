@@ -39,7 +39,11 @@ async function main() {
       name: "Legacy Brick",
       price: 250,
       size: "10 x 20",
+<<<<<<< HEAD:prisma/seed1.ts
       //description: "Model Description",
+=======
+      description: "Model Description",
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2:prisma/seed.ts
       stock: 500,
       createdById: superAdmin.id
     },

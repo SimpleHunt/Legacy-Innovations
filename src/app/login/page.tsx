@@ -45,8 +45,12 @@ const Login = () => {
       sessionStorage.setItem("fullName", data.user.fullName ?? "");
       sessionStorage.setItem("role", data.user.role ?? "");
       sessionStorage.setItem("id", data.user.id ?? "");
+<<<<<<< HEAD
       sessionStorage.setItem("email", data.user.email ?? "");
       sessionStorage.setItem("phone", data.user.phone ?? "");
+=======
+
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
     
       router.push("/dashboard");
 

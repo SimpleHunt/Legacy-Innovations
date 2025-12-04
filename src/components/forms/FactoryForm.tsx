@@ -2,29 +2,27 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { CustomerSchema, customerSchema } from "@/lib/formValidationSchema";
+import { z } from "zod";
 import InputField from "../InputField";
-import TextAreaField from "../TextAreaField";
+import Image from "next/image";
+import { customerSchema, CustomerSchema } from "@/lib/formValidationSchema";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
-import { useEffect, useState } from "react";
-import { getSessionUser } from "@/lib/getSessionUser"; // <-- use your session function
-=======
 import TextAreaField from "../TextAreaField";
 import bcrypt from "bcryptjs";
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
-const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data?: any; onClose?: () => void }) => {
-  
-  const [session, setSession] = useState<any>();
 
-  useEffect(() => {
-    const user = getSessionUser(); // get session using your function
-    setSession(user);
-  }, []);
 
+const CustomerForm = ({
+  type,
+  data,
+  onClose, 
+}: {
+  type: "create" | "update";
+  data?: any;
+  onClose?: () => void; 
+}) => {
   const {
     register,
     handleSubmit,
@@ -33,13 +31,9 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
     resolver: zodResolver(customerSchema),
   });
 
-  const router = useRouter();
+  const router = useRouter(); 
 
   const onSubmit = handleSubmit(async (formData) => {
-<<<<<<< HEAD
-    try {
-      if (!session) return toast.error("Session not found!");
-=======
   try {
     // 🔐 Hash the password
     const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -54,42 +48,28 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
       franchiseId: 3,
       isActive: true,
     };
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
-      const payload = {
-        ...formData,
-        createdBy: Number(session.id),           
-        employeeId: session.role === "EMPLOYEE" ? Number(session.id) : null,
-        franchiseId: session.role === "FRANCHISE" ? Number(session.franchiseId) : null,
-      };
+    console.log("PAYLOAD:", payload);
 
-       console.log("PAYLOAD:", payload);
+    const res = await axios.post("/api/customers", payload);
 
-      await axios.post("/api/customers", payload);
+    toast.success("Product created successfully!");
+    router.refresh();
+    onClose?.();  
 
-      toast.success("Customer created successfully!");
-      router.refresh();
-      onClose?.();
-    } catch (error: any) {
-      toast.error(error?.response?.data?.error || "Something went wrong");
-    }
-  });
+  } catch (error: any) {
+    toast.error(error?.response?.data?.error || "Something went wrong");
+  }
+});
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">Create a new Customer</h1>
-
-      <span className="text-xs text-gray-400 font-medium">Personal Information</span>
-
+      
+      <span className="text-xs text-gray-400 font-medium">
+        Personal Information
+      </span>
       <div className="flex justify-between flex-wrap gap-4">
-<<<<<<< HEAD
-        <InputField label="Customer Name" name="name" defaultValue={data?.name} register={register} error={errors.name} />
-        <InputField label="Email" name="email" defaultValue={data?.email} register={register} error={errors.email} />
-        <InputField label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />
-        <TextAreaField label="Address" name="address" defaultValue={data?.address} register={register} error={errors.address} />
-        <InputField label="User Name" name="loginUserId" defaultValue={data?.loginUserId} register={register} error={errors.loginUserId} />
-        <InputField label="Password" name="password" register={register} error={errors.password} />
-=======
         <InputField
           label="Customer Name"
           name="name"
@@ -136,9 +116,7 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
         />
         
         
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       </div>
-
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

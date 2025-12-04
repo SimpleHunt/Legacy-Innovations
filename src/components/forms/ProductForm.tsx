@@ -46,7 +46,11 @@ const ProductForm = ({
         createdById: createdById || null, // ⬅️ Important
       };
 
+<<<<<<< HEAD
       console.log("PAYLOAD:", payload);
+=======
+    console.log("PAYLOAD:", payload);
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
       const res = await axios.post("/api/products", payload);
 

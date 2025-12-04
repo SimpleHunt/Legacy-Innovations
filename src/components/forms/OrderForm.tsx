@@ -63,6 +63,7 @@ const OrderForm = ({
     defaultValues: data || {},
   });
 
+<<<<<<< HEAD
   const router = useRouter();
   const onSubmit = handleSubmit(async (formData) => {
     try {
@@ -70,6 +71,42 @@ const OrderForm = ({
         toast.error("User session not found!");
         return;
       }
+=======
+  
+
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+
+  const router = useRouter(); 
+
+  useEffect(() => {
+  const loadCustomers = async () => {
+    try {
+      const customerRes = await axios.get("/api/customers?franchiseId=3");
+      const productRes  = await axios.get("/api/products");
+
+      setCustomers(customerRes.data.customer);  // ← customer array
+      setProducts(productRes .data.products);  // ← Product array
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  loadCustomers();
+}, []);
+
+  const onSubmit = handleSubmit(async (formData) => {
+  try {
+    const payload = {
+      orderNumber:formData.orderNumber,
+      customerId: formData.customerId,
+      productId: formData.productId,
+      climate: formData.climate,
+      terrain: formData.terrain,
+      expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
+      totalAmount: Number(formData.totalAmount),
+      franchiseId: 3,
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
       const payload = {
         orderNumber: formData.orderNumber,

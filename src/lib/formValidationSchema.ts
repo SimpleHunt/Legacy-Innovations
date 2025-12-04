@@ -75,9 +75,14 @@ export const orderSchema = z.object({
     .string()
     .min(1, { message: "Expected delivery date is required!" }),
 
+<<<<<<< HEAD
   totalAmount: z.coerce
     .number()
     .positive("Total amount is required!"),
+=======
+  totalAmount: z.coerce.number().positive("Total amount is required"),
+  
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 });
 
 export type OrderSchema = z.infer<typeof orderSchema>;

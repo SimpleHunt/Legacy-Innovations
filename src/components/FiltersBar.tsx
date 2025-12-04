@@ -47,6 +47,11 @@ export default function FiltersBar({ params, table }: any) {
       { key: "amount", label: "Amount" },
       { key: "method", label: "Payment Method" },
     ],
+    factory: [
+      { key: "id", label: "ID" },
+      { key: "amount", label: "Amount" },
+      { key: "method", label: "Payment Method" },
+    ],
   };
 
   // DYNAMIC FILTER OPTIONS BASED ON PAGE

@@ -22,7 +22,10 @@ export async function POST(req: Request) {
     if (!isMatch) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 400 });
     }
+<<<<<<< HEAD
   
+=======
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
     
     return NextResponse.json({
@@ -31,8 +34,11 @@ export async function POST(req: Request) {
         id: user.id,
         fullName: user.fullName,
         role: user.role,
+<<<<<<< HEAD
         email:user.email,
         phone:user.phone,
+=======
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       },
     });
 

@@ -59,6 +59,10 @@ export async function POST(req: NextRequest) {
 
     const {
       name,
+<<<<<<< HEAD
+=======
+      code,
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       ownerName,
       ownerEmail,
       ownerPhone,
@@ -68,6 +72,7 @@ export async function POST(req: NextRequest) {
       isActive
     } = body;
 
+<<<<<<< HEAD
     const last = await prisma.franchise.findFirst({
       orderBy: { code: "desc" }
     });
@@ -77,13 +82,19 @@ export async function POST(req: NextRequest) {
     const nextNumber = lastNumber + 1;
     const newCode = `FC${String(nextNumber).padStart(3, "0")}`;
 
+=======
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
     // 🔥 Use transaction to ensure atomic inserts
     const result = await prisma.$transaction(async (tx) => {
       // 1️⃣ Create Franchise
       const franchise = await tx.franchise.create({
         data: {
           name,
+<<<<<<< HEAD
           code: newCode,
+=======
+          code,
+>>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
           ownerName,
           ownerEmail,
           ownerPhone,
