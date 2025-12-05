@@ -77,12 +77,12 @@ const Navbar = () => {
       {/* RIGHT SECTION */}
       <div className="flex items-center gap-6 justify-end w-full">
         {/* Message Icon */}
-        <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
+        {/* <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
           <Image src="/message.png" alt="" width={20} height={20} />
-        </div>
+        </div> */}
 
         {/* Notification */}
-        <div ref={notifyRef} className="relative">
+        {/* <div ref={notifyRef} className="relative">
           <div
             className="relative bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer"
             onClick={() => setNotifyOpen(!notifyOpen)}
@@ -110,7 +110,7 @@ const Navbar = () => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* USER DROPDOWN */}
         <div ref={userRef} className="relative">

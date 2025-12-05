@@ -6,11 +6,8 @@ import bcrypt from "bcryptjs";
 export async function loginAction(formData: FormData) {
   const loginUserId = formData.get("loginUserId")?.toString();
   const password = formData.get("password")?.toString();
-<<<<<<< HEAD
 
   console.log(password)
-=======
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
   if (!loginUserId || !password) {
     return { error: "All fields are required" };

@@ -11,10 +11,7 @@ import { toast } from "react-toastify";
 import {  useRouter } from "next/navigation";
 import TextAreaField from "../TextAreaField";
 import bcrypt from "bcryptjs";
-<<<<<<< HEAD
 import { useEffect } from "react";
-=======
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
 
 
@@ -46,17 +43,12 @@ const FranchiseForm = ({
     const getLastCode = async () => {
       try {
         const res = await axios.get("/api/franchise/lastCode");
-        const lastCode = res.data?.lastCode || "FC00";
 
-        // Extract the numeric part: "FR-002" → 2
-        const lastNumber = parseInt(lastCode.replace("FC", ""), 10);
-
-        // Increment: 2 → 3
+        // If no last code exists → start from LI-FC-001
+        const lastCode = res.data?.lastCode;
+        const lastNumber = parseInt(lastCode.replace("LI-FC-", ""), 10) || 0;
         const nextNumber = lastNumber + 1;
-
-        // Format with padding: 3 → "003"
-        const formatted = `FC${String(nextNumber).padStart(3, "0")}`;
-
+        const formatted = `LI-FC-${String(nextNumber).padStart(3, "0")}`;
         
         setValue("code", formatted);
       } catch (error) {
@@ -83,6 +75,7 @@ const FranchiseForm = ({
       address: formData.address,
       loginUserId: formData.loginUserId,
       password: hashedPassword,
+      
       isActive: true,
     };
 
@@ -168,6 +161,66 @@ const FranchiseForm = ({
           register={register}
           error={errors.password}
         />
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+            htmlFor="companyProfile"
+          >
+            <Image src="/upload.png" alt="" width={28} height={28} />
+            <span>Upload Company Profile </span>
+          </label>
+          <input type="file" id="companyProfile" {...register("companyProfile")} className="hidden" />
+          {errors.companyProfile?.message && (
+            <p className="text-xs text-red-400">
+              {errors.companyProfile.message.toString()}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+            htmlFor="companyKyc"
+          >
+            <Image src="/upload.png" alt="" width={28} height={28} />
+            <span>Upload Company KYC </span>
+          </label>
+          <input type="file" id="companyKyc" {...register("companyKyc")} className="hidden" />
+          {errors.companyKyc?.message && (
+            <p className="text-xs text-red-400">
+              {errors.companyKyc.message.toString()}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+            htmlFor="bankDetails"
+          >
+            <Image src="/upload.png" alt="" width={28} height={28} />
+            <span>Upload Bank Account Details  </span>
+          </label>
+          <input type="file" id="bankDetails" {...register("bankDetails")} className="hidden" />
+          {errors.bankDetails?.message && (
+            <p className="text-xs text-red-400">
+              {errors.bankDetails.message.toString()}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+            htmlFor="itrDocs"
+          >
+            <Image src="/upload.png" alt="" width={28} height={28} />
+            <span>Upload  ITR or Balnce Sheet last 3 Years</span>
+          </label>
+          <input type="file" id="itrDocs" {...register("itrDocs")} className="hidden" />
+          {errors.itrDocs?.message && (
+            <p className="text-xs text-red-400">
+              {errors.itrDocs.message.toString()}
+            </p>
+          )}
+        </div>
         
         
       </div>

@@ -30,6 +30,7 @@ export default function RoleWrapper({
 
   const columns = [
     { header: "#", accessor: "info" },
+    { header: "Product Code", accessor: "productcode" },
     { header: "Product Name", accessor: "productName" },
     { header: "Size", accessor: "size", className: "hidden md:table-cell" },
     { header: "Price", accessor: "price", className: "hidden md:table-cell" },
@@ -45,9 +46,10 @@ export default function RoleWrapper({
       : []),
   ];
 
-  const renderRow = (item: Product) => (
+  const renderRow = (item: Product,index: number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-      <td className="hidden md:table-cell py-5">#</td>
+      <td className="hidden md:table-cell py-5">{index + 1}</td>
+      <td><h3 className="font-semibold">{item.productCode}</h3></td>
       <td><h3 className="font-semibold">{item.name}</h3></td>
       <td className="hidden md:table-cell">{item.size}</td>
       <td className="hidden md:table-cell">{item.price}</td>

@@ -39,6 +39,7 @@ const ProductForm = ({
 
       const payload = {
         name: formData.productName,
+        productCode: formData.productCode,
         price: Number(formData.productPrice),
         stock: Number(formData.productStock),
         size: formData.productSize,
@@ -46,11 +47,7 @@ const ProductForm = ({
         createdById: createdById || null, // ⬅️ Important
       };
 
-<<<<<<< HEAD
       console.log("PAYLOAD:", payload);
-=======
-    console.log("PAYLOAD:", payload);
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
       const res = await axios.post("/api/products", payload);
 
@@ -79,6 +76,14 @@ const ProductForm = ({
         />
 
         <InputField
+          label="Product Code"
+          name="productCode"
+          defaultValue={data?.productCode}
+          register={register}
+          error={errors?.productCode}
+        />
+
+        <InputField
           label="Product Size"
           name="productSize"
           defaultValue={data?.productSize}
@@ -93,9 +98,6 @@ const ProductForm = ({
           register={register}
           error={errors?.productPrice}
         />
-      </div>
-
-      <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="Product Stock"
           name="productStock"
@@ -105,6 +107,7 @@ const ProductForm = ({
         />
       </div>
 
+      
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

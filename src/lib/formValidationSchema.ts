@@ -13,6 +13,7 @@ export const productSchema = z.object({
     .min(1, { message: "Product Stock is required!" })
     .transform((val) => Number(val))
     .refine((val) => !isNaN(val), "Stock must be a valid number"),
+    productCode: z.string().min(1, { message: "Product Code is required!" }),
 });
 
 export type ProductSchema = z.infer<typeof productSchema>;
@@ -22,10 +23,20 @@ export const franchiseSchema = z.object({
   code: z.string().min(1, { message: "Code is required!" }),
   ownerName: z.string().min(1, { message: "Owner Name is required!" }),
   email: z.string().email({ message: "Invalid email address!" }),  
-  phone: z.string().min(1, { message: "Phone is required!" }),
+  phone: z
+    .string()
+    .min(10, { message: "Phone must be 10 digits" })
+    .max(10, { message: "Phone must be 10 digits" })
+    .regex(/^[0-9]{10}$/, { message: "Phone must contain only numbers" }),
   address: z.string().min(1, { message: "Address is required!" }),
   loginUserId: z.string().min(1, { message: "Username is required!" }),
-  password: z.string().min(1, { message: "Password is required!" })
+  password: z.string().min(1, { message: "Password is required!" }),
+  // img: z.instanceof(File, { message: "Image is required" }),
+  // companyProfile: z.any().optional(),
+  // companyKyc: z.any().optional(),
+  // bankDetails: z.any().optional(),
+  // itrDocs: z.any().optional(),
+
 });
 
 export type FranchiseSchema = z.infer<typeof franchiseSchema>;
@@ -34,7 +45,11 @@ export type FranchiseSchema = z.infer<typeof franchiseSchema>;
 export const customerSchema = z.object({
   name: z.string().min(1, { message: "Customer Name is required!" }),
   email: z.string().email({ message: "Invalid email address!" }),  
-  phone: z.string().min(1, { message: "Phone is required!" }),
+  phone: z
+    .string()
+    .min(10, { message: "Phone must be 10 digits" })
+    .max(10, { message: "Phone must be 10 digits" })
+    .regex(/^[0-9]{10}$/, { message: "Phone must contain only numbers" }),
   address: z.string().min(1, { message: "Address is required!" }),
   loginUserId: z.string().min(1, { message: "Username is required!" }),
   password: z.string().min(1, { message: "Password is required!" })
@@ -58,31 +73,45 @@ export const orderSchema = z.object({
     .refine((val) => val > 0, { message: "Product Name is required!" }),
 
   climate: z
-    .enum(["NORMAL", "HOT", "COLD", "RAINY"])
+    .enum(["HUMID", "COLD"])
     .or(z.literal(""))
     .refine((val) => val !== "", {
       message: "Climate is required!",
     }),
 
   terrain: z
-    .enum(["FLAT", "HILL"])
+    .enum(["FLAT", "HILL_STATION"])
     .or(z.literal(""))
     .refine((val) => val !== "", {
       message: "Terrain is required!",
     }),
-
-  expectedDeliveryDate: z
+    
+  stock: z
     .string()
-    .min(1, { message: "Expected delivery date is required!" }),
+    .min(1, "Stock must be at least 1"),
 
-<<<<<<< HEAD
-  totalAmount: z.coerce
+  unitPrice: z
     .number()
-    .positive("Total amount is required!"),
-=======
-  totalAmount: z.coerce.number().positive("Total amount is required"),
-  
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
+    .min(0, "Unit price must be positive"),
+
+  discount: z
+    .string()
+    .min(0, "Discount cannot be negative"),
+
+  unitPriceCost: z
+    .number()
+    .min(0, "Price after discount cannot be negative"),
+
+  gstPercent: z
+    .number()
+    .min(0, "GST cannot be negative"),
+  gstAmountValue: z
+    .number()
+    .min(0, "GST Amount Value cannot be negative"),
+
+  totalAmount: z
+    .number()
+    .min(0, "Total cannot be negative"),
 });
 
 export type OrderSchema = z.infer<typeof orderSchema>;

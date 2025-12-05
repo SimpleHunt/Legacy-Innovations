@@ -5,16 +5,16 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const last = await prisma.franchise.findFirst({
-      orderBy: { code: "desc" },
+    const last = await prisma.customer.findFirst({
+      orderBy: { cusotmerCode: "desc" },
     });
 
     return NextResponse.json({
-      lastCode: last?.code || "LI-FC-000",
+      lastCode: last?.cusotmerCode || "LI-FC-000",
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch last franchise code" },
+      { error: "Failed to fetch last customer code" },
       { status: 500 }
     );
   }

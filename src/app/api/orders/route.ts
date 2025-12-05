@@ -74,18 +74,10 @@ export async function GET(req: NextRequest) {
         orderBy: { [sortBy]: sortOrder },
         skip: (page - 1) * take,
         take,
-<<<<<<< HEAD
         include: {
           customer: true,
           product: true,
         },
-=======
-        skip: take * (page - 1),
-        include: {
-           customer: true,
-           product: true,
-         }
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       }),
       prisma.order.count({ where }),
     ]);
@@ -105,7 +97,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-<<<<<<< HEAD
     const required = ["orderNumber", "customerId", "productId", "totalAmount"];
     const missing = required.filter((key) => !body[key]);
 
@@ -128,15 +119,6 @@ export async function POST(req: NextRequest) {
 
     delete body.id; // important for create()
 
-=======
-    // convert integer relation ids
-    if (body.productId) body.productId = Number(body.productId);
-    if (body.customerId) body.customerId = Number(body.customerId);
-    if (body.franchiseId) body.franchiseId = Number(body.franchiseId);
-    if (body.employeeId) body.employeeId = Number(body.employeeId);
-    console.log(body)
-    delete body.id;
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
     const created = await prisma.order.create({ data: body });
 
     return NextResponse.json(created, { status: 201 });

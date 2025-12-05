@@ -12,7 +12,7 @@ model User {
   email         String?     @unique
   password      String?
   fullName      String?
-  phone         String?
+  phone         String      @unique
   role          Role
   isActive      Boolean     @default(true)
   createdAt     DateTime    @default(now())
@@ -28,19 +28,25 @@ model User {
 
 model Franchise {
   name       String
-  code       String     @unique
+  code       String   @unique
   address    String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  isActive   Boolean    @default(true)
-  ownerEmail String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isActive   Boolean  @default(true)
+  ownerEmail String   @unique
   ownerName  String?
-  ownerPhone String?
-  id         Int        @id @default(autoincrement())
-  createdBy  Int?
-  customers  Customer[]
-  creator    User?      @relation(fields: [createdBy], references: [id])
-  orders     Order[]
+  ownerPhone String   @unique
+
+  companyProfile String?
+  companyKyc     String?
+  bankDetails    String?
+  itrDocs        String?
+
+  id        Int        @id @default(autoincrement())
+  createdBy Int?
+  customers Customer[]
+  creator   User?      @relation(fields: [createdBy], references: [id])
+  orders    Order[]
 }
 
 model Customer {
@@ -52,6 +58,7 @@ model Customer {
   updatedAt    DateTime   @updatedAt
   customerType String?
   id           Int        @id @default(autoincrement())
+  cusotmerCode String     @unique
   franchiseId  Int?
   createdBy    Int?
   employeeId   Int?
@@ -69,6 +76,7 @@ model Product {
   updatedAt   DateTime @updatedAt
   size        String
   id          Int      @id @default(autoincrement())
+  productCode String   @unique
   createdById Int?
   orders      Order[]
   createdBy   User?    @relation(fields: [createdById], references: [id])
@@ -78,6 +86,11 @@ model Order {
   orderNumber          String     @unique
   status               String     @default("PENDING")
   expectedDeliveryDate DateTime?
+  unitPrice            Float      @default(0)
+  unitPriceCost        Float      @default(0)
+  discount             Float      @default(0)
+  gstPercentage        Float      @default(0)
+  gstAmount            Float      @default(0)
   totalAmount          Float      @default(0)
   createdAt            DateTime   @default(now())
   updatedAt            DateTime   @updatedAt
@@ -131,15 +144,13 @@ enum Role {
 }
 
 enum Climate {
-  HOT
+  HUMID
   COLD
-  RAINY
-  NORMAL
 }
 
 enum Terrain {
   FLAT
-  HILL
+  HILL_STATION
 }
 
 enum PaymentMethod {

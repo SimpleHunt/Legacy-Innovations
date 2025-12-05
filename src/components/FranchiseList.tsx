@@ -46,15 +46,18 @@ export default function FranchiseList({  }: Props) {
       { next: { revalidate: 0 } }
     );
 
+    console.log("FETCH ORDERS URL:", res);
+
     const result = await res.json();
     setData(result.franchise);
     setCount(result.count);
   };
 
   const columns = [
-    { header: "ID", accessor: "info" },
-    { header: "Franchise Name", accessor: "franchise", className: "hidden lg:table-cell" },
+    { header: "#", accessor: "info" },
+    
     { header: "Code", accessor: "code", className: "hidden lg:table-cell" },
+    { header: "Franchise Name", accessor: "franchise", className: "hidden lg:table-cell" },
     { header: "Name", accessor: "name", className: "hidden lg:table-cell" },
     { header: "Mobile", accessor: "mobile", className: "hidden lg:table-cell" },
     { header: "Email", accessor: "email", className: "hidden lg:table-cell" },
@@ -63,14 +66,16 @@ export default function FranchiseList({  }: Props) {
     { header: "Actions", accessor: "action" },
   ];
 
-  const renderRow = (item: Franchise) => (
+  const renderRow = (item: Franchise,index: number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-      <td className=" md:table-cell py-4 ">#</td>
-      <td className="hidden md:table-cell">{item.name}</td>
+      <td className=" md:table-cell py-4 ">{index + 1}</td>
       <td className="hidden md:table-cell">{item.code}</td>
+      <td className="hidden md:table-cell">{item.name}</td>
+      
       <td className="hidden md:table-cell">{item.ownerName}</td>
-      <td className="hidden md:table-cell">{item.ownerEmail}</td>
       <td className="hidden md:table-cell">{item.ownerPhone}</td>
+      <td className="hidden md:table-cell">{item.ownerEmail}</td>
+      
       <td className="hidden md:table-cell">{item.address}</td>
       <td className="hidden md:table-cell">
         {item.isActive ? (

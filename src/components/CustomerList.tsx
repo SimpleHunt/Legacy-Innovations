@@ -63,7 +63,8 @@ export default function CustomerList({  }: Props) {
   const { customers: data, count } = dataState;
 
   const columns = [
-    { header: "ID", accessor: "info" },
+    { header: "#", accessor: "info" },
+    { header: "Customer Code", accessor: "Customer Code", className: "hidden lg:table-cell" },
     { header: "Customer Name", accessor: "Customer Name", className: "hidden lg:table-cell" },
     { header: "Mobile", accessor: "mobile", className: "hidden lg:table-cell" },
     { header: "Email", accessor: "email", className: "hidden lg:table-cell" },
@@ -74,9 +75,10 @@ export default function CustomerList({  }: Props) {
     { header: "Actions", accessor: "action" },
   ];
 
-  const renderRow = (item: Customer) => (
+  const renderRow = (item: Customer,index: number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-      <td className="md:table-cell py-4">#</td>
+      <td className="md:table-cell py-4">{index + 1}</td>
+      <td className="hidden md:table-cell">{item.cusotmerCode}</td>
       <td>
         <div className="flex flex-col">
           <h3 className="font-semibold">{item.name}</h3>

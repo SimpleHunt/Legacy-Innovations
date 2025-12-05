@@ -144,6 +144,10 @@ exports.Prisma.FranchiseScalarFieldEnum = {
   ownerEmail: 'ownerEmail',
   ownerName: 'ownerName',
   ownerPhone: 'ownerPhone',
+  companyProfile: 'companyProfile',
+  companyKyc: 'companyKyc',
+  bankDetails: 'bankDetails',
+  itrDocs: 'itrDocs',
   id: 'id',
   createdBy: 'createdBy'
 };
@@ -157,6 +161,7 @@ exports.Prisma.CustomerScalarFieldEnum = {
   updatedAt: 'updatedAt',
   customerType: 'customerType',
   id: 'id',
+  cusotmerCode: 'cusotmerCode',
   franchiseId: 'franchiseId',
   createdBy: 'createdBy',
   employeeId: 'employeeId'
@@ -171,6 +176,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   updatedAt: 'updatedAt',
   size: 'size',
   id: 'id',
+  productCode: 'productCode',
   createdById: 'createdById'
 };
 
@@ -178,6 +184,11 @@ exports.Prisma.OrderScalarFieldEnum = {
   orderNumber: 'orderNumber',
   status: 'status',
   expectedDeliveryDate: 'expectedDeliveryDate',
+  unitPrice: 'unitPrice',
+  unitPriceCost: 'unitPriceCost',
+  discount: 'discount',
+  gstPercentage: 'gstPercentage',
+  gstAmount: 'gstAmount',
   totalAmount: 'totalAmount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -233,15 +244,13 @@ exports.Role = exports.$Enums.Role = {
 };
 
 exports.Climate = exports.$Enums.Climate = {
-  HOT: 'HOT',
-  COLD: 'COLD',
-  RAINY: 'RAINY',
-  NORMAL: 'NORMAL'
+  HUMID: 'HUMID',
+  COLD: 'COLD'
 };
 
 exports.Terrain = exports.$Enums.Terrain = {
   FLAT: 'FLAT',
-  HILL: 'HILL'
+  HILL_STATION: 'HILL_STATION'
 };
 
 exports.Prisma.ModelName = {

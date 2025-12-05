@@ -14,7 +14,6 @@ const OrderForm = dynamic(() => import("./forms/OrderForm"), { loading: () => <h
 const FranchiseForm = dynamic(() => import("./forms/FranchiseForm"), { loading: () => <h1>Loading...</h1> });
 const PaymentForm = dynamic(() => import("./forms/PaymentForm"), { loading: () => <h1>Loading...</h1> });
 const UserForm = dynamic(() => import("./forms/UserForm"), { loading: () => <h1>Loading...</h1> });
-const FactoryForm = dynamic(() => import("./forms/FactoryForm"), { loading: () => <h1>Loading...</h1> });
 
 // FIXED: Added onClose support to forms[]
 const forms: {
@@ -26,7 +25,6 @@ const forms: {
   franchise: (type, data, onClose) => <FranchiseForm type={type} data={data} onClose={onClose}  />,
   payment: (type, data, onClose) => <PaymentForm type={type} data={data} />,
   users: (type, data, onClose) => <UserForm type={type} data={data} onClose={onClose}/>,
-  factory: (type, data, onClose) => <FactoryForm type={type} data={data} onClose={onClose}/>,
 };
 
 

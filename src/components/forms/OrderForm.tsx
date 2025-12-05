@@ -26,11 +26,14 @@ const OrderForm = ({
   const [customers, setCustomers] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   
+  
 
   // 🔹 Load Session
   useEffect(() => {
     setSession(getSessionUser());
   }, []);
+
+  
 
   // 🔹 Load Customers + Products
   useEffect(() => {
@@ -57,13 +60,33 @@ const OrderForm = ({
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch
   } = useForm<OrderSchema>({
     resolver: zodResolver(orderSchema),
     //mode: "onChange",
-    defaultValues: data || {},
+    defaultValues: data || {
+      gstPercent: 18,
+    },
   });
 
-<<<<<<< HEAD
+  useEffect(() => {
+  if (type === "create") {
+    const getLastCode = async () => {
+      try {
+        const res = await axios.get("/api/orders/lastCode");
+        setValue("orderNumber", res.data.lastCode);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getLastCode();
+  }
+}, [type, setValue]);
+
+
+
   const router = useRouter();
   const onSubmit = handleSubmit(async (formData) => {
     try {
@@ -71,42 +94,6 @@ const OrderForm = ({
         toast.error("User session not found!");
         return;
       }
-=======
-  
-
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [products, setProducts] = useState<any[]>([]);
-
-  const router = useRouter(); 
-
-  useEffect(() => {
-  const loadCustomers = async () => {
-    try {
-      const customerRes = await axios.get("/api/customers?franchiseId=3");
-      const productRes  = await axios.get("/api/products");
-
-      setCustomers(customerRes.data.customer);  // ← customer array
-      setProducts(productRes .data.products);  // ← Product array
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  loadCustomers();
-}, []);
-
-  const onSubmit = handleSubmit(async (formData) => {
-  try {
-    const payload = {
-      orderNumber:formData.orderNumber,
-      customerId: formData.customerId,
-      productId: formData.productId,
-      climate: formData.climate,
-      terrain: formData.terrain,
-      expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
-      totalAmount: Number(formData.totalAmount),
-      franchiseId: 3,
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
       const payload = {
         orderNumber: formData.orderNumber,
@@ -114,7 +101,12 @@ const OrderForm = ({
         productId: Number(formData.productId),
         climate: formData.climate,
         terrain: formData.terrain,
-        expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
+        //expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
+        unitPrice: Number(formData.unitPrice),
+        discount: Number(formData.discount),
+        unitPriceCost: Number(formData.unitPriceCost),
+        gstPercentage: Number(formData.gstPercent),
+        gstAmount: Number(formData.gstAmountValue),
         totalAmount: Number(formData.totalAmount),
 
         createdBy: Number(session.id),
@@ -142,6 +134,81 @@ const OrderForm = ({
     }
   });
 
+  
+const watchProductId = watch("productId");
+const watchStock = watch("stock");
+const watchUnitPrice = watch("unitPrice");
+const watchDiscount = watch("discount");
+const watchGstPercent = watch("gstPercent");
+const watchGstAmountValue = watch("gstAmountValue");
+
+
+useEffect(() => {
+  if (!watchProductId) return;
+
+  const product = products.find((p) => p.id === Number(watchProductId));
+  if (!product) return;
+
+  // Auto-fill fields when product changes
+  setValue("unitPrice", product.price);
+  setValue("unitPriceCost", product.price);   
+  setValue("stock", 1);                       
+  setValue("discount", 0);                    
+  setValue("totalAmount", product.price);     
+
+}, [watchProductId, products, setValue]);
+
+useEffect(() => {
+  let stock = Number(watchStock);
+  let unitPrice = Number(watchUnitPrice);
+  let discount = Number(watchDiscount);
+  let gstPercent = Number(watchGstPercent);
+  let gstAmountValue = Number(watchGstAmountValue);
+
+  // --- STOCK VALIDATION ---
+  if (stock < 1) {
+    stock = 1;
+    setValue("stock", 1);
+  }
+
+  // --- DISCOUNT VALIDATION ---
+  if (discount < 0) {
+    discount = 0;
+    setValue("discount", 0);
+  }
+  if (discount > unitPrice) {
+    discount = unitPrice;
+    setValue("discount", unitPrice);
+  }
+
+  // --- UNIT PRICE VALIDATION ---
+  if (unitPrice < 0) {
+    unitPrice = 0;
+    setValue("unitPrice", 0);
+  }
+
+  // --- GST VALIDATION ---
+  if (gstPercent < 0) {
+    gstPercent = 0;
+    setValue("gstPercent", 0);
+  }
+
+  // --- CALCULATIONS ---
+  const unitPriceCost = unitPrice - discount;
+  setValue("unitPriceCost", unitPriceCost < 0 ? 0 : unitPriceCost);
+
+  // GST amount value
+  const gstAmountValue1 = (unitPriceCost * stock * gstPercent) / 100;
+  setValue("gstAmountValue", gstAmountValue1);
+
+  const gstValue = (unitPriceCost * stock * gstPercent) / 100;
+  const totalAmount = (unitPriceCost * stock) + gstValue;
+  setValue("totalAmount", totalAmount);
+
+}, [watchStock, watchUnitPrice, watchDiscount, watchGstPercent, watchGstAmountValue, setValue]);
+
+
+
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
@@ -157,6 +224,7 @@ const OrderForm = ({
           name="orderNumber"
           register={register}
           error={errors.orderNumber}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }}  
         />
 
         {/* Customer Select */}
@@ -167,7 +235,7 @@ const OrderForm = ({
           >
             <option value="">Select Customer</option>
             {customers.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+              <option key={c.id} value={c.id}>{c.name} / {c.cusotmerCode}</option>
             ))}
           </select>
           {errors.customerId && <p className="text-xs text-red-400">{errors.customerId.message}</p>}
@@ -196,10 +264,8 @@ const OrderForm = ({
             {...register("climate")}
           >
             <option value="">Select Climate</option>
-            <option value="NORMAL">Normal</option>
-            <option value="HOT">Hot</option>
+            <option value="HUMID">Humid</option>
             <option value="COLD">Cold</option>
-            <option value="RAINY">Rainy</option>
           </select>
           {errors.climate && <p className="text-xs text-red-400">{errors.climate.message}</p>}
         </div>
@@ -212,26 +278,65 @@ const OrderForm = ({
           >
             <option value="">Select Terrain</option>
             <option value="FLAT">Flat</option>
-            <option value="HILL">Hill</option>
+            <option value="HILL_STATION">Hill Station</option>
           </select>
           {errors.terrain && <p className="text-xs text-red-400">{errors.terrain.message}</p>}
         </div>
 
-        <InputField
-          label="Expected Delivery Date"
-          name="expectedDeliveryDate"
-          type="date"
+       <InputField
+          label="Stock"
+          name="stock"
+          type="number"
           register={register}
-          error={errors.expectedDeliveryDate}
+          registerOptions={{ valueAsNumber: true }}
+          error={errors.stock}
         />
+
       </div>
 
       <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Unit Price"
+          name="unitPrice"
+          register={register}
+          error={errors.unitPrice}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
+        />
+
+        <InputField
+          label="Discount"
+          name="discount"
+          register={register}
+        />
+        <InputField
+          label="Unit Price Cost"
+          name="unitPriceCost"
+          register={register}
+          error={errors.unitPriceCost}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
+        />
+      </div>
+      <div className="flex justify-between flex-wrap gap-4">
+         <InputField
+          label="GST Percentage % "
+          name="gstPercent"
+          register={register}
+          error={errors.gstPercent}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }}
+        />
+        <InputField
+          label="GST Amount Value"
+          name="gstAmountValue"
+          register={register}
+          error={errors.gstAmountValue}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
+        />
         <InputField
           label="Total Amount"
           name="totalAmount"
           register={register}
           error={errors.totalAmount}
+          inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
         />
       </div>
 

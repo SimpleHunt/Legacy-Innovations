@@ -7,7 +7,7 @@ import TableSearch from "@/components/TableSearch";
 import { useState } from "react";
 
 const columns = [
-  { header: "ID", accessor: "id" },
+  { header: "#", accessor: "id" },
   { header: "Name", accessor: "name" },
   { header: "Price", accessor: "price" },
   { header: "Stock", accessor: "stock" },
@@ -50,12 +50,12 @@ export default function ProductReportPage() {
     );
   };
 
-  const renderRow = (item: any) => (
+  const renderRow = (item: any, index: number) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight py-4"
     >
-      <td className="md:table-cell py-4">{item.id}</td>
+      <td className="md:table-cell py-4">{index + 1}</td>
       <td>{item.name}</td>
       <td>{item.price}</td>
       <td>{item.stock}</td>

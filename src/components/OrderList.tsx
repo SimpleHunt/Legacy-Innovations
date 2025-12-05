@@ -97,7 +97,7 @@ export default function OrderList({  }: Props) {
 
 
   const columns = [
-  { header: "ID", accessor: "info" },
+  { header: "#ID", accessor: "info" },
   { header: "Order Number", accessor: "orderNumber", className: "hidden lg:table-cell" },
 
   // Only show Customer Name if NOT factory
@@ -110,6 +110,8 @@ export default function OrderList({  }: Props) {
   { header: "Climate", accessor: "climate", className: "hidden lg:table-cell" },
   { header: "Terrain", accessor: "terrain", className: "hidden lg:table-cell" },
   { header: "Expected Delivery Date", accessor: "expectedDeliveryDate", className: "hidden lg:table-cell" },
+  { header: "Unit Cost", accessor: "unitCost", className: "hidden lg:table-cell" },
+  { header: "GST Amount", accessor: "gstAmountValue", className: "hidden lg:table-cell" },
   { header: "Total Amount", accessor: "totalAmount", className: "hidden lg:table-cell" },
 
   { header: "Status", accessor: "status", className: "hidden lg:table-cell" },
@@ -122,10 +124,10 @@ export default function OrderList({  }: Props) {
 ];
 
 
-  const renderRow = (item: Order) => (
+  const renderRow = (item: Order,index: number) => (
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
     
-    <td className="py-4">#</td>
+    <td className="py-4">{index + 1}</td>
     <td className="hidden md:table-cell py-4">{item.orderNumber}</td>
 
     {/* Only show customer for franchise/employee */}
@@ -139,6 +141,8 @@ export default function OrderList({  }: Props) {
     <td className="hidden md:table-cell py-4">
       {item.expectedDeliveryDate ? new Date(item.expectedDeliveryDate).toISOString().split("T")[0] : "-"}
     </td>
+    <td className="hidden md:table-cell py-4">{item.unitPriceCost}</td>
+    <td className="hidden md:table-cell py-4">{item.gstAmount}</td>
     <td className="hidden md:table-cell py-4">{item.totalAmount}</td>
 
     {/* Status */}

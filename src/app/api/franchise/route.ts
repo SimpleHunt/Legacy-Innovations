@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import fs from "fs";
+import path from "path";
 
 export async function GET(req: Request) {
   try {
@@ -56,13 +58,10 @@ export async function GET(req: Request) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    
 
     const {
       name,
-<<<<<<< HEAD
-=======
-      code,
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       ownerName,
       ownerEmail,
       ownerPhone,
@@ -72,36 +71,76 @@ export async function POST(req: NextRequest) {
       isActive
     } = body;
 
-<<<<<<< HEAD
+    // // FILE HANDLING FUNCTION
+    // const saveFile = async (file: File | null, folder: string) => {
+    //   if (!file) return null;
+
+    //   const uploadDir = path.join(process.cwd(), "public/uploads/franchise", folder);
+    //   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+    //   const filePath = path.join(uploadDir, file.name);
+
+    //   const arrayBuffer = await file.arrayBuffer();
+    //   const buffer = Buffer.from(arrayBuffer);
+
+    //   fs.writeFileSync(filePath, buffer);
+
+    //   return `/uploads/franchise/${folder}/${file.name}`;
+    // };
+
+    // // Save each file
+    // const companyProfile = await saveFile(body.get("companyProfile") as File | null, "profile");
+    // const companyKyc = await saveFile(body.get("companyKyc") as File | null, "kyc");
+    // const bankDetails = await saveFile(body.get("bankDetails") as File | null, "bank");
+    // const itrDocs = await saveFile(body.get("itrDocs") as File | null, "itr");
+
+    const companyProfile ="companyProfile";
+    const companyKyc ="companyProfile";
+    const bankDetails ="companyProfile";
+    const itrDocs ="companyProfile";
+
     const last = await prisma.franchise.findFirst({
       orderBy: { code: "desc" }
     });
 
-    const lastCode = last?.code || "FC001";
-    const lastNumber = parseInt(lastCode.replace("FR-", ""), 10);
+    const lastCode = last?.code || "LI-FC-000";
+    const lastNumber = parseInt(lastCode.replace("LI-FC-", ""), 10) || 0;
     const nextNumber = lastNumber + 1;
-    const newCode = `FC${String(nextNumber).padStart(3, "0")}`;
+    const newCode = `LI-FC-${String(nextNumber).padStart(3, "0")}`;
+    
 
-=======
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
     // 🔥 Use transaction to ensure atomic inserts
     const result = await prisma.$transaction(async (tx) => {
       // 1️⃣ Create Franchise
-      const franchise = await tx.franchise.create({
-        data: {
-          name,
-<<<<<<< HEAD
+      // const franchise = await tx.franchise.create({
+      //   data: {
+      //     name,
+      //     code: newCode,
+      //     ownerName,
+      //     ownerEmail,
+      //     ownerPhone,
+      //     address,
+      //     isActive: isActive ?? true,
+      //   }
+      // });
+
+      // CREATE FRANCHISE
+    const franchise = await prisma.franchise.create({
+      data: {
+        name,
           code: newCode,
-=======
-          code,
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
           ownerName,
           ownerEmail,
           ownerPhone,
           address,
           isActive: isActive ?? true,
-        }
-      });
+          companyProfile,
+          companyKyc,
+          bankDetails,
+          itrDocs,
+        
+      },
+    });
 
       // 2️⃣ Create User linked to Franchise
       const user = await tx.user.create({
@@ -121,8 +160,27 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(result, { status: 201 });
-  } catch (err) {
-    console.log("Error creating franchise:", err);
-    return NextResponse.json({ error: String(err) }, { status: 400 });
+  } catch (err: any) {
+  console.log("Error creating franchise:", err);
+
+  // Prisma unique constraint error
+  if (err.code === "P2002") {
+    const target = err.meta?.target?.[0];
+
+    let message = "Duplicate value";
+
+    if (target === "ownerEmail" || target === "email") {
+      message = "Email already exists!";
+    } else if (target === "ownerPhone" || target === "phone") {
+      message = "Phone number already exists!";
+    } else if (target === "name" || target === "loginUserId") {
+      message = "Username is already taken!";
+    }
+
+    return NextResponse.json({ error: message }, { status: 400 });
   }
+
+  // Other errors
+  return NextResponse.json({ error: "Something went wrong!" }, { status: 500 });
+}
 }

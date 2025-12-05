@@ -54,7 +54,7 @@ export default function UserList({  }: Props) {
   };
 
   const columns = [
-    { header: "ID", accessor: "info" },
+    { header: "#", accessor: "info" },
     { header: "Login UserId", accessor: "loginUserId", className: "hidden lg:table-cell" },
     { header: "Password", accessor: "password", className: "hidden lg:table-cell" },
     { header: "Email", accessor: "email", className: "hidden lg:table-cell" },
@@ -65,9 +65,9 @@ export default function UserList({  }: Props) {
     { header: "Actions", accessor: "action" },
   ];
 
-  const renderRow = (item: User) => (
+  const renderRow = (item: User,index: number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-      <td className=" md:table-cell py-4 ">#{item.id}</td>
+      <td className=" md:table-cell py-4 ">{index + 1}</td>
       <td>{item.loginUserId}</td>
       <td>{item.password}</td>
       <td className="hidden md:table-cell">{item.email}</td>

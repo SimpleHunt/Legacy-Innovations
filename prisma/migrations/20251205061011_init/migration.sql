@@ -2,10 +2,10 @@
 CREATE TYPE "Role" AS ENUM ('SUPER_ADMIN', 'ADMIN', 'FACTORY', 'EMPLOYEE', 'FRANCHISE', 'CUSTOMER');
 
 -- CreateEnum
-CREATE TYPE "Climate" AS ENUM ('HOT', 'COLD', 'RAINY', 'NORMAL');
+CREATE TYPE "Climate" AS ENUM ('HUMID', 'COLD');
 
 -- CreateEnum
-CREATE TYPE "Terrain" AS ENUM ('FLAT', 'HILL');
+CREATE TYPE "Terrain" AS ENUM ('FLAT', 'HILL_STATION');
 
 -- CreateEnum
 CREATE TYPE "PaymentMethod" AS ENUM ('CASH', 'CARD', 'UPI', 'BANK_TRANSFER');
@@ -15,7 +15,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "password" TEXT,
     "fullName" TEXT,
-    "phone" TEXT,
+    "phone" TEXT NOT NULL,
     "role" "Role" NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,9 +34,13 @@ CREATE TABLE "Franchise" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "ownerEmail" TEXT,
+    "ownerEmail" TEXT NOT NULL,
     "ownerName" TEXT,
-    "ownerPhone" TEXT,
+    "ownerPhone" TEXT NOT NULL,
+    "companyProfile" TEXT,
+    "companyKyc" TEXT,
+    "bankDetails" TEXT,
+    "itrDocs" TEXT,
     "id" SERIAL NOT NULL,
     "createdBy" INTEGER,
 
@@ -53,6 +57,7 @@ CREATE TABLE "Customer" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "customerType" TEXT,
     "id" SERIAL NOT NULL,
+    "cusotmerCode" TEXT NOT NULL,
     "franchiseId" INTEGER,
     "createdBy" INTEGER,
     "employeeId" INTEGER,
@@ -70,6 +75,7 @@ CREATE TABLE "Product" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "size" TEXT NOT NULL,
     "id" SERIAL NOT NULL,
+    "productCode" TEXT NOT NULL,
     "createdById" INTEGER,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
@@ -80,6 +86,11 @@ CREATE TABLE "Order" (
     "orderNumber" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'PENDING',
     "expectedDeliveryDate" TIMESTAMP(3),
+    "unitPrice" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "unitPriceCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "discount" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "gstPercentage" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "gstAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "totalAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -123,10 +134,25 @@ CREATE TABLE "Payment" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_loginUserId_key" ON "User"("loginUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Franchise_code_key" ON "Franchise"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Franchise_ownerEmail_key" ON "Franchise"("ownerEmail");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Franchise_ownerPhone_key" ON "Franchise"("ownerPhone");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Customer_cusotmerCode_key" ON "Customer"("cusotmerCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Product_productCode_key" ON "Product"("productCode");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Order_orderNumber_key" ON "Order"("orderNumber");
@@ -157,6 +183,9 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_franchiseId_fkey" FOREIGN KEY ("franch
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Factory" ADD CONSTRAINT "Factory_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -8,13 +8,8 @@ import TextAreaField from "../TextAreaField";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { getSessionUser } from "@/lib/getSessionUser"; // <-- use your session function
-=======
-import TextAreaField from "../TextAreaField";
-import bcrypt from "bcryptjs";
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
 const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data?: any; onClose?: () => void }) => {
   
@@ -36,25 +31,8 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (formData) => {
-<<<<<<< HEAD
     try {
       if (!session) return toast.error("Session not found!");
-=======
-  try {
-    // 🔐 Hash the password
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
-
-    const payload = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      address: formData.address,
-      loginUserId: formData.loginUserId,
-      password: hashedPassword,
-      franchiseId: 3,
-      isActive: true,
-    };
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
 
       const payload = {
         ...formData,
@@ -82,61 +60,12 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
       <span className="text-xs text-gray-400 font-medium">Personal Information</span>
 
       <div className="flex justify-between flex-wrap gap-4">
-<<<<<<< HEAD
         <InputField label="Customer Name" name="name" defaultValue={data?.name} register={register} error={errors.name} />
         <InputField label="Email" name="email" defaultValue={data?.email} register={register} error={errors.email} />
         <InputField label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />
         <TextAreaField label="Address" name="address" defaultValue={data?.address} register={register} error={errors.address} />
         <InputField label="User Name" name="loginUserId" defaultValue={data?.loginUserId} register={register} error={errors.loginUserId} />
         <InputField label="Password" name="password" register={register} error={errors.password} />
-=======
-        <InputField
-          label="Customer Name"
-          name="name"
-          defaultValue={data?.name}
-          register={register}
-          error={errors.name}
-        />
-        <InputField
-          label="Email"
-          name="email"
-          defaultValue={data?.email}
-          register={register}
-          error={errors.email}
-        />
-        <InputField
-          label="Phone"
-          name="phone"
-          defaultValue={data?.phone}
-          register={register}
-          error={errors.phone}
-        />
-       
-        <TextAreaField
-          label="Address"
-          name="address"
-          defaultValue={data?.address}
-          register={register}
-          error={errors.address}
-        />
-
-        <InputField
-          label="User Name"
-          name="loginUserId"
-          defaultValue={data?.loginUserId}
-          register={register}
-          error={errors.loginUserId}
-        />
-        <InputField
-          label="Password"
-          name="password"
-          defaultValue={data?.password}
-          register={register}
-          error={errors.password}
-        />
-        
-        
->>>>>>> c451937a061cf7b0ae4e343925bb8a52e21132c2
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">
