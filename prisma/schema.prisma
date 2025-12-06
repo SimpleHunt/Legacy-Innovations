@@ -26,6 +26,23 @@ model User {
   ordersCreated Order[] @relation("OrderCreatedBy") // <--- ADD THIS
 }
 
+model enquiry {
+  enquiryID     Int         @id @default(autoincrement())
+  name          String
+  ownerEmail    String     @unique
+  ownerName     String?
+  ownerPhone    String     @unique
+  address       String?
+  status        Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  createdBy     Int?
+
+}
+
+
+
+
 model Franchise {
   name       String
   code       String     @unique
@@ -66,6 +83,8 @@ model Customer {
   franchise    Franchise? @relation(fields: [franchiseId], references: [id])
   orders       Order[]
 }
+
+
 
 model Product {
   name        String

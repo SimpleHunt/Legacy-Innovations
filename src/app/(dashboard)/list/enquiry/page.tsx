@@ -1,6 +1,6 @@
 import RoleWrapper from "@/components/RoleWrapper";
-import FranchiseList from "@/components/FranchiseList";
 import Footer from "@/components/footer";
+import FranchiseEnquiryList from "@/components/FranchiseEnquiryList";
 
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
   return (
@@ -9,7 +9,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
                   {/* PAGE CONTENT */}
                   <div className="flex-1">
                     <RoleWrapper allowedRoles={["SUPER_ADMIN", "ADMIN","EMPLOYEE"]}>
-                      <FranchiseList searchParams={searchParams} />
+                      <FranchiseEnquiryList searchParams={searchParams} />
                     </RoleWrapper>
                     
                   </div>

@@ -18,6 +18,7 @@ export default function DashboardClient() {
     franchise: 0,
     customers: 0,
     orders: 0,
+    enquiry: 0
   });
 
   useEffect(() => {
@@ -42,24 +43,31 @@ export default function DashboardClient() {
                 url = `${baseUrl}/api/${table}?createdBy=${user.id}`;
             }
             
-            // filter by customerId
+           
             else if (user.role === "CUSTOMER") {
-                url = `${baseUrl}/api/${table}?customerId=${user.id}&role=CUSTOMER`;
-            }
 
+              const customerRes = await fetch(
+                `${baseUrl}/api/customers/emailID?email=${user.email}`,
+                { cache: "no-store" }
+              );
+              const customer = await customerRes.json();
+              url = `${baseUrl}/api/${table}?customerId=${customer.id}&role=CUSTOMER`;
+            }
+            console.log(url)
             const res = await fetch(url, { cache: "no-store" });
             const data = await res.json();
             return data.count;
             }
 
-      const [products, franchise, customers, orders] = await Promise.all([
+      const [products, franchise, customers, orders, enquiry] = await Promise.all([
         getCount("products?&isActive=true"),
         getCount("franchise"),
         getCount("customers"),
         getCount("orders"),
+        getCount("enquiry"),
       ]);
 
-      setCounts({ products, franchise, customers, orders });
+      setCounts({ products, franchise, customers, orders, enquiry });
     };
 
     fetchCounts();
@@ -89,9 +97,23 @@ export default function DashboardClient() {
         {user.role !== "FRANCHISE" &&
           user.role !== "FACTORY" &&
           user.role !== "CUSTOMER" &&
-          user.role !== "EMPLOYEE" && (
+          (
             <UserCard type="Franchise" data={{ count: counts.franchise }} />
+              
+            
           )}
+          
+          {user.role !== "FRANCHISE" &&
+          user.role !== "FACTORY" &&
+          user.role !== "CUSTOMER" &&
+          (
+            <UserCard type="enquiry" data={{ count: counts.enquiry }} />
+              
+            
+          )}
+           
+         
+          
       </div>
 
       {isAdmin && (

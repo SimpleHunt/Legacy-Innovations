@@ -134,6 +134,19 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id'
 };
 
+exports.Prisma.EnquiryScalarFieldEnum = {
+  enquiryID: 'enquiryID',
+  name: 'name',
+  ownerEmail: 'ownerEmail',
+  ownerName: 'ownerName',
+  ownerPhone: 'ownerPhone',
+  address: 'address',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy'
+};
+
 exports.Prisma.FranchiseScalarFieldEnum = {
   name: 'name',
   code: 'code',
@@ -255,6 +268,7 @@ exports.Terrain = exports.$Enums.Terrain = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  enquiry: 'enquiry',
   Franchise: 'Franchise',
   Customer: 'Customer',
   Product: 'Product',

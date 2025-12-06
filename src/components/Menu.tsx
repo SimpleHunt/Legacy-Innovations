@@ -25,13 +25,13 @@ const menuItems = [
         icon: "/franchise.png",
         label: "Franchise",
         href: "/list/franchise",
-        visible: ["SUPER_ADMIN","ADMIN"],
+        visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE"],
       },
       {
-        icon: "/order.png",
-        label: "Order Details",
-        href: "/list/order",
-        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+        icon: "/franchise.png",
+        label: "Franchise Enquiry",
+        href: "/list/enquiry",
+        visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE"],
       },
       {
         icon: "/customer.png",
@@ -39,6 +39,14 @@ const menuItems = [
         href: "/list/customer",
         visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE","FRANCHISE"],
       },
+      
+      {
+        icon: "/order.png",
+        label: "Order Details",
+        href: "/list/order",
+        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+      },
+      
       {
         icon: "/customer.png",
         label: "User Details",

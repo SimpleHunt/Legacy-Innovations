@@ -137,6 +137,9 @@ export async function GET(req: NextRequest) {
         orderBy: { [sortBy]: sortOrder },
         take,
         skip: take * (page - 1),
+        include: {
+          employee: true,   // 🔥 GET USER TABLE DATA ALSO
+        },
       }),
       prisma.customer.count({ where }),
     ]);

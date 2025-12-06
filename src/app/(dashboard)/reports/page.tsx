@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import TableSearch from "@/components/TableSearch";
 import Pagination from "@/components/Pagination";
+import { useEffect, useState } from "react";
+import { getSessionUser } from "@/lib/getSessionUser";
+import axios from "axios";
 
 const columns = [
   { header: "Sr.No", accessor: "id" },
@@ -20,6 +22,40 @@ export default function ProductReportPage() {
   const [reportData, setReportData] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
+
+
+  const [session, setSession] = useState<any>(null);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [franchise, setFranchise] = useState<any[]>([]);
+
+  // 🔹 Load Customers + Products
+    useEffect(() => {
+      const loadCustomers = async () => {
+        try {
+          const user = getSessionUser();
+          const createdBy = user?.id;
+  
+          
+  
+          const customerRes = await axios.get(`/api/customers`);
+          const franchiseRes = await axios.get(`/api/franchise`);
+          const productRes = await axios.get("/api/products?isActive=true");
+  
+          //console.log(customerRes.data.customers)
+  
+          setCustomers(customerRes.data.customers ?? []);
+          setProducts(productRes.data.products ?? []);
+          setFranchise(franchiseRes.data.franchise ?? []);
+        } catch (error) {
+          console.log(error);
+          setCustomers([]);
+          setProducts([]);
+          setFranchise([]);
+        }
+      };
+      loadCustomers();
+    }, []);
 
   const renderRow = (item: any, index: number) => (
     <tr
@@ -135,16 +171,26 @@ export default function ProductReportPage() {
                 <span className="text-xs font-medium text-slate-600">
                   Product
                 </span>
-                <select className="text-xs border border-slate-300 rounded-md px-2 py-1 bg-white">
-                  <option>Please Select</option>
+                <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                  
+                >
+                  <option value="">Select Product</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">
                   Franchise
                 </span>
-                <select className="text-xs border border-slate-300 rounded-md px-2 py-1 bg-white">
-                  <option>Please Select</option>
+                <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                  
+                >
+                  <option value="">Select Franchise</option>
+                  {franchise.map((p) => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-center gap-2">
@@ -168,10 +214,13 @@ export default function ProductReportPage() {
                 <span className="text-xs font-medium text-slate-600">
                   Customer
                 </span>
-                <select className="text-xs border border-slate-300 rounded-md px-2 py-1 bg-white">
-                  <option>All items</option>
-                  <option>Customer 1</option>
-                  <option>Customer 2</option>
+                <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                  
+                >
+                  <option value="">Select Customer</option>
+                  {customers.map((c) => (
+                    <option key={c.id} value={c.id}>{c.name} / {c.cusotmerCode}</option>
+                  ))}
                 </select>
               </div>
             </div>

@@ -120,7 +120,7 @@ const UserForm = ({
             <option value="SUPER_ADMIN">SUPER_ADMIN</option>
             <option value="ADMIN">ADMIN</option>
             <option value="FACTORY">FACTORY</option>
-            <option value="EMPLOYEE">EMPLOYEE</option> 
+            <option value="EMPLOYEE">INSIDESALES</option> 
             <option value="FRANCHISE">FRANCHISE</option> 
             <option value="CUSTOMER">CUSTOMER</option>               
           </select>

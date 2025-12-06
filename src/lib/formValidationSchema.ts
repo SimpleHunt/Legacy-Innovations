@@ -41,6 +41,21 @@ export const franchiseSchema = z.object({
 
 export type FranchiseSchema = z.infer<typeof franchiseSchema>;
 
+export const enquirySchema = z.object({
+  franchiseName: z.string().min(1, { message: "Frachise is required!" }),
+  ownerName: z.string().min(1, { message: "Owner Name is required!" }),
+  email: z.string().email({ message: "Invalid email address!" }),  
+  phone: z
+    .string()
+    .min(10, { message: "Phone must be 10 digits" })
+    .max(10, { message: "Phone must be 10 digits" })
+    .regex(/^[0-9]{10}$/, { message: "Phone must contain only numbers" }),
+  address: z.string().min(1, { message: "Address is required!" }),
+  //status:z.string().min(1, { message: "Frachise is required!" }),
+});
+
+export type EnquirySchema = z.infer<typeof enquirySchema>;
+
 
 export const customerSchema = z.object({
   name: z.string().min(1, { message: "Customer Name is required!" }),

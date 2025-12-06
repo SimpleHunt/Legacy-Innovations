@@ -42,8 +42,12 @@ const OrderForm = ({
         const user = getSessionUser();
         const createdBy = user?.id;
 
+        
+
         const customerRes = await axios.get(`/api/customers?createdBy=${createdBy}`);
         const productRes = await axios.get("/api/products?isActive=true");
+
+        console.log(customerRes.data.customers)
 
         setCustomers(customerRes.data.customers ?? []);
         setProducts(productRes.data.products ?? []);
@@ -114,20 +118,26 @@ const OrderForm = ({
         franchiseId: session.role === "FRANCHISE" ? Number(session.franchiseId) : null,
       };
 
+      const user = getSessionUser();
+      //const createdBy = user?.id;
+      console.log('sdaf');
+      console.log(user);
+      console.log("test");
+      console.log(session)
       console.log("PAYLOAD:", payload);
 
-      if (type === "create") {
-        await axios.post("/api/orders", payload);
-        toast.success("Order created successfully!");
-      } else {
-        await axios.put(`/api/orders/${data.id}`, payload);
-        toast.success("Order updated successfully!");
-      }
+      // if (type === "create") {
+      //   await axios.post("/api/orders", payload);
+      //   toast.success("Order created successfully!");
+      // } else {
+      //   await axios.put(`/api/orders/${data.id}`, payload);
+      //   toast.success("Order updated successfully!");
+      // }
 
-      router.refresh();
+      //router.refresh();
 
       // Close modal
-      onClose?.();
+      //onClose?.();
 
     } catch (error: any) {
       toast.error(error?.response?.data?.error || "Something went wrong");
