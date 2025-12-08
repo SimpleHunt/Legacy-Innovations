@@ -61,36 +61,81 @@ const FranchiseForm = ({
 }, [type, setValue]);
 
 
-  const onSubmit = handleSubmit(async (formData) => {
+//   const onSubmit = handleSubmit(async (formData) => {
+//   try {
+//     // 🔐 Hash the password
+//     const hashedPassword = await bcrypt.hash(formData.password, 10);
+
+//     const payload = {
+//       name: formData.franchiseName,
+//       code: formData.code,
+//       ownerName: formData.ownerName,
+//       ownerEmail: formData.email,
+//       ownerPhone: formData.phone,
+//       address: formData.address,
+//       loginUserId: formData.loginUserId,
+//       password: hashedPassword,
+      
+//       isActive: true,
+//     };
+
+//     //console.log("PAYLOAD:", payload);
+
+//     const res = await axios.post("/api/franchise", payload);
+
+//     toast.success("Franchise created successfully!");
+//     router.refresh();
+//     onClose?.();  
+
+//   } catch (error: any) {
+//     toast.error(error?.response?.data?.error || "Something went wrong");
+//   }
+// });
+
+const onSubmit = handleSubmit(async (formData) => {
   try {
-    // 🔐 Hash the password
     const hashedPassword = await bcrypt.hash(formData.password, 10);
 
-    const payload = {
-      name: formData.franchiseName,
-      code: formData.code,
-      ownerName: formData.ownerName,
-      ownerEmail: formData.email,
-      ownerPhone: formData.phone,
-      address: formData.address,
-      loginUserId: formData.loginUserId,
-      password: hashedPassword,
-      
-      isActive: true,
-    };
+    const fd = new FormData();
 
-    //console.log("PAYLOAD:", payload);
+    fd.append("name", formData.franchiseName);
+    fd.append("code", formData.code);
+    fd.append("ownerName", formData.ownerName);
+    fd.append("ownerEmail", formData.email);
+    fd.append("ownerPhone", formData.phone);
+    fd.append("address", formData.address);
+    fd.append("loginUserId", formData.loginUserId);
+    fd.append("password", hashedPassword);
+    fd.append("isActive", "true");
 
-    const res = await axios.post("/api/franchise", payload);
+    // Attach Files (if selected)
+    if (formData.companyProfile?.[0]) {
+      fd.append("companyProfile", formData.companyProfile[0]);
+    }
+    if (formData.companyKyc?.[0]) {
+      fd.append("companyKyc", formData.companyKyc[0]);
+    }
+    if (formData.bankDetails?.[0]) {
+      fd.append("bankDetails", formData.bankDetails[0]);
+    }
+    if (formData.itrDocs?.[0]) {
+      fd.append("itrDocs", formData.itrDocs[0]);
+    }
+
+    const res = await axios.post("/api/franchise", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
     toast.success("Franchise created successfully!");
     router.refresh();
-    onClose?.();  
-
+    onClose?.();
   } catch (error: any) {
     toast.error(error?.response?.data?.error || "Something went wrong");
   }
 });
+
+
+
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">Create a new Franchise</h1>
@@ -169,7 +214,7 @@ const FranchiseForm = ({
             <Image src="/upload.png" alt="" width={28} height={28} />
             <span>Upload Company Profile </span>
           </label>
-          <input type="file" id="companyProfile" {...register("companyProfile")} className="hidden" />
+          <input type="file" id="companyProfile" accept="application/pdf" {...register("companyProfile")} className="hidden" />
           {errors.companyProfile?.message && (
             <p className="text-xs text-red-400">
               {errors.companyProfile.message.toString()}
@@ -184,7 +229,7 @@ const FranchiseForm = ({
             <Image src="/upload.png" alt="" width={28} height={28} />
             <span>Upload Company KYC </span>
           </label>
-          <input type="file" id="companyKyc" {...register("companyKyc")} className="hidden" />
+          <input type="file" id="companyKyc" accept="application/pdf" {...register("companyKyc")} className="hidden" />
           {errors.companyKyc?.message && (
             <p className="text-xs text-red-400">
               {errors.companyKyc.message.toString()}
@@ -199,7 +244,7 @@ const FranchiseForm = ({
             <Image src="/upload.png" alt="" width={28} height={28} />
             <span>Upload Bank Account Details  </span>
           </label>
-          <input type="file" id="bankDetails" {...register("bankDetails")} className="hidden" />
+          <input type="file" id="bankDetails" accept="application/pdf" {...register("bankDetails")} className="hidden" />
           {errors.bankDetails?.message && (
             <p className="text-xs text-red-400">
               {errors.bankDetails.message.toString()}
@@ -214,7 +259,7 @@ const FranchiseForm = ({
             <Image src="/upload.png" alt="" width={28} height={28} />
             <span>Upload  ITR or Balnce Sheet last 3 Years</span>
           </label>
-          <input type="file" id="itrDocs" {...register("itrDocs")} className="hidden" />
+          <input type="file" id="itrDocs" accept="application/pdf" {...register("itrDocs")} className="hidden" />
           {errors.itrDocs?.message && (
             <p className="text-xs text-red-400">
               {errors.itrDocs.message.toString()}

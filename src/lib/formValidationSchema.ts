@@ -32,10 +32,38 @@ export const franchiseSchema = z.object({
   loginUserId: z.string().min(1, { message: "Username is required!" }),
   password: z.string().min(1, { message: "Password is required!" }),
   // img: z.instanceof(File, { message: "Image is required" }),
-  // companyProfile: z.any().optional(),
-  // companyKyc: z.any().optional(),
-  // bankDetails: z.any().optional(),
-  // itrDocs: z.any().optional(),
+  companyProfile: z
+  .any()
+  .refine((file) => file && file.length > 0, {
+    message: "Company Profile document is required",
+  })
+  .refine((file) => file?.[0]?.type === "application/pdf", {
+    message: "Only PDF files are allowed",
+  }),
+  companyKyc: z
+  .any()
+  .refine((file) => file && file.length > 0, {
+    message: "Company KYC document is required",
+  })
+  .refine((file) => file?.[0]?.type === "application/pdf", {
+    message: "Only PDF files are allowed",
+  }),
+  bankDetails: z
+  .any()
+  .refine((file) => file && file.length > 0, {
+    message: "Bank details document is required",
+  })
+  .refine((file) => file?.[0]?.type === "application/pdf", {
+    message: "Only PDF files are allowed",
+  }),
+  itrDocs: z
+  .any()
+  .refine((file) => file && file.length > 0, {
+    message: "ITR document is required",
+  })
+  .refine((file) => file?.[0]?.type === "application/pdf", {
+    message: "Only PDF files are allowed",
+  }),
 
 });
 
@@ -151,3 +179,9 @@ export const userSchema = z.object({
 });
 
 export type UserSchema = z.infer<typeof userSchema>;
+
+const pdfValidation = z
+  .any()
+  .refine((file) => !file || file.length === 0 || file[0].type === "application/pdf", {
+    message: "Only PDF files are allowed",
+  });

@@ -3,11 +3,6 @@ import prisma from "@/lib/db";
 import fs from "fs";
 import path from "path";
 
-
-
-import { writeFile } from "fs/promises";
-
-
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -60,11 +55,49 @@ export async function GET(req: Request) {
 }
 
 
-
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const form = await req.formData();
+    const body = await req.json();
+    
+
+    const {
+      name,
+      ownerName,
+      ownerEmail,
+      ownerPhone,
+      address,
+      loginUserId,
+      password,
+      isActive
+    } = body;
+
+    // // FILE HANDLING FUNCTION
+    // const saveFile = async (file: File | null, folder: string) => {
+    //   if (!file) return null;
+
+    //   const uploadDir = path.join(process.cwd(), "public/uploads/franchise", folder);
+    //   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+    //   const filePath = path.join(uploadDir, file.name);
+
+    //   const arrayBuffer = await file.arrayBuffer();
+    //   const buffer = Buffer.from(arrayBuffer);
+
+    //   fs.writeFileSync(filePath, buffer);
+
+    //   return `/uploads/franchise/${folder}/${file.name}`;
+    // };
+
+    // // Save each file
+    // const companyProfile = await saveFile(body.get("companyProfile") as File | null, "profile");
+    // const companyKyc = await saveFile(body.get("companyKyc") as File | null, "kyc");
+    // const bankDetails = await saveFile(body.get("bankDetails") as File | null, "bank");
+    // const itrDocs = await saveFile(body.get("itrDocs") as File | null, "itr");
+
+    const companyProfile ="companyProfile";
+    const companyKyc ="companyProfile";
+    const bankDetails ="companyProfile";
+    const itrDocs ="companyProfile";
 
     const last = await prisma.franchise.findFirst({
       orderBy: { code: "desc" }
@@ -74,43 +107,25 @@ export async function POST(req: Request) {
     const lastNumber = parseInt(lastCode.replace("LI-FC-", ""), 10) || 0;
     const nextNumber = lastNumber + 1;
     const newCode = `LI-FC-${String(nextNumber).padStart(3, "0")}`;
+    
 
-    const name = form.get("name") as string;
-    const code = newCode;
-    const ownerName = form.get("ownerName") as string;
-    const ownerEmail = form.get("ownerEmail") as string;
-    const ownerPhone = form.get("ownerPhone") as string;
-    const address = form.get("address") as string;
-    const loginUserId = form.get("loginUserId") as string;
-    const password = form.get("password") as string;
-
-    // File saving helper
-    async function saveFile(file: File | null, folder: string) {
-      if (!file) return null;
-
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const uploadDir = path.join(process.cwd(), "public/uploads/franchise", folder);
-
-      const filename = `${Date.now()}-${file.name.replace(/\s/g, "")}`;
-
-      const filePath = path.join(uploadDir, filename);
-
-      await writeFile(filePath, buffer);
-
-      return `/uploads/franchise/${folder}/${filename}`;
-    }
-
-    // Save files to correct folders
-    const companyProfile = await saveFile(form.get("companyProfile") as unknown as File, "profile");
-    const companyKyc = await saveFile(form.get("companyKyc") as unknown as File, "kyc");
-    const bankDetails = await saveFile(form.get("bankDetails") as unknown as File, "bank");
-    const itrDocs = await saveFile(form.get("itrDocs") as unknown as File, "itr");
-
+    // 🔥 Use transaction to ensure atomic inserts
     const result = await prisma.$transaction(async (tx) => {
+      // 1️⃣ Create Franchise
+      // const franchise = await tx.franchise.create({
+      //   data: {
+      //     name,
+      //     code: newCode,
+      //     ownerName,
+      //     ownerEmail,
+      //     ownerPhone,
+      //     address,
+      //     isActive: isActive ?? true,
+      //   }
+      // });
 
-      const franchise = await prisma.franchise.create({
+      // CREATE FRANCHISE
+    const franchise = await prisma.franchise.create({
       data: {
         name,
           code: newCode,
@@ -118,7 +133,7 @@ export async function POST(req: Request) {
           ownerEmail,
           ownerPhone,
           address,
-          isActive: true,
+          isActive: isActive ?? true,
           companyProfile,
           companyKyc,
           bankDetails,
@@ -126,6 +141,7 @@ export async function POST(req: Request) {
         
       },
     });
+
       // 2️⃣ Create User linked to Franchise
       const user = await tx.user.create({
         data: {
@@ -140,11 +156,9 @@ export async function POST(req: Request) {
         }
       });
 
-
       return { franchise, user };
     });
 
-   
     return NextResponse.json(result, { status: 201 });
   } catch (err: any) {
   console.log("Error creating franchise:", err);

@@ -63,8 +63,10 @@ export default function FranchiseList({  }: Props) {
     { header: "Email", accessor: "email", className: "hidden lg:table-cell" },
     { header: "Address", accessor: "address", className: "hidden lg:table-cell" },
     { header: "IsActive", accessor: "isActive", className: "hidden md:table-cell" },
+    { header: "Documents", accessor: "documents", className: "hidden lg:table-cell" },
     { header: "Actions", accessor: "action" },
   ];
+  
 
   const renderRow = (item: Franchise,index: number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
@@ -84,6 +86,34 @@ export default function FranchiseList({  }: Props) {
           <span className="px-3 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Inactive</span>
         )}
       </td>
+      {/* 👇 NEW DOCUMENT DOWNLOAD CELL */}
+    <td className="hidden md:table-cell space-y-2">
+      {item.companyProfile && (
+        <a href={item.companyProfile} download className="text-blue-600 underline text-xs block">
+          Company Profile
+        </a>
+      )}
+      {item.companyKyc && (
+        <a href={item.companyKyc} download className="text-blue-600 underline text-xs block">
+          Company KYC
+        </a>
+      )}
+      {item.bankDetails && (
+        <a href={item.bankDetails} download className="text-blue-600 underline text-xs block">
+          Bank Details
+        </a>
+      )}
+      {item.itrDocs && (
+        <a href={item.itrDocs} download className="text-blue-600 underline text-xs block">
+          ITR Docs
+        </a>
+      )}
+
+      {!item.companyProfile && !item.companyKyc && !item.bankDetails && !item.itrDocs && (
+        <span className="text-gray-400 text-xs">No Documents</span>
+      )}
+    </td>
+
       <td>
         {["SUPER_ADMIN", "ADMIN"].includes(role) && item.isActive && (
           <FormModal table="franchise" type="delete" id={item.id} />
@@ -92,7 +122,11 @@ export default function FranchiseList({  }: Props) {
     </tr>
   );
 
+  
+  
+
   return (
+    
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       <div className="flex items-center justify-between">
         <h1 className="hidden md:block text-lg font-semibold">Franchise List</h1>

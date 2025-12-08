@@ -152,7 +152,7 @@ const ProfilePage = () => {
             </Link> */}
           </div>
         </div>
-        <Performance />
+        {/* <Performance /> */}
         {/* <Announcements /> */}
       </div>
     </div>
