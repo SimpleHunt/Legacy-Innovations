@@ -82,10 +82,28 @@ export default function OrderList() {
       return;
     }
 
+      // 👉 DEFECT - REPLACEMENT
+    if (newStatus === "Defect - Replacement") {
+      // FACTORY → show StartedModal (ask expected date)
+      if (role === "FACTORY") {
+        setEditData({ ...order, newStatus, isDefect: true });
+        setShowStartedModal(true);
+        return;
+      }
+
+      // EMPLOYEE + FRANCHISE → no date → use GeneralModal
+      if (role === "EMPLOYEE" || role === "FRANCHISE") {
+        setEditData({ ...order, newStatus, isDefect: true });
+        setShowGeneralModal(true);
+        return;
+      }
+    }
+
     // Other statuses → Simple confirm modal
     setEditData({ ...order, newStatus });
     setShowGeneralModal(true);
   };
+
 
   const columns = [
     { header: "#ID", accessor: "info" },
@@ -104,9 +122,9 @@ export default function OrderList() {
     { header: "Total Amount", accessor: "totalAmount", className: "hidden lg:table-cell" },
     { header: "Status", accessor: "status", className: "hidden lg:table-cell" },
 
-    ...(role === "FACTORY"
-      ? [{ header: "Action", accessor: "action", className: "hidden lg:table-cell" }]
-      : []),
+    
+      { header: "Action", accessor: "action", className: "hidden lg:table-cell" }
+     
   ];
 
   const renderRow = (item: Order, index : number) => (
@@ -144,22 +162,34 @@ export default function OrderList() {
         </span>
       </td>
 
-      {role === "FACTORY" && (
-        <td className="py-4">
-          <select
-            className="border p-2 rounded-md text-sm"
-            defaultValue=""
-            onChange={(e) => handleStatusChange(item, e.target.value)}
-          >
-            <option value="">Select Status</option>
-            <option value="Started">Started</option>
-            <option value="Interior Phase">Interior Phase</option>
-            <option value="Completed">Completed</option>
-            <option value="Out For Delivery">Out For Delivery</option>
+      <td className="py-4">
+        <select
+          className="border p-2 rounded-md text-sm"
+          defaultValue=""
+          onChange={(e) => handleStatusChange(item, e.target.value)}
+        >
+          <option value="">Select Status</option>
+
+          {/* FACTORY → All statuses EXCEPT Defect */}
+          {role === "FACTORY" && (
+            <>
+              <option value="Started">Started</option>
+              <option value="Interior Phase">Interior Phase</option>
+              <option value="Completed">Completed</option>
+              <option value="Out For Delivery">Out For Delivery</option>
+              <option value="Defect - Replacement">Defect - Replacement</option>
+              
+            </>
+          )}
+
+          {/* EMPLOYEE + FRANCHISE → ONLY Defect */}
+          {["EMPLOYEE", "FRANCHISE"].includes(role) && (
             <option value="Defect - Replacement">Defect - Replacement</option>
-          </select>
-        </td>
-      )}
+          )}
+        </select>
+      </td>
+
+      
     </tr>
   );
 

@@ -5,16 +5,39 @@ import React, { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+
+const images = [
+  "/dd.png",
+  "/hh.png",
+  "/kk.png",
+  "/loginimage.png",
+];
+
 const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+   const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
 
+ useEffect(() => {
+  const interval = setInterval(() => {
+    setFade(false); // start fade-out
+
+    setTimeout(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+      setFade(true); // fade-in new image
+    }, 300);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
   const router = useRouter(); 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
 
     const formData = new FormData(e.currentTarget);
 
@@ -59,8 +82,9 @@ const Login = () => {
 
 
   return (
-    <div className="h-screen w-full flex flex-col md:flex-row bg-[#144E76] items-center justify-center p-4">
+    <div className="h-screen w-full flex flex-row bg-[#144E76] ">
       {/* LOGIN CARD */}
+      <div className="flex flex-col w-1/2  justify-center items-center bg-[#144E76]">
       <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
         {/* LOGO CENTERED */}
         <div className="flex justify-center mb-6">
@@ -131,16 +155,13 @@ const Login = () => {
               />
         </div>
       </div>
-
+       </div>
       {/* RIGHT-SIDE IMAGE */}
-      <div className="hidden md:block md:w-[50%] h-full relative ml-10">
-        <Image
-          src="/loginimage.png"
-          alt="Login Background"
-          fill
-          priority
-          quality={100}
-          className="object-cover rounded-xl shadow-lg"
+      <div className="hidden w-1/2 md:block md:w-[50%] h-full relative ml-10">
+        <img
+          src={images[index]}
+          alt="Capsules Images"
+          className= {`w-full h-full object-cover transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}
         />
       </div>
     </div>

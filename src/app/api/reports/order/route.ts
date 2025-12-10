@@ -1,55 +1,74 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
     const page = Number(searchParams.get("page")) || 1;
-    const take = 10; // fixed or can make dynamic
+    const take = Number(searchParams.get("take")) || 10;
+    const skip = (page - 1) * take;
+
+    const productId = searchParams.get("productId");
+    const franchiseId = searchParams.get("franchiseId");
+    const employeeId = searchParams.get("employeeId");
+    const customerId = searchParams.get("customerId");
+    const status = searchParams.get("status");
+
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
 
-    if (!startDate || !endDate) {
-      return NextResponse.json({ error: "Start and end dates required" }, { status: 400 });
+    const where: any = {};
+
+    if (productId) where.productId = Number(productId);
+    if (franchiseId) where.franchiseId = Number(franchiseId);
+    if (employeeId) where.employeeId = Number(employeeId);
+    if (customerId) where.customerId = Number(customerId);
+    if (status) where.status = status;
+
+    if (startDate || endDate) {
+      where.createdAt = {};
+      if (startDate) where.createdAt.gte = new Date(startDate);
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        where.createdAt.lte = end;
+      }
     }
 
-    const where: any = {
-      createdAt: {
-        gte: new Date(startDate),
-        lte: new Date(endDate),
+    
+
+    const data = await prisma.order.findMany({
+      where,
+      skip,
+      take,
+      include: {
+        product: true,
+        customer: true,
+        franchise: true,
       },
-    };
+      orderBy: { id: "desc" },
+    });
 
-    const [orders, count] = await prisma.$transaction([
-      prisma.order.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: take * (page - 1),
-        take,
-        include: {
-          customer: true,
-          franchise: true,
-          product: true,
-          employee: true,
-        },
-      }),
-      prisma.order.count({ where }),
-    ]);
+    const count = await prisma.order.count({ where });
 
-    // map orders to frontend format
-    const reports = orders.map((o) => ({
+    const formatted = data.map((o) => ({
       id: o.id,
-      customerName: o.customer?.name || "N/A",
-      franchiseName: o.franchise?.name || "N/A",
-      productName: o.product?.name || "N/A",
+      name: o.customer?.name ?? "-",
+      productName: o.product?.name ?? "-",
+      orderNumber: o.orderNumber,
       totalAmount: o.totalAmount,
-      createdAt: o.createdAt,
+      createdAt: o.createdAt ? o.createdAt.toISOString() : null,
     }));
 
-    return NextResponse.json({ reports, count });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({
+      data: formatted,
+      count,
+      page,
+      take,
+    });
+  } catch (error) {
+    console.error("report orders API error", error);
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

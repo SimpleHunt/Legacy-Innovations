@@ -44,16 +44,24 @@ export async function PUT(
 
     const updateData: any = {};
 
-    
-    // DATE
+   
     if (body.expectedDeliveryDate) {
       updateData.expectedDeliveryDate = new Date(body.expectedDeliveryDate);
     }
 
-    // STATUS
-    if (body.status) updateData.status = body.status;
+   
+    if (body.defectedStatus !== undefined) {
+      updateData.defectedStatus = Number(body.defectedStatus);
+    }
 
-    // AUDITS
+    if (body.defExpectedDate) {
+      updateData.defExpectedDate = new Date(body.defExpectedDate);
+    }
+
+    if (body.status) {
+      updateData.status = body.status;
+    }
+
     if (body.employeeId) updateData.employeeId = Number(body.employeeId);
     if (body.franchiseId) updateData.franchiseId = Number(body.franchiseId);
 
@@ -65,6 +73,7 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedOrder, { status: 200 });
+
   } catch (err: any) {
     console.error("❌ ORDER UPDATE ERROR:", err);
 
@@ -77,7 +86,7 @@ export async function PUT(
     );
   }
 }
-// If you want DELETE (hard) — uncomment below. Usually orders are kept for records.
+
 
 
 export async function DELETE(_req: NextRequest, context: { params: Promise<{ id: string }> }) {

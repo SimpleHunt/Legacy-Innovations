@@ -39,28 +39,6 @@ model enquiry {
   createdBy  Int?
 }
 
-// model User {
-//   id           Int           @id @default(autoincrement())
-//   email        String?       @unique
-//   password     String?
-//   fullName     String?
-//   phone        String        @unique
-//   role         Role
-//   isActive     Boolean       @default(true)
-//   createdAt    DateTime      @default(now())
-//   updatedAt    DateTime      @updatedAt
-//   loginUserId  String?       @unique
-
-//   customers    Customer[]
-//   franchises   Franchise[]
-//   ordersPlaced Order[]       @relation("UserOrdersPlaced")
-//   products     Product[]
-//   ordersCreated Order[]      @relation("OrderCreatedBy")
-
-//   // 👇 BACK RELATION
-//   customersCreated Customer[] @relation("CustomerCreatedBy")
-// }
-
 model Franchise {
   name       String
   code       String   @unique
@@ -102,30 +80,6 @@ model Customer {
   orders       Order[]
 }
 
-// model Customer {
-//   id           Int        @id @default(autoincrement())
-//   name         String
-//   email        String?
-//   phone        String?
-//   address      String?
-//   createdAt    DateTime   @default(now())
-//   updatedAt    DateTime   @updatedAt
-//   customerType String?
-//   cusotmerCode String     @unique
-
-//   franchiseId  Int?
-//   employeeId   Int?
-//   createdBy    Int?      // THIS is your userId  
-
-//   employee     User?      @relation(fields: [employeeId], references: [id])
-//   franchise    Franchise? @relation(fields: [franchiseId], references: [id])
-
-//   // 👇 ADD THIS RELATION
-//   createdByUser User? @relation("CustomerCreatedBy", fields: [createdBy], references: [id])
-
-//   orders       Order[]
-// }
-
 model Product {
   name        String
   price       Float
@@ -142,30 +96,34 @@ model Product {
 }
 
 model Order {
-  orderNumber          String     @unique
-  status               String     @default("PENDING")
+  orderNumber          String    @unique
+  status               String    @default("PENDING")
   expectedDeliveryDate DateTime?
-  unitPrice            Float      @default(0)
-  unitPriceCost        Float      @default(0)
-  discount             Float      @default(0)
-  gstPercentage        Float      @default(0)
-  gstAmount            Float      @default(0)
-  totalAmount          Float      @default(0)
-  createdAt            DateTime   @default(now())
-  updatedAt            DateTime   @updatedAt
-  climate              Climate
-  employeeId           Int?
-  createdBy            Int? // <--- field
-  productId            Int
-  terrain              Terrain
-  id                   Int        @id @default(autoincrement())
-  franchiseId          Int?
-  customerId           Int?
-  factory              Factory?
-  customer             Customer?  @relation(fields: [customerId], references: [id])
-  employee             User?      @relation("UserOrdersPlaced", fields: [employeeId], references: [id])
-  franchise            Franchise? @relation(fields: [franchiseId], references: [id])
-  product              Product    @relation(fields: [productId], references: [id])
+  defectedStatus       Int
+  defExpectedDate      DateTime?
+  unitPrice            Float     @default(0)
+  unitPriceCost        Float     @default(0)
+  discount             Float     @default(0)
+  gstPercentage        Float     @default(0)
+  gstAmount            Float     @default(0)
+
+  totalAmount Float    @default(0)
+  createdAt   DateTime @default(now())
+
+  updatedAt   DateTime   @updatedAt
+  climate     Climate
+  employeeId  Int?
+  createdBy   Int? // <--- field
+  productId   Int
+  terrain     Terrain
+  id          Int        @id @default(autoincrement())
+  franchiseId Int?
+  customerId  Int?
+  factory     Factory?
+  customer    Customer?  @relation(fields: [customerId], references: [id])
+  employee    User?      @relation("UserOrdersPlaced", fields: [employeeId], references: [id])
+  franchise   Franchise? @relation(fields: [franchiseId], references: [id])
+  product     Product    @relation(fields: [productId], references: [id])
 
   // ✅ ADD THIS RELATION
   createdByUser User? @relation("OrderCreatedBy", fields: [createdBy], references: [id])

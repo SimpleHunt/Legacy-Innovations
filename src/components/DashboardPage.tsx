@@ -150,7 +150,7 @@ export default function DashboardClient() {
             {user.role !== "FRANCHISE" &&
               user.role !== "FACTORY" &&
               user.role !== "CUSTOMER" && (
-                <UserCard type="Enquiry" data={{ count: counts.enquiry }} />
+                <UserCard type="Franchise Enquiry" data={{ count: counts.enquiry }} />
               )}
 
             {/* ------------ ORDER STATUS GRID ------------ */}

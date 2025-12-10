@@ -197,6 +197,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   orderNumber: 'orderNumber',
   status: 'status',
   expectedDeliveryDate: 'expectedDeliveryDate',
+  defectedStatus: 'defectedStatus',
+  defExpectedDate: 'defExpectedDate',
   unitPrice: 'unitPrice',
   unitPriceCost: 'unitPriceCost',
   discount: 'discount',

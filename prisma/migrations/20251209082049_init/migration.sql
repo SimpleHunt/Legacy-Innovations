@@ -27,6 +27,22 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "enquiry" (
+    "enquiryID" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "ownerEmail" TEXT NOT NULL,
+    "ownerName" TEXT,
+    "ownerPhone" TEXT NOT NULL,
+    "address" TEXT,
+    "status" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdBy" INTEGER,
+
+    CONSTRAINT "enquiry_pkey" PRIMARY KEY ("enquiryID")
+);
+
+-- CreateTable
 CREATE TABLE "Franchise" (
     "name" TEXT NOT NULL,
     "code" TEXT NOT NULL,
@@ -86,6 +102,8 @@ CREATE TABLE "Order" (
     "orderNumber" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'PENDING',
     "expectedDeliveryDate" TIMESTAMP(3),
+    "defectedStatus" INTEGER NOT NULL,
+    "defExpectedDate" TIMESTAMP(3),
     "unitPrice" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "unitPriceCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "discount" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -138,6 +156,12 @@ CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_loginUserId_key" ON "User"("loginUserId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "enquiry_ownerEmail_key" ON "enquiry"("ownerEmail");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "enquiry_ownerPhone_key" ON "enquiry"("ownerPhone");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Franchise_code_key" ON "Franchise"("code");

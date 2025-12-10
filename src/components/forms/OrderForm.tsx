@@ -112,6 +112,7 @@ const OrderForm = ({
         gstPercentage: Number(formData.gstPercent),
         gstAmount: Number(formData.gstAmountValue),
         totalAmount: Number(formData.totalAmount),
+        defectedStatus: 0,
 
         createdBy: Number(session.id),
         employeeId: session.role === "EMPLOYEE" ? Number(session.id) : null,
