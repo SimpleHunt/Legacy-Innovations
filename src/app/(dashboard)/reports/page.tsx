@@ -167,8 +167,8 @@ const loadFilteredSummary = async () => {
                   { label: "Total Orders", value: summary.totalOrders },
                   { label: "Product", value: summary.totalProducts },
                   { label: "Customer", value: summary.totalCustomers },
-                  { label: "Franchise", value: summary.totalFranchise },
-                  { label: "Inside Sales", value: summary.totalInsideSales },
+                  // { label: "Franchise", value: summary.totalFranchise },
+                  // { label: "Inside Sales", value: summary.totalInsideSales },
                 ].map((card) => (
                   <div
                     key={card.label}
@@ -237,22 +237,22 @@ const loadFilteredSummary = async () => {
               </div>
 
               {/* FRANCHISE */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">Franchise</span>
                 <select value={selectedFranchise} onChange={onFilterChange(setSelectedFranchise)} className="text-xs border rounded-md px-2 py-1 bg-white">
                   <option value="">Select Franchise</option>
                   {franchise.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
-              </div>
+              </div> */}
 
               {/* INSIDE SALES */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">Inside Sales</span>
                 <select value={selectedEmployee} onChange={onFilterChange(setSelectedEmployee)} className="text-xs border rounded-md px-2 py-1 bg-white">
                   <option value="">Select InsideSales</option>
                   {users.map(u => <option key={u.id} value={u.id}>{u.fullName}</option>)}
                 </select>
-              </div>
+              </div> */}
 
               {/* CUSTOMER */}
               <div className="flex items-center gap-2">
@@ -308,9 +308,9 @@ const loadFilteredSummary = async () => {
               <table className="min-w-full text-left">
                 <thead className="bg-slate-100 border-b text-xs text-slate-600">
                   <tr>
-                    <th className="py-2 px-4"><input type="checkbox" /></th>
+                    {/* <th className="py-2 px-4"><input type="checkbox" /></th> */}
                     {columns.map(col => <th key={col.accessor} className="py-2 px-4 font-medium">{col.header}</th>)}
-                    <th className="py-2 px-4 font-medium">Action</th>
+                    {/* <th className="py-2 px-4 font-medium">Action</th> */}
                   </tr>
                 </thead>
                 <tbody>

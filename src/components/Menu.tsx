@@ -62,8 +62,14 @@ const menuItems = [
     items: [
       {
         icon: "/salesReport.png",
-        label: "Report",
+        label: "Order Report",
         href: "/reports",
+        visible: ["SUPER_ADMIN", "ADMIN"],
+      },
+      {
+        icon: "/salesReport.png",
+        label: "Report",
+        href: "/reports/sales",
         visible: ["SUPER_ADMIN", "ADMIN"],
       },
       // {
