@@ -44,7 +44,16 @@ export default function CustomerList({  }: Props) {
     if (user) fetchData(user);
   }, [searchParams]); 
 
-  const fetchData = async (user) => {
+  type SessionUser = {
+    fullName: string;
+    role: string;
+    id: string;
+    email: string;
+    phone: string;
+  };
+
+
+  const fetchData = async (user: SessionUser) => {
     const sessionUser = getSessionUser();
     const createdBy = sessionUser?.id;   // 👈 logged-in user id
 

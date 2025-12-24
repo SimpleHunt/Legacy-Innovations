@@ -1,34 +1,72 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-type Params = { params: { id: string } };
-
-function parseId(s: string) {
-  const n = Number(s);
-  if (Number.isNaN(n)) throw new Error("Invalid id");
-  return n;
+function parseId(value: string) {
+  const id = Number(value);
+  if (Number.isNaN(id)) throw new Error("Invalid id");
+  return id;
 }
 
-export async function GET(_req: NextRequest, { params }: Params) {
+// ---------------------- GET: Single Factory ----------------------
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = parseId(params.id);
-    const item = await prisma.factory.findUnique({ where: { id }, include: { order: true } });
-    if (!item) return NextResponse.json({ message: "Not found" }, { status: 404 });
-    return NextResponse.json(item);
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
+    const { id } = await context.params; // ✅ REQUIRED
+    const factoryId = parseId(id);
+
+    const factory = await prisma.factory.findUnique({
+      where: { id: factoryId },
+      include: {
+        order: true,
+      },
+    });
+
+    if (!factory) {
+      return NextResponse.json({ message: "Not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(factory);
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err.message || "Something went wrong" },
+      { status: 400 }
+    );
   }
 }
 
-export async function PUT(req: NextRequest, { params }: Params) {
+// ---------------------- PUT: Update Factory ----------------------
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = parseId(params.id);
+    const { id } = await context.params; // ✅ REQUIRED
+    const factoryId = parseId(id);
     const body = await req.json();
-    delete body.id;
-    if (body.orderId) body.orderId = Number(body.orderId);
-    const updated = await prisma.factory.update({ where: { id }, data: body });
+
+    const updateData: any = { ...body };
+
+    if (body.orderId) {
+      updateData.order = {
+        connect: { id: Number(body.orderId) },
+      };
+    }
+
+    delete updateData.id;
+    delete updateData.orderId;
+
+    const updated = await prisma.factory.update({
+      where: { id: factoryId },
+      data: updateData,
+    });
+
     return NextResponse.json(updated);
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err.message || "Update failed" },
+      { status: 400 }
+    );
   }
 }

@@ -1,55 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-type Params = { params: { id: string } };
+type Context = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
-function parseId(s: string) {
-  const n = Number(s);
+function parseId(id: string) {
+  const n = Number(id);
   if (Number.isNaN(n)) throw new Error("Invalid id");
   return n;
 }
 
-export async function GET(_req: NextRequest, { params }: Params) {
-  try {
-    const id = parseId(params.id);
-    const order = await prisma.order.findUnique({
-      where: { id },
-      include: { product: true, customer: true, franchise: true, factory: true },
-    });
-    if (!order) return NextResponse.json({ message: "Not found" }, { status: 404 });
-    return NextResponse.json(order);
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 400 });
-  }
-}
-
-export async function PUT(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+/* ======================= GET ======================= */
+export async function GET(
+  _req: NextRequest,
+  context: Context
 ) {
   try {
-    // 👇 REQUIRED by Next.js — unwrap the params Promise
     const { id } = await context.params;
+    const orderId = parseId(id);
 
-    const orderId = Number(id);
-    if (isNaN(orderId)) {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        product: true,
+        customer: true,
+        franchise: true,
+        factory: true,
+      },
+    });
+
+    if (!order) {
       return NextResponse.json(
-        { error: "Invalid order ID" },
-        { status: 400 }
+        { message: "Not found" },
+        { status: 404 }
       );
     }
 
-    const body = await req.json();
-    console.log("🟦 Incoming Update Body:", body);
+    return NextResponse.json(order);
+  } catch (err) {
+    return NextResponse.json(
+      { error: String(err) },
+      { status: 400 }
+    );
+  }
+}
 
+/* ======================= PUT ======================= */
+export async function PUT(
+  req: NextRequest,
+  context: Context
+) {
+  try {
+    const { id } = await context.params;
+    const orderId = parseId(id);
+
+    const body = await req.json();
     const updateData: any = {};
 
-   
     if (body.expectedDeliveryDate) {
       updateData.expectedDeliveryDate = new Date(body.expectedDeliveryDate);
     }
 
-   
     if (body.defectedStatus !== undefined) {
       updateData.defectedStatus = Number(body.defectedStatus);
     }
@@ -58,14 +72,9 @@ export async function PUT(
       updateData.defExpectedDate = new Date(body.defExpectedDate);
     }
 
-    if (body.status) {
-      updateData.status = body.status;
-    }
-
+    if (body.status) updateData.status = body.status;
     if (body.employeeId) updateData.employeeId = Number(body.employeeId);
     if (body.franchiseId) updateData.franchiseId = Number(body.franchiseId);
-
-    console.log("📦 Final Data to Update:", updateData);
 
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
@@ -73,10 +82,7 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedOrder, { status: 200 });
-
   } catch (err: any) {
-    console.error("❌ ORDER UPDATE ERROR:", err);
-
     return NextResponse.json(
       {
         error: "Order update failed",
@@ -87,20 +93,14 @@ export async function PUT(
   }
 }
 
-
-
-export async function DELETE(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+/* ======================= DELETE ======================= */
+export async function DELETE(
+  _req: NextRequest,
+  context: Context
+) {
   try {
     const { id } = await context.params;
-
-    const orderId = Number(id);
-
-    if (isNaN(orderId)) {
-      return NextResponse.json(
-        { error: "Invalid order ID" },
-        { status: 400 }
-      );
-    }
+    const orderId = parseId(id);
 
     const deleted = await prisma.order.delete({
       where: { id: orderId },
@@ -124,4 +124,3 @@ export async function DELETE(_req: NextRequest, context: { params: Promise<{ id:
     );
   }
 }
-

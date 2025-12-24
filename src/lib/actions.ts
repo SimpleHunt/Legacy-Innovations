@@ -12,14 +12,14 @@ export const createProduct = async (
   data: ProductSchema
 ) => {
   try {
-    await prisma.productTable.create({
-      data: {
-        productName: data.productName,
-        productTable: {
-          connect: data.productTable.map((id) => ({ id: productID })),
-        },
-      },
-    });
+    // await prisma.productTable.create({
+    //   data: {
+    //     productName: data.productName,
+    //     productTable: {
+    //       connect: data.productTable.map((id) => ({ id: productID })),
+    //     },
+    //   },
+    // });
 
     
     return { success: true, error: false };

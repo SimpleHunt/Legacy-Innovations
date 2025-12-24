@@ -13,7 +13,8 @@ export async function GET(req: Request) {
     const search = searchParams.get("search") || "";
 
     // FILTERS
-    const isActive = searchParams.get("isActive"); // "true" | "false" | null
+    const isActive = searchParams.get("isActive"); // "true" | "false"
+    const role = searchParams.get("role"); // ✅ ADD THIS
 
     // SORTING
     const sortBy = searchParams.get("sortBy") || "id";
@@ -24,14 +25,17 @@ export async function GET(req: Request) {
     // SEARCH LOGIC
     if (search) {
       where.OR = [
-        { name: { contains: search, mode: "insensitive" } },
-        { size: { contains: search, mode: "insensitive" } }
+        { fullName: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } }
       ];
     }
 
     // FILTER LOGIC
     if (isActive === "true") where.isActive = true;
     if (isActive === "false") where.isActive = false;
+
+    // ✅ ROLE FILTER
+    if (role) where.role = role;
 
     const [users, count] = await prisma.$transaction([
       prisma.user.findMany({
@@ -40,7 +44,6 @@ export async function GET(req: Request) {
         take,
         skip: take * (page - 1),
       }),
-
       prisma.user.count({ where }),
     ]);
 
@@ -51,6 +54,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
 
 export async function POST(req: NextRequest) {
   try {

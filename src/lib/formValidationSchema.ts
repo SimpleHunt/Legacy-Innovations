@@ -3,16 +3,23 @@ import { z } from "zod";
 export const productSchema = z.object({
   productName: z.string().min(1, { message: "Product Name is required!" }),
   productSize: z.string().min(1, { message: "Product Size is required!" }),
+  // productPrice: z
+  //   .string()
+  //   .min(1, { message: "Product Price is required!" })
+  //   .transform((val) => Number(val))
+  //   .refine((val) => !isNaN(val), "Price must be a valid number"),
+  // productStock: z
+  //   .string()
+  //   .min(1, { message: "Product Stock is required!" })
+  //   .transform((val) => Number(val))
+  //   .refine((val) => !isNaN(val), "Stock must be a valid number"),
   productPrice: z
-    .string()
-    .min(1, { message: "Product Price is required!" })
-    .transform((val) => Number(val))
-    .refine((val) => !isNaN(val), "Price must be a valid number"),
+    .number()
+    .refine((val) => val > 0, { message: "Price must be greater than 0" }),
+
   productStock: z
-    .string()
-    .min(1, { message: "Product Stock is required!" })
-    .transform((val) => Number(val))
-    .refine((val) => !isNaN(val), "Stock must be a valid number"),
+    .number()
+    .refine((val) => val >= 0, { message: "Stock cannot be negative" }),
     productCode: z.string().min(1, { message: "Product Code is required!" }),
 });
 
@@ -107,13 +114,15 @@ export const orderSchema = z.object({
     .string()
     .min(1, { message: "Order Number is required!" }),
 
-  customerId: z.coerce
-    .number()
-    .refine((val) => val > 0, { message: "Customer Name is required!" }),
+  customerId: z
+    .string()
+    .min(1, { message: "Order Number is required!" }),
 
-  productId: z.coerce
-    .number()
-    .refine((val) => val > 0, { message: "Product Name is required!" }),
+  productId: z
+    .string()
+    .min(1, { message: "Order Number is required!" }),
+
+    
 
   climate: z
     .enum(["HUMID", "COLD"])
@@ -130,7 +139,7 @@ export const orderSchema = z.object({
     }),
     
   stock: z
-    .string()
+    .number()
     .min(1, "Stock must be at least 1"),
 
   unitPrice: z
@@ -138,7 +147,7 @@ export const orderSchema = z.object({
     .min(0, "Unit price must be positive"),
 
   discount: z
-    .string()
+    .number()
     .min(0, "Discount cannot be negative"),
 
   unitPriceCost: z

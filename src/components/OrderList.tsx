@@ -5,34 +5,49 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import FiltersBar from "@/components/FiltersBar";
-import { Order } from "@/generated";
+//import { Order } from "@/generated";
+
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { getSessionUser } from "@/lib/getSessionUser";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import StartedModal from "@/app/(dashboard)/list/order/StartedModal";
 import GeneralStatusModal from "@/app/(dashboard)/list/order/GeneralStatusModal";
+import { OrderWithRelations } from "@/types/order";
 
 
+type OrderSearchParams = {
+  [key: string]: string | undefined;
+};
 
-export default function OrderList() {
-  const searchParams = useSearchParams();
+type OrderListProps = {
+  searchParams: OrderSearchParams;
+};
+
+export default function OrderList({ searchParams }: OrderListProps) {
+  //const searchParams = useSearchParams();
 
   const [role, setRole] = useState("");
-  const [data, setData] = useState<Order[]>([]);
+  const [data, setData] = useState<OrderWithRelations []>([]);
   const [count, setCount] = useState(0);
 
-  const [editData, setEditData] = useState(null);
+  type ModalData = {
+    id: number;
+    newStatus: string;
+    isDefect?: boolean;
+  };
+
+  const [editData, setEditData] = useState<ModalData | null>(null);
   const [showStartedModal, setShowStartedModal] = useState(false);
   const [showGeneralModal, setShowGeneralModal] = useState(false);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  const page = Number(searchParams.get("page")) || 1;
-  const search = searchParams.get("search") || "";
-  const sortBy = searchParams.get("sortBy") || "id";
-  const sortOrder = searchParams.get("sortOrder") || "desc";
-  const status = searchParams.get("status") || "";
+   const page = Number(searchParams.page) || 1;
+  const search = searchParams.search || "";
+  const sortBy = searchParams.sortBy || "id";
+  const sortOrder = searchParams.sortOrder || "desc";
+  const status = searchParams.status || "";
 
   useEffect(() => {
     const user = getSessionUser();
@@ -44,7 +59,15 @@ export default function OrderList() {
     if (user) fetchOrders(user);
   }, [searchParams]);
 
-  const fetchOrders = async (user) => {
+  type SessionUser = {
+    fullName: string;
+    role: string;
+    id: string;
+    email: string;
+    phone: string;
+  };
+
+  const fetchOrders = async (user : SessionUser) => {
     let url = `${baseUrl}/api/orders?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&status=${status}&sortBy=${sortBy}&sortOrder=${sortOrder}&role=${user.role}`;
 
     if (user.role === "FRANCHISE") url += `&createdBy=${user.id}`;
@@ -72,7 +95,7 @@ export default function OrderList() {
   };
 
   // 🔥 Handle dropdown selection
-  const handleStatusChange = (order, newStatus) => {
+  const handleStatusChange = (order: OrderWithRelations, newStatus: string) => {
     if (!newStatus) return;
 
     // Started → Ask Expected Delivery Date
@@ -127,7 +150,7 @@ export default function OrderList() {
      
   ];
 
-  const renderRow = (item: Order, index : number) => (
+  const renderRow = (item: OrderWithRelations, index : number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
       <td className="py-4">{index + 1}</td>
       <td className="hidden md:table-cell py-4">{item.orderNumber}</td>
@@ -144,8 +167,8 @@ export default function OrderList() {
         {item.expectedDeliveryDate ? new Date(item.expectedDeliveryDate).toISOString().split("T")[0] : "-"}
       </td>
 
-      <td className="hidden md:table-cell py-4">{item.unitPriceCost}</td>
-      <td className="hidden md:table-cell py-4">{item.gstAmount}</td>
+      <td className="hidden md:table-cell py-4">{"unitCost"}</td>
+      <td className="hidden md:table-cell py-4">{"gstAmount"}</td>
       <td className="hidden md:table-cell py-4">{item.totalAmount}</td>
 
       <td className="hidden md:table-cell">
@@ -217,7 +240,7 @@ export default function OrderList() {
         <Table columns={columns} renderRow={renderRow} data={data} />
       )}
 
-      {showStartedModal && (
+      {showStartedModal && editData && (
         <StartedModal
           data={editData}
           onClose={() => setShowStartedModal(false)}
@@ -225,7 +248,7 @@ export default function OrderList() {
         />
       )}
 
-      {showGeneralModal && (
+      {showGeneralModal && editData && (
         <GeneralStatusModal
           data={editData}
           onClose={() => setShowGeneralModal(false)}

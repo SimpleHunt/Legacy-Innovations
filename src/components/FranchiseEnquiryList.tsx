@@ -39,7 +39,15 @@ export default function FranchiseEnquiryList({  }: Props) {
       if (user) fetchData(user);
     }, [searchParams]); 
 
-  const fetchData = async (user) => {
+    type SessionUser = {
+    fullName: string;
+    role: string;
+    id: string;
+    email: string;
+    phone: string;
+  };
+
+  const fetchData = async (user: SessionUser) => {
     
     const res = await fetch(
       `${baseUrl}/api/enquiry?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}`,

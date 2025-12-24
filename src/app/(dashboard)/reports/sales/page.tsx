@@ -12,7 +12,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
       <div className="flex-1">
         <RoleWrapper allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
           
-          { <SalesReport searchParams={searchParams} /> }
+          { <SalesReport  /> }
         </RoleWrapper>
       </div>
 

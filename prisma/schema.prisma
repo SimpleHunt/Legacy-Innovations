@@ -106,9 +106,10 @@ model Order {
   status               String     @default("PENDING")
   expectedDeliveryDate DateTime?
   defectedStatus       Int
-  defExpectedDate      DateTime?
+  defExpectedDate      DateTime   @default(now())
   unitPrice            Float      @default(0)
   unitPriceCost        Float      @default(0)
+  discountDate         DateTime
   discount             Float      @default(0)
   gstPercentage        Float      @default(0)
   gstAmount            Float      @default(0)

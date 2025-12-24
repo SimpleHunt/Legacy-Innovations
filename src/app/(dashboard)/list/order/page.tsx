@@ -4,6 +4,8 @@ import RoleWrapper from "@/components/RoleWrapper";
 
 export const revalidate = 0;
 
+
+
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
   return (
     <div className="min-h-screen flex flex-col">

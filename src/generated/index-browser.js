@@ -201,6 +201,7 @@ exports.Prisma.OrderScalarFieldEnum = {
   defExpectedDate: 'defExpectedDate',
   unitPrice: 'unitPrice',
   unitPriceCost: 'unitPriceCost',
+  discountDate: 'discountDate',
   discount: 'discount',
   gstPercentage: 'gstPercentage',
   gstAmount: 'gstAmount',

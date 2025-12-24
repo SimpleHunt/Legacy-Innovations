@@ -51,7 +51,7 @@ export default function ProductReportPage() {
           axios.get(`${baseUrl}/api/customers`),
           axios.get(`${baseUrl}/api/franchise`),
           axios.get(`${baseUrl}/api/products?isActive=true`),
-          axios.get(`${baseUrl}/api/users?role=Employee`),
+          axios.get(`${baseUrl}/api/users?role=EMPLOYEE`),
           axios.get(`${baseUrl}/api/reports/dashboard`),
         ]);
         console.log(axios.get(`${baseUrl}/api/users`),)
@@ -60,7 +60,7 @@ export default function ProductReportPage() {
         setFranchise(franchRes.data.franchise ?? []);
         setProducts(prodRes.data.products ?? []);
         setUsers(usersRes.data.users ?? []);
-        setSummary(dashRes.data.summary ?? null);
+        setSummary(dashRes.data.summary ?? []);
         setStatusCounts(dashRes.data.statusCounts ?? null);
       } catch (err) {
         console.error("initial load error", err);
@@ -109,7 +109,7 @@ const loadFilteredSummary = async () => {
       }
     });
 
-    setSummary(res.data.summary);
+    //setSummary(res.data.summary);
     setStatusCounts(res.data.statusCounts);
 
   } catch (err) {
@@ -167,8 +167,8 @@ const loadFilteredSummary = async () => {
                   { label: "Total Orders", value: summary.totalOrders },
                   { label: "Product", value: summary.totalProducts },
                   { label: "Customer", value: summary.totalCustomers },
-                  // { label: "Franchise", value: summary.totalFranchise },
-                  // { label: "Inside Sales", value: summary.totalInsideSales },
+                  { label: "Franchise", value: summary.totalFranchise },
+                  { label: "Inside Sales", value: summary.totalInsideSales },
                 ].map((card) => (
                   <div
                     key={card.label}
@@ -237,22 +237,22 @@ const loadFilteredSummary = async () => {
               </div>
 
               {/* FRANCHISE */}
-              {/* <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">Franchise</span>
                 <select value={selectedFranchise} onChange={onFilterChange(setSelectedFranchise)} className="text-xs border rounded-md px-2 py-1 bg-white">
                   <option value="">Select Franchise</option>
                   {franchise.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
-              </div> */}
+              </div>
 
               {/* INSIDE SALES */}
-              {/* <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">Inside Sales</span>
                 <select value={selectedEmployee} onChange={onFilterChange(setSelectedEmployee)} className="text-xs border rounded-md px-2 py-1 bg-white">
                   <option value="">Select InsideSales</option>
                   {users.map(u => <option key={u.id} value={u.id}>{u.fullName}</option>)}
                 </select>
-              </div> */}
+              </div>
 
               {/* CUSTOMER */}
               <div className="flex items-center gap-2">
@@ -324,7 +324,7 @@ const loadFilteredSummary = async () => {
             </div>
 
             <div className="border-t py-2 px-4 flex justify-end">
-              <Pagination page={page} count={count} setPage={setPage} />
+              {/* <Pagination page={page} count={count} setPage={setPage} /> */}
             </div>
           </div>
         </div>

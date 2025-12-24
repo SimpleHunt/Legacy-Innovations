@@ -2,7 +2,7 @@
 
 import { Calendar, momentLocalizer, View, Views } from "react-big-calendar";
 import moment from "moment";
-import { calendarEvents } from "@/lib/data1";
+//import { calendarEvents } from "@/lib/data1";
 //import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ const BigCalendar = () => {
     <Calendar
     
       localizer={localizer}
-      events={calendarEvents}
+      //events={calendarEvents}
       startAccessor="start"
       endAccessor="end"
       views={["work_week", "day"]}

@@ -14,6 +14,11 @@ export default function FiltersBar({ params, table }: any) {
   const [openFilter, setOpenFilter] = useState(false);
   const [openSort, setOpenSort] = useState(false);
 
+  type FilterOption = {
+  label: string;
+  value: string;
+};
+
   const tableSortFields: any = {
     products: [
       { key: "id", label: "ID" },
@@ -78,10 +83,9 @@ export default function FiltersBar({ params, table }: any) {
     ],
   };
 
-  // FALLBACK → if table not found, use simple All
-  const currentOptions = filterOptions[table] || [
-    { label: "All", value: "" },
-  ];
+
+  const currentOptions: FilterOption[] =
+  filterOptions[table] || [{ label: "All", value: "" }];
 
   return (
     <div className="flex items-center gap-4">

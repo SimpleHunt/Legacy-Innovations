@@ -1,6 +1,21 @@
 "use client";
 
-export default function GeneralStatusModal({ data, onClose, onSuccess }) {
+type GeneralStatusData = {
+  id: number;
+  newStatus: string;
+};
+
+type Props = {
+  data: GeneralStatusData;
+  onClose: () => void;
+  onSuccess: () => void;
+};
+
+export default function GeneralStatusModal({
+  data,
+  onClose,
+  onSuccess,
+}: Props) {
   const updateStatus = async () => {
     await fetch(`/api/orders/${data.id}`, {
       method: "PUT",

@@ -66,73 +66,73 @@ export default function ReportPage() {
     </tr>
   );
 
-  return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      {/* TOP HEADER */}
-      <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">Franchise Report</h1>
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <TableSearch />
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/filter.png" alt="" width={14} height={14} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/sort.png" alt="" width={14} height={14} />
-            </button>
-          </div>
-        </div>
-      </div>
+  // return (
+  //   <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+  //     {/* TOP HEADER */}
+  //     <div className="flex items-center justify-between">
+  //       <h1 className="hidden md:block text-lg font-semibold">Franchise Report</h1>
+  //       <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+  //         <TableSearch />
+  //         <div className="flex items-center gap-4 self-end">
+  //           <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+  //             <Image src="/filter.png" alt="" width={14} height={14} />
+  //           </button>
+  //           <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+  //             <Image src="/sort.png" alt="" width={14} height={14} />
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </div>
 
-      {/* DATE FILTERS */}
-      <div className="flex flex-wrap items-center gap-4 mb-6">
-        <div className="flex flex-col">
-          <label className="text-sm text-gray-500 font-medium mb-1">
-            Start Date
-          </label>
-          <input
-            type="date"
-            className="border border-gray-300 rounded-md px-3 py-2"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </div>
+  //     {/* DATE FILTERS */}
+  //     <div className="flex flex-wrap items-center gap-4 mb-6">
+  //       <div className="flex flex-col">
+  //         <label className="text-sm text-gray-500 font-medium mb-1">
+  //           Start Date
+  //         </label>
+  //         <input
+  //           type="date"
+  //           className="border border-gray-300 rounded-md px-3 py-2"
+  //           value={startDate}
+  //           onChange={(e) => setStartDate(e.target.value)}
+  //         />
+  //       </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm text-gray-500 font-medium mb-1">
-            End Date
-          </label>
-          <input
-            type="date"
-            className="border border-gray-300 rounded-md px-3 py-2"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </div>
+  //       <div className="flex flex-col">
+  //         <label className="text-sm text-gray-500 font-medium mb-1">
+  //           End Date
+  //         </label>
+  //         <input
+  //           type="date"
+  //           className="border border-gray-300 rounded-md px-3 py-2"
+  //           value={endDate}
+  //           onChange={(e) => setEndDate(e.target.value)}
+  //         />
+  //       </div>
 
-        <button
-          onClick={handleFilter}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-5"
-        >
-          Submit
-        </button>
-      </div>
+  //       <button
+  //         onClick={handleFilter}
+  //         className="bg-blue-500 text-white px-4 py-2 rounded-md mt-5"
+  //       >
+  //         Submit
+  //       </button>
+  //     </div>
 
-      {/* DOWNLOAD BUTTONS */}
-      <div className="flex gap-4 mb-6">
-        <button onClick={downloadExcel} className="bg-green-500 text-white px-4 py-2 rounded-md">
-          Download Excel
-        </button>
-        <button onClick={downloadPDF} className="bg-red-500 text-white px-4 py-2 rounded-md">
-          Download PDF
-        </button>
-      </div>
+  //     {/* DOWNLOAD BUTTONS */}
+  //     <div className="flex gap-4 mb-6">
+  //       <button onClick={downloadExcel} className="bg-green-500 text-white px-4 py-2 rounded-md">
+  //         Download Excel
+  //       </button>
+  //       <button onClick={downloadPDF} className="bg-red-500 text-white px-4 py-2 rounded-md">
+  //         Download PDF
+  //       </button>
+  //     </div>
 
-      {/* TABLE */}
-      <Table columns={columns} renderRow={renderRow} data={reportData} />
+  //     {/* TABLE */}
+  //     <Table columns={columns} renderRow={renderRow} data={reportData} />
 
-      {/* PAGINATION */}
-      <Pagination page={page} count={count} />
-    </div>
-  );
+  //     {/* PAGINATION */}
+  //     <Pagination page={page} count={count} />
+  //   </div>
+  // );
 }

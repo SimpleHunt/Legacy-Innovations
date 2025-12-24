@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
   orders.forEach((o) => {
     sheet.addRow([
       o.id,
-      o.customer?.fullName || "-",
-      o.amount,
+      //o.customer?.fullName || "-",
+      //o.amount,
       o.createdAt.toISOString().slice(0, 10),
     ]);
   });

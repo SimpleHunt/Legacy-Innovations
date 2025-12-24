@@ -39,8 +39,15 @@ export default function UserList({  }: Props) {
       if (user) fetchData(user);
     }, [searchParams]); 
   
+  type SessionUser = {
+    fullName: string;
+    role: string;
+    id: string;
+    email: string;
+    phone: string;
+  };
 
-  const fetchData = async (user) => {
+  const fetchData = async (user : SessionUser) => {
     
 
     const res = await fetch(

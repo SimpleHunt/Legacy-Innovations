@@ -28,9 +28,9 @@ export async function GET(req: NextRequest) {
         where,
         select: {
           id: true,
-          amount: true,
+          //amount: true,
           createdAt: true,
-          customer: { select: { fullName: true } },
+         // customer: { select: { fullName: true } },
         },
         skip,
         take: PAGE_SIZE,
@@ -41,8 +41,8 @@ export async function GET(req: NextRequest) {
 
     const formatted = reports.map((o) => ({
       id: o.id,
-      customerName: o.customer?.fullName || "-",
-      amount: o.amount,
+      //customerName: o.customer?.fullName || "-",
+      //amount: o.amount,
       createdAt: o.createdAt,
     }));
 

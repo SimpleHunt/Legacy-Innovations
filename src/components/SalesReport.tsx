@@ -72,9 +72,9 @@ const [employeeMonthly, setEmployeeMonthly] = useState(new Array(12).fill(0));
         const [franchRes, usersRes] = await Promise.all([
           
           axios.get(`${baseUrl}/api/franchise`),
-          axios.get(`${baseUrl}/api/users?role=Employee`),
+          axios.get(`${baseUrl}/api/users?role=EMPLOYEE`),
         ]);
-       // console.log(axios.get(`${baseUrl}/api/users`),)
+        //console.log(axios.get(`${baseUrl}/api/users`),)
 
        
         setFranchise(franchRes.data.franchise ?? []);
@@ -154,64 +154,6 @@ const [employeeMonthly, setEmployeeMonthly] = useState(new Array(12).fill(0));
             </button>
             </div>
           </div>
-
-          {/* RADIAL SUMMARY CARD */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 px-4 py-6 flex flex-col items-center mt-6">
-
-            {/* Outer + Inner Radial using CSS only */}
-            <div className="relative w-40 h-40">
-                {/* Outer circle */}
-                <div className="absolute inset-0 rounded-full bg-blue-300"></div>
-
-                {/* Inner progress */}
-                <div className="absolute inset-4 rounded-full bg-purple-400"></div>
-
-                {/* Center white circle */}
-                <div className="absolute inset-10 rounded-full bg-white"></div>
-            </div>
-
-            {/* Values */}
-            <div className="flex justify-center gap-10 mt-6">
-
-                {/* Franchise Count */}
-                <div className="flex flex-col items-center">
-                <span className="w-3 h-3 rounded-full bg-blue-300 inline-block"></span>
-                <div className="font-bold text-lg">{franchiseTotal}</div>
-                <div className="text-xs text-slate-500">Franchise</div>
-                </div>
-
-                {/* Inside Sales */}
-                <div className="flex flex-col items-center">
-                <span className="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
-                <div className="font-bold text-lg">{employeeTotal}</div>
-                <div className="text-xs text-slate-500">Inside Sales</div>
-                </div>
-
-            </div>
-
-            </div>
-
-
-            {/* MONTHLY BAR CHART */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 px-4 py-6 mt-6">
-            <h2 className="text-lg font-semibold mb-3">Monthly Performance</h2>
-
-            <Chart
-                options={{
-                chart: { type: "bar", height: 350 },
-                xaxis: { categories: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] },
-                colors: ["#6FA8FF", "#FFD66F"],
-                legend: { position: "top" }
-                }}
-                series={[
-                { name: "Franchise", data: franchiseMonthly },
-                { name: "Inside Sales", data: employeeMonthly }
-                ]}
-                type="bar"
-                height={350}
-            />
-            </div>
-
 
 
        

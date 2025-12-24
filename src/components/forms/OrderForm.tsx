@@ -112,6 +112,7 @@ const OrderForm = ({
         gstPercentage: Number(formData.gstPercent),
         gstAmount: Number(formData.gstAmountValue),
         totalAmount: Number(formData.totalAmount),
+        discountDate: new Date("2025-12-12").toISOString(),
         defectedStatus: 0,
 
         createdBy: Number(session.id),
@@ -160,7 +161,8 @@ useEffect(() => {
   setValue("unitPriceCost", product.price);   
   setValue("stock", 1);                       
   setValue("discount", 0);                    
-  setValue("totalAmount", product.price);     
+  setValue("totalAmount", product.price); 
+   
 
 }, [watchProductId, products, setValue]);
 
@@ -294,7 +296,7 @@ useEffect(() => {
           name="stock"
           type="number"
           register={register}
-          registerOptions={{ valueAsNumber: true }}
+          //registerOptions={{ valueAsNumber: true }}
           error={errors.stock}
         />
 

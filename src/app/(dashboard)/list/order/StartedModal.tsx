@@ -3,16 +3,33 @@
 import { getSessionUser } from "@/lib/getSessionUser";
 import { useState } from "react";
 
-export default function StartedModal({ data, onClose, onSuccess }) {
-   const user = getSessionUser();              // 👉 Get logged-in user
+/* ✅ Define exact types */
+type StartedModalData = {
+  id: number;
+  newStatus: string;
+  isDefect?: boolean;
+};
+
+type StartedModalProps = {
+  data: StartedModalData;
+  onClose: () => void;
+  onSuccess: () => void;
+};
+
+export default function StartedModal({
+  data,
+  onClose,
+  onSuccess,
+}: StartedModalProps) {
+  const user = getSessionUser();
   const role = user?.role;
 
   const [expectedDate, setExpectedDate] = useState("");
 
   const updateStatus = async () => {
-    if (!expectedDate) return;
+    if (!expectedDate && !data.isDefect) return;
 
-    let body = {};
+    let body: Record<string, any> = {};
 
     // 🔥 DEFECT HANDLING
     if (data.isDefect) {
@@ -21,10 +38,10 @@ export default function StartedModal({ data, onClose, onSuccess }) {
         body = {
           status: "PENDING",
           defectedStatus: 1,
-          defExpectedDate: null,   
+          defExpectedDate: null,
         };
       } else {
-        // FACTORY (or admin) must give expected date
+        // FACTORY / ADMIN
         body = {
           status: "Started",
           defectedStatus: 1,
@@ -32,31 +49,13 @@ export default function StartedModal({ data, onClose, onSuccess }) {
           defExpectedDate: expectedDate,
         };
       }
-    }
-
-    // 🔥 Normal STARTED handling
-    else {
+    } else {
+      // 🔥 Normal STARTED handling
       body = {
         status: data.newStatus,
         expectedDeliveryDate: expectedDate,
       };
     }
-
-    // // 🔥 Handle Defect - Replacement Status
-    // if (data.isDefect) {
-    //   body = {
-    //     status: "Started",
-    //     defectedStatus: 1,
-    //     expectedDeliveryDate: expectedDate,
-    //     defExpectedDate: expectedDate,
-    //   };
-    // } else {
-    //   // 🔥 Normal Started status update
-    //   body = {
-    //     status: data.newStatus,
-    //     expectedDeliveryDate: expectedDate,
-    //   };
-    // }
 
     await fetch(`/api/orders/${data.id}`, {
       method: "PUT",
@@ -72,7 +71,9 @@ export default function StartedModal({ data, onClose, onSuccess }) {
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-md w-96 shadow-lg">
         <h2 className="text-lg font-semibold mb-4">
-          {data.isDefect ? "Set Replacement Expected Date" : "Set Expected Delivery Date"}
+          {data.isDefect
+            ? "Set Replacement Expected Date"
+            : "Set Expected Delivery Date"}
         </h2>
 
         <input
@@ -90,7 +91,7 @@ export default function StartedModal({ data, onClose, onSuccess }) {
           <button
             onClick={updateStatus}
             className="px-4 py-2 bg-blue-600 text-white rounded"
-            disabled={!expectedDate}
+            disabled={!expectedDate && !data.isDefect}
           >
             Save
           </button>

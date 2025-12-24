@@ -7983,6 +7983,7 @@ export namespace Prisma {
     defExpectedDate: Date | null
     unitPrice: number | null
     unitPriceCost: number | null
+    discountDate: Date | null
     discount: number | null
     gstPercentage: number | null
     gstAmount: number | null
@@ -8007,6 +8008,7 @@ export namespace Prisma {
     defExpectedDate: Date | null
     unitPrice: number | null
     unitPriceCost: number | null
+    discountDate: Date | null
     discount: number | null
     gstPercentage: number | null
     gstAmount: number | null
@@ -8031,6 +8033,7 @@ export namespace Prisma {
     defExpectedDate: number
     unitPrice: number
     unitPriceCost: number
+    discountDate: number
     discount: number
     gstPercentage: number
     gstAmount: number
@@ -8089,6 +8092,7 @@ export namespace Prisma {
     defExpectedDate?: true
     unitPrice?: true
     unitPriceCost?: true
+    discountDate?: true
     discount?: true
     gstPercentage?: true
     gstAmount?: true
@@ -8113,6 +8117,7 @@ export namespace Prisma {
     defExpectedDate?: true
     unitPrice?: true
     unitPriceCost?: true
+    discountDate?: true
     discount?: true
     gstPercentage?: true
     gstAmount?: true
@@ -8137,6 +8142,7 @@ export namespace Prisma {
     defExpectedDate?: true
     unitPrice?: true
     unitPriceCost?: true
+    discountDate?: true
     discount?: true
     gstPercentage?: true
     gstAmount?: true
@@ -8245,9 +8251,10 @@ export namespace Prisma {
     status: string
     expectedDeliveryDate: Date | null
     defectedStatus: number
-    defExpectedDate: Date | null
+    defExpectedDate: Date
     unitPrice: number
     unitPriceCost: number
+    discountDate: Date
     discount: number
     gstPercentage: number
     gstAmount: number
@@ -8291,6 +8298,7 @@ export namespace Prisma {
     defExpectedDate?: boolean
     unitPrice?: boolean
     unitPriceCost?: boolean
+    discountDate?: boolean
     discount?: boolean
     gstPercentage?: boolean
     gstAmount?: boolean
@@ -8323,6 +8331,7 @@ export namespace Prisma {
     defExpectedDate?: boolean
     unitPrice?: boolean
     unitPriceCost?: boolean
+    discountDate?: boolean
     discount?: boolean
     gstPercentage?: boolean
     gstAmount?: boolean
@@ -8352,6 +8361,7 @@ export namespace Prisma {
     defExpectedDate?: boolean
     unitPrice?: boolean
     unitPriceCost?: boolean
+    discountDate?: boolean
     discount?: boolean
     gstPercentage?: boolean
     gstAmount?: boolean
@@ -8381,6 +8391,7 @@ export namespace Prisma {
     defExpectedDate?: boolean
     unitPrice?: boolean
     unitPriceCost?: boolean
+    discountDate?: boolean
     discount?: boolean
     gstPercentage?: boolean
     gstAmount?: boolean
@@ -8397,7 +8408,7 @@ export namespace Prisma {
     customerId?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"orderNumber" | "status" | "expectedDeliveryDate" | "defectedStatus" | "defExpectedDate" | "unitPrice" | "unitPriceCost" | "discount" | "gstPercentage" | "gstAmount" | "totalAmount" | "createdAt" | "updatedAt" | "climate" | "employeeId" | "createdBy" | "productId" | "terrain" | "id" | "franchiseId" | "customerId", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"orderNumber" | "status" | "expectedDeliveryDate" | "defectedStatus" | "defExpectedDate" | "unitPrice" | "unitPriceCost" | "discountDate" | "discount" | "gstPercentage" | "gstAmount" | "totalAmount" | "createdAt" | "updatedAt" | "climate" | "employeeId" | "createdBy" | "productId" | "terrain" | "id" | "franchiseId" | "customerId", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     factory?: boolean | Order$factoryArgs<ExtArgs>
     customer?: boolean | Order$customerArgs<ExtArgs>
@@ -8439,9 +8450,10 @@ export namespace Prisma {
       status: string
       expectedDeliveryDate: Date | null
       defectedStatus: number
-      defExpectedDate: Date | null
+      defExpectedDate: Date
       unitPrice: number
       unitPriceCost: number
+      discountDate: Date
       discount: number
       gstPercentage: number
       gstAmount: number
@@ -8893,6 +8905,7 @@ export namespace Prisma {
     readonly defExpectedDate: FieldRef<"Order", 'DateTime'>
     readonly unitPrice: FieldRef<"Order", 'Float'>
     readonly unitPriceCost: FieldRef<"Order", 'Float'>
+    readonly discountDate: FieldRef<"Order", 'DateTime'>
     readonly discount: FieldRef<"Order", 'Float'>
     readonly gstPercentage: FieldRef<"Order", 'Float'>
     readonly gstAmount: FieldRef<"Order", 'Float'>
@@ -11771,6 +11784,7 @@ export namespace Prisma {
     defExpectedDate: 'defExpectedDate',
     unitPrice: 'unitPrice',
     unitPriceCost: 'unitPriceCost',
+    discountDate: 'discountDate',
     discount: 'discount',
     gstPercentage: 'gstPercentage',
     gstAmount: 'gstAmount',
@@ -12428,9 +12442,10 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
     defectedStatus?: IntFilter<"Order"> | number
-    defExpectedDate?: DateTimeNullableFilter<"Order"> | Date | string | null
+    defExpectedDate?: DateTimeFilter<"Order"> | Date | string
     unitPrice?: FloatFilter<"Order"> | number
     unitPriceCost?: FloatFilter<"Order"> | number
+    discountDate?: DateTimeFilter<"Order"> | Date | string
     discount?: FloatFilter<"Order"> | number
     gstPercentage?: FloatFilter<"Order"> | number
     gstAmount?: FloatFilter<"Order"> | number
@@ -12459,9 +12474,10 @@ export namespace Prisma {
     status?: SortOrder
     expectedDeliveryDate?: SortOrderInput | SortOrder
     defectedStatus?: SortOrder
-    defExpectedDate?: SortOrderInput | SortOrder
+    defExpectedDate?: SortOrder
     unitPrice?: SortOrder
     unitPriceCost?: SortOrder
+    discountDate?: SortOrder
     discount?: SortOrder
     gstPercentage?: SortOrder
     gstAmount?: SortOrder
@@ -12494,9 +12510,10 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
     defectedStatus?: IntFilter<"Order"> | number
-    defExpectedDate?: DateTimeNullableFilter<"Order"> | Date | string | null
+    defExpectedDate?: DateTimeFilter<"Order"> | Date | string
     unitPrice?: FloatFilter<"Order"> | number
     unitPriceCost?: FloatFilter<"Order"> | number
+    discountDate?: DateTimeFilter<"Order"> | Date | string
     discount?: FloatFilter<"Order"> | number
     gstPercentage?: FloatFilter<"Order"> | number
     gstAmount?: FloatFilter<"Order"> | number
@@ -12524,9 +12541,10 @@ export namespace Prisma {
     status?: SortOrder
     expectedDeliveryDate?: SortOrderInput | SortOrder
     defectedStatus?: SortOrder
-    defExpectedDate?: SortOrderInput | SortOrder
+    defExpectedDate?: SortOrder
     unitPrice?: SortOrder
     unitPriceCost?: SortOrder
+    discountDate?: SortOrder
     discount?: SortOrder
     gstPercentage?: SortOrder
     gstAmount?: SortOrder
@@ -12556,9 +12574,10 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     defectedStatus?: IntWithAggregatesFilter<"Order"> | number
-    defExpectedDate?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    defExpectedDate?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     unitPrice?: FloatWithAggregatesFilter<"Order"> | number
     unitPriceCost?: FloatWithAggregatesFilter<"Order"> | number
+    discountDate?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     discount?: FloatWithAggregatesFilter<"Order"> | number
     gstPercentage?: FloatWithAggregatesFilter<"Order"> | number
     gstAmount?: FloatWithAggregatesFilter<"Order"> | number
@@ -13225,9 +13244,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -13250,9 +13270,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -13276,9 +13297,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -13301,9 +13323,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -13327,9 +13350,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -13351,9 +13375,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -13369,9 +13394,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -14095,6 +14121,7 @@ export namespace Prisma {
     defExpectedDate?: SortOrder
     unitPrice?: SortOrder
     unitPriceCost?: SortOrder
+    discountDate?: SortOrder
     discount?: SortOrder
     gstPercentage?: SortOrder
     gstAmount?: SortOrder
@@ -14135,6 +14162,7 @@ export namespace Prisma {
     defExpectedDate?: SortOrder
     unitPrice?: SortOrder
     unitPriceCost?: SortOrder
+    discountDate?: SortOrder
     discount?: SortOrder
     gstPercentage?: SortOrder
     gstAmount?: SortOrder
@@ -14159,6 +14187,7 @@ export namespace Prisma {
     defExpectedDate?: SortOrder
     unitPrice?: SortOrder
     unitPriceCost?: SortOrder
+    discountDate?: SortOrder
     discount?: SortOrder
     gstPercentage?: SortOrder
     gstAmount?: SortOrder
@@ -15343,9 +15372,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15367,9 +15397,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15437,9 +15468,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15461,9 +15493,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15586,9 +15619,10 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     expectedDeliveryDate?: DateTimeNullableFilter<"Order"> | Date | string | null
     defectedStatus?: IntFilter<"Order"> | number
-    defExpectedDate?: DateTimeNullableFilter<"Order"> | Date | string | null
+    defExpectedDate?: DateTimeFilter<"Order"> | Date | string
     unitPrice?: FloatFilter<"Order"> | number
     unitPriceCost?: FloatFilter<"Order"> | number
+    discountDate?: DateTimeFilter<"Order"> | Date | string
     discount?: FloatFilter<"Order"> | number
     gstPercentage?: FloatFilter<"Order"> | number
     gstAmount?: FloatFilter<"Order"> | number
@@ -15735,9 +15769,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15759,9 +15794,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15950,9 +15986,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -15974,9 +16011,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16117,9 +16155,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16141,9 +16180,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16766,9 +16806,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16790,9 +16831,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16831,9 +16873,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -16855,9 +16898,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -16880,9 +16924,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16904,9 +16949,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -16945,9 +16991,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -16969,9 +17016,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17025,9 +17073,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -17060,9 +17109,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -17180,9 +17230,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17204,9 +17255,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17229,9 +17281,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17289,9 +17342,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17313,9 +17367,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17338,9 +17393,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17375,9 +17431,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -17441,9 +17498,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17465,9 +17523,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17490,9 +17549,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17513,9 +17573,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -17536,9 +17597,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17560,9 +17622,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17585,9 +17648,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17608,9 +17672,10 @@ export namespace Prisma {
     status?: string
     expectedDeliveryDate?: Date | string | null
     defectedStatus: number
-    defExpectedDate?: Date | string | null
+    defExpectedDate?: Date | string
     unitPrice?: number
     unitPriceCost?: number
+    discountDate: Date | string
     discount?: number
     gstPercentage?: number
     gstAmount?: number
@@ -17631,9 +17696,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17655,9 +17721,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
@@ -17680,9 +17747,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     defectedStatus?: IntFieldUpdateOperationsInput | number
-    defExpectedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    defExpectedDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unitPrice?: FloatFieldUpdateOperationsInput | number
     unitPriceCost?: FloatFieldUpdateOperationsInput | number
+    discountDate?: DateTimeFieldUpdateOperationsInput | Date | string
     discount?: FloatFieldUpdateOperationsInput | number
     gstPercentage?: FloatFieldUpdateOperationsInput | number
     gstAmount?: FloatFieldUpdateOperationsInput | number
