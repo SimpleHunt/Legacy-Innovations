@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import FiltersBar from "@/components/FiltersBar";
-//import { Order } from "@/generated";
+import { Order } from "@/generated";
 
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { getSessionUser } from "@/lib/getSessionUser";
@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 // import { useSearchParams } from "next/navigation";
 import StartedModal from "@/app/(dashboard)/list/order/StartedModal";
 import GeneralStatusModal from "@/app/(dashboard)/list/order/GeneralStatusModal";
-import { OrderWithRelations } from "@/types/order";
+//import { OrderWithRelations } from "@/types/order";
 
 
 type OrderSearchParams = {
@@ -28,13 +28,14 @@ export default function OrderList({ searchParams }: OrderListProps) {
   //const searchParams = useSearchParams();
 
   const [role, setRole] = useState("");
-  const [data, setData] = useState<OrderWithRelations []>([]);
+  const [data, setData] = useState<Order []>([]);
   const [count, setCount] = useState(0);
 
   type ModalData = {
     id: number;
     newStatus: string;
     isDefect?: boolean;
+    
   };
 
   const [editData, setEditData] = useState<ModalData | null>(null);
@@ -95,7 +96,7 @@ export default function OrderList({ searchParams }: OrderListProps) {
   };
 
   // 🔥 Handle dropdown selection
-  const handleStatusChange = (order: OrderWithRelations, newStatus: string) => {
+  const handleStatusChange = (order: Order, newStatus: string) => {
     if (!newStatus) return;
 
     // Started → Ask Expected Delivery Date
@@ -150,16 +151,16 @@ export default function OrderList({ searchParams }: OrderListProps) {
      
   ];
 
-  const renderRow = (item: OrderWithRelations, index : number) => (
+  const renderRow = (item: Order, index : number) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
       <td className="py-4">{index + 1}</td>
       <td className="hidden md:table-cell py-4">{item.orderNumber}</td>
 
       {role !== "FACTORY" && (
-        <td className="hidden md:table-cell py-4">{item.customer?.name}</td>
+        <td className="hidden md:table-cell py-4">name</td>
       )}
 
-      <td className="hidden md:table-cell py-4">{item.product?.name}</td>
+      <td className="hidden md:table-cell py-4">product Name</td>
       <td className="hidden md:table-cell py-4">{item.climate}</td>
       <td className="hidden md:table-cell py-4">{item.terrain}</td>
 
