@@ -22,6 +22,8 @@ export async function POST(req: Request) {
     if (!isMatch) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 400 });
     }
+
+    
   
 
     
@@ -29,7 +31,7 @@ export async function POST(req: Request) {
       success: true,
       user: {
         id: user.id,
-        fullName: user.fullName,
+        fullname: user.fullName,
         role: user.role,
         email:user.email,
         phone:user.phone,
@@ -37,6 +39,7 @@ export async function POST(req: Request) {
     });
 
   } catch (err) {
+    console.error("LOGIN API ERROR:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
