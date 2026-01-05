@@ -20,10 +20,10 @@ export async function GET(req: Request) {
         },
       },
       include: {
-        customer: true,
-        franchise: true,
-        product: true,
-        employee: true,
+        //customer: true,
+        //franchise: true,
+        //product: true,
+        //employee: true,
       },
     });
 
@@ -36,15 +36,7 @@ export async function GET(req: Request) {
     doc.fontSize(18).text("Order Report", { align: "center" }).moveDown();
     doc.fontSize(12);
 
-    orders.forEach((o, i) => {
-      doc.text(
-        `${i + 1}. Customer: ${o.customer?.name || "N/A"}, Franchise: ${
-          o.franchise?.name || "N/A"
-        }, Product: ${o.product?.name || "N/A"}, Employee: ${
-          o.employee?.fullName || "N/A"
-        }, Amount: ${o.totalAmount}, Date: ${o.createdAt.toISOString().slice(0, 10)}`
-      );
-    });
+    
 
     doc.end();
     const pdfBuffer = Buffer.concat(buffers);

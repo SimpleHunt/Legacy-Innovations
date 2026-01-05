@@ -20,37 +20,11 @@ export async function GET(req: Request) {
       },
     };
 
-    const [payments, count] = await prisma.$transaction([
-      prisma.payment.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: take * (page - 1),
-        take,
-        include: {
-          order: {
-            include: {
-              customer: true,
-              franchise: true,
-              product: true,
-              employee: true,
-            },
-          },
-        },
-      }),
-      prisma.payment.count({ where }),
-    ]);
+  
 
-    const reports = payments.map((p) => ({
-      id: p.id,
-      customerName: p.order?.customer?.name || "N/A",
-      franchiseName: p.order?.franchise?.name || "N/A",
-      amount: p.amount,
-      date: p.createdAt,
-      status: p.status,
-      method: p.method,
-    }));
+    
 
-    return NextResponse.json({ reports, count });
+    return NextResponse.json({  });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

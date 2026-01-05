@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated";  // ✅ Use custom output
+import { PrismaClient } from "@prisma/client";  // ✅ Use custom output
 
 const prisma = new PrismaClient();
 

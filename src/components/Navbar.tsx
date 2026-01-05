@@ -5,66 +5,69 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+type SessionUser = {
+  id: string;
+  role: string;
+  fullName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+};
+
 const Navbar = () => {
   const [userOpen, setUserOpen] = useState(false);
-  const [notifyOpen, setNotifyOpen] = useState(false);
-
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<SessionUser | null>(null);
 
   const userRef = useRef<HTMLDivElement>(null);
-  const notifyRef = useRef<HTMLDivElement>(null);
-
   const router = useRouter();
-
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ---------- Load session after mount ----------
+  // ✅ Read from localStorage (NOT sessionStorage)
   useEffect(() => {
     if (!mounted) return;
 
-    const name = sessionStorage.getItem("fullName");
-    const r = sessionStorage.getItem("role");
+    const name = localStorage.getItem("fullName");
+    const r = localStorage.getItem("role");
 
-    if (!name || !r) {
-      router.replace("/login");
-      return;
-    }
+    console.log('Nav Page');
+    console.log(name);
+    console.log(r);
+
+    // ❌ DO NOT redirect here — RoleWrapper already handles auth
+    if (!name || !r) return;
 
     setFullName(name);
     setRole(r);
-  }, [mounted, router]);
+  }, [mounted]);
 
-  // -------- LOGOUT FUNCTION --------
+  // ✅ Logout must clear localStorage
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     router.replace("/login");
   };
 
-  // Close dropdowns when clicking outside
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (userRef.current && !userRef.current.contains(e.target as Node)) {
         setUserOpen(false);
       }
-      if (notifyRef.current && !notifyRef.current.contains(e.target as Node)) {
-        setNotifyOpen(false);
-      }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
- 
   if (!mounted) return null;
 
   return (
     <div className="flex items-center justify-between p-4 relative">
-      {/* Search Bar */}
+      {/* Search */}
       <div className="hidden md:flex items-center gap-2 tex-xs rounded-full ring-[1.5px] ring-gray-300 px-2">
         <Image src="/search.png" alt="" width={14} height={14} />
         <input
@@ -74,45 +77,8 @@ const Navbar = () => {
         />
       </div>
 
-      {/* RIGHT SECTION */}
+      {/* Right Section */}
       <div className="flex items-center gap-6 justify-end w-full">
-        {/* Message Icon */}
-        {/* <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
-          <Image src="/message.png" alt="" width={20} height={20} />
-        </div> */}
-
-        {/* Notification */}
-        {/* <div ref={notifyRef} className="relative">
-          <div
-            className="relative bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer"
-            onClick={() => setNotifyOpen(!notifyOpen)}
-          >
-            <Image src="/announcement.png" alt="" width={20} height={20} />
-            <div className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center 
-                            bg-purple-500 text-white rounded-full text-[10px]">
-              1
-            </div>
-          </div>
-
-          {notifyOpen && (
-            <div className="absolute right-0 top-10 bg-white shadow-lg rounded-md w-56 py-2 z-50">
-              <div className="px-4 py-2 text-sm text-gray-600 border-b font-medium">
-                Notifications
-              </div>
-              <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                New order received
-              </div>
-              <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                Franchise request pending
-              </div>
-              <div className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                System update available
-              </div>
-            </div>
-          )}
-        </div> */}
-
-        {/* USER DROPDOWN */}
         <div ref={userRef} className="relative">
           <div
             className="flex items-center gap-3 cursor-pointer"

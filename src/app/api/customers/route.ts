@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { Prisma } from "@prisma/client";
 
 // ---------------------- POST: Create Customer & User ----------------------
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const {
       name,
       email,
@@ -25,18 +27,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      return NextResponse.json({ error: "Email already registered!" }, { status: 400 });
+    // ✅ Safe email check
+    if (email) {
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        return NextResponse.json(
+          { error: "Email already registered!" },
+          { status: 400 }
+        );
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // ✅ Correct field name
     const last = await prisma.customer.findFirst({
-      orderBy: { cusotmerCode: "desc" }
+      orderBy: { customerCode: "desc" },
     });
 
-    const lastCode = last?.cusotmerCode || "LI000";
+    const lastCode = last?.customerCode || "LI000";
     const lastNumber = parseInt(lastCode.replace("LI", ""), 10) || 0;
     const nextNumber = lastNumber + 1;
     const newCode = `LI${String(nextNumber).padStart(3, "0")}`;
@@ -54,17 +66,20 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      // ✅ Use UncheckedCreateInput + null (NOT undefined)
+      const customerData: Prisma.CustomerUncheckedCreateInput = {
+        name,
+        email,
+        phone,
+        address,
+        customerCode: newCode,
+        createdBy: createdBy ? Number(createdBy) : null,
+        employeeId: employeeId ? Number(employeeId) : null,
+        franchiseId: franchiseId ? Number(franchiseId) : null,
+      };
+
       const customer = await tx.customer.create({
-        data: {
-          name,
-          email,
-          phone,
-          address,
-          cusotmerCode: newCode,
-          createdBy: createdBy ? Number(createdBy) : null,
-          employee: employeeId ? { connect: { id: Number(employeeId) } } : undefined,
-          franchise: franchiseId ? { connect: { id: Number(franchiseId) } } : undefined,
-        },
+        data: customerData,
       });
 
       return { user, customer };
@@ -73,21 +88,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result, { status: 201 });
   } catch (err: any) {
     // Prisma unique constraint error
-      if (err.code === "P2002") {
-        const target = err.meta?.target?.[0];
+    if (err.code === "P2002") {
+      const target = err.meta?.target?.[0];
 
-        let message = "Duplicate value";
+      let message = "Duplicate value";
 
-        if (target === "ownerEmail" || target === "email") {
-          message = "Email already exists!";
-        } else if (target === "ownerPhone" || target === "phone") {
-          message = "Phone number already exists!";
-        } else if (target === "name" || target === "loginUserId") {
-          message = "Username is already taken!";
-        }
-
-        return NextResponse.json({ error: message }, { status: 400 });
+      if (target === "email") {
+        message = "Email already exists!";
+      } else if (target === "phone") {
+        message = "Phone number already exists!";
+      } else if (target === "loginUserId") {
+        message = "Username is already taken!";
       }
+
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
+
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
@@ -102,24 +118,19 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search") || "";
     const sortBy = searchParams.get("sortBy") || "id";
     const sortOrder = searchParams.get("sortOrder") || "desc";
-    const role = searchParams.get("role");   
+    const role = searchParams.get("role");
+    const createdBy = searchParams.get("createdBy");
 
     const where: any = {};
 
-    // 👇 IMPORTANT — receive logged-in user ID
-    const createdBy = searchParams.get("createdBy");
-
-    if (role === "ADMIN" || role === "SUPER_ADMIN") {
-      
-    }else{
-    // ✔ filter by login user
-        if (createdBy) {
-          where.createdBy = Number(createdBy);
-        }
+    // 🔐 Role-based filter
+    if (role !== "ADMIN" && role !== "SUPER_ADMIN") {
+      if (createdBy) {
+        where.createdBy = Number(createdBy);
+      }
     }
-    
 
-    // Search filter
+    // 🔍 Search filter
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
@@ -128,18 +139,15 @@ export async function GET(req: NextRequest) {
       ];
     }
 
-    
-
-    // Fetch all customers with pagination & count
     const [customers, count] = await prisma.$transaction([
       prisma.customer.findMany({
         where,
         orderBy: { [sortBy]: sortOrder },
         take,
         skip: take * (page - 1),
-        include: {
-          employee: true,   // 🔥 GET USER TABLE DATA ALSO
-        },
+        //include: {
+         // employee: true, // ✅ relation fetch is OK
+        //},
       }),
       prisma.customer.count({ where }),
     ]);

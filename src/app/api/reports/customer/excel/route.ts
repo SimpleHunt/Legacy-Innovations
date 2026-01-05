@@ -14,7 +14,9 @@ export async function GET(req: Request) {
         lte: new Date(endDate!),
       },
     },
-    include: { customer: true },
+    include: { 
+//customer: true 
+},
     orderBy: { createdAt: "desc" },
   });
 
@@ -22,9 +24,9 @@ export async function GET(req: Request) {
   const sheet = workbook.addWorksheet("Customer Report");
 
   sheet.addRow(["ID", "Customer", "Amount", "Date"]);
-  orders.forEach((o) =>
-    sheet.addRow([o.id, o.customer?.name, o.totalAmount, o.createdAt.toISOString().slice(0, 10)])
-  );
+  //orders.forEach((o) =>
+   // sheet.addRow([o.id, o.customer?.name, o.totalAmount, o.createdAt.toISOString().slice(0, //10)])
+ // );
 
   const buffer = await workbook.xlsx.writeBuffer();
   return new NextResponse(buffer, {

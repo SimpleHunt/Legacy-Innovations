@@ -16,7 +16,7 @@ export async function GET(req: Request) {
         lte: new Date(endDate!),
       },
     },
-    //include: { customer: true },
+    
     skip,
     take: limit,
     orderBy: { createdAt: "desc" },

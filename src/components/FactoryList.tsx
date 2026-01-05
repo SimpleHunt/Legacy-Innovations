@@ -6,7 +6,7 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import FiltersBar from "@/components/FiltersBar";
-import { Factory } from "@/generated";
+import { Factory } from "@prisma/client";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { getSessionUser } from "@/lib/getSessionUser";
 
@@ -14,14 +14,28 @@ interface Props {
   searchParams: { [key: string]: string | undefined };
 }
 
+// 🔹 Session user type
+type SessionUser = {
+  id: string;
+  role: string;
+  fullName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+};
+
 export default function FactoryList({ searchParams }: Props) {
   const [role, setRole] = useState("");
   const [data, setData] = useState<Factory[]>([]);
   const [count, setCount] = useState(0);
+  const [user, setUser] = useState<SessionUser | null>(null);
 
   useEffect(() => {
-    const user = getSessionUser();
-    setRole(user.role);
+    const sessionUser = getSessionUser();
+    
+    if (!sessionUser) return;
+
+    setUser(sessionUser);
+    setRole(sessionUser.role);
     fetchData();
   }, []);
 

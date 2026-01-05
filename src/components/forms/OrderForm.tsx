@@ -10,72 +10,74 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSessionUser } from "@/lib/getSessionUser";
 
+type SessionUser = {
+  id: string;
+  role: string;
+  email?: string | null;
+  franchiseId?: number | null;
+};
 
-const OrderForm = ({
-  type,
-  data,
-  onClose,
-  
-}: {
+type OrderFormProps = {
   type: "create" | "update";
   data?: any;
   onClose?: () => void;
-  
-}) => {
-  const [session, setSession] = useState<any>(null);
+};
+
+const OrderForm = ({ type, data, onClose }: OrderFormProps) => {
+  const router = useRouter();
+
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [customers, setCustomers] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  
-  
 
-  // 🔹 Load Session
+  // ✅ Load session ONCE
   useEffect(() => {
-    setSession(getSessionUser());
+    const sessionUser = getSessionUser();
+    if (sessionUser) setUser(sessionUser);
   }, []);
 
-  
-
-  // 🔹 Load Customers + Products
+  // ✅ Load customers & products after session exists
   useEffect(() => {
-    const loadCustomers = async () => {
+    if (!user) return;
+
+    console.log(user);
+
+    const loadData = async () => {
       try {
-        const user = getSessionUser();
-        const createdBy = user?.id;
-
-        
-
-        const customerRes = await axios.get(`/api/customers?createdBy=${createdBy}`);
-        const productRes = await axios.get("/api/products?isActive=true");
-
-        console.log(customerRes.data.customers)
+        const customerRes = await axios.get(
+          `/api/customers?createdBy=${user.id}`
+        );
+        const productRes = await axios.get(
+          "/api/products?isActive=true"
+        );
 
         setCustomers(customerRes.data.customers ?? []);
         setProducts(productRes.data.products ?? []);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setCustomers([]);
         setProducts([]);
       }
     };
-    loadCustomers();
-  }, []);
+
+    loadData();
+  }, [user]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    watch
+    watch,
   } = useForm<OrderSchema>({
     resolver: zodResolver(orderSchema),
-    //mode: "onChange",
-    defaultValues: data || {
-      gstPercent: 18,
-    },
+    defaultValues: data || { gstPercent: 18 },
   });
 
+  // ✅ Auto-generate order number (create only)
   useEffect(() => {
-  if (type === "create") {
+    if (type !== "create") return;
+
     const getLastCode = async () => {
       try {
         const res = await axios.get("/api/orders/lastCode");
@@ -86,15 +88,11 @@ const OrderForm = ({
     };
 
     getLastCode();
-  }
-}, [type, setValue]);
+  }, [type, setValue]);
 
-
-
-  const router = useRouter();
   const onSubmit = handleSubmit(async (formData) => {
     try {
-      if (!session) {
+      if (!user) {
         toast.error("User session not found!");
         return;
       }
@@ -105,7 +103,6 @@ const OrderForm = ({
         productId: Number(formData.productId),
         climate: formData.climate,
         terrain: formData.terrain,
-        //expectedDeliveryDate: new Date(formData.expectedDeliveryDate).toISOString(),
         unitPrice: Number(formData.unitPrice),
         discount: Number(formData.discount),
         unitPriceCost: Number(formData.unitPriceCost),
@@ -115,13 +112,20 @@ const OrderForm = ({
         discountDate: new Date("2025-12-12").toISOString(),
         defectedStatus: 0,
 
-        createdBy: Number(session.id),
-        employeeId: session.role === "EMPLOYEE" ? Number(session.id) : null,
-        franchiseId: session.role === "FRANCHISE" ? Number(session.franchiseId) : null,
-      };
+        
 
-      const user = getSessionUser();
-     
+        createdBy: Number(user.id),
+        employeeId:
+          user.role === "EMPLOYEE" ? Number(user.id) : null,
+        franchiseId:
+          user.role === "FRANCHISE"
+            ? Number(user.franchiseId)
+            : null,
+      };
+      // console.log(user.role);
+      // console.log(user.id);
+      // console.log(user.franchiseId);
+      // console.log(payload);
 
       if (type === "create") {
         await axios.post("/api/orders", payload);
@@ -132,90 +136,65 @@ const OrderForm = ({
       }
 
       router.refresh();
-
-      //Close modal
       onClose?.();
-
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || "Something went wrong");
+      toast.error(
+        error?.response?.data?.error || "Something went wrong"
+      );
     }
   });
 
-  
-const watchProductId = watch("productId");
-const watchStock = watch("stock");
-const watchUnitPrice = watch("unitPrice");
-const watchDiscount = watch("discount");
-const watchGstPercent = watch("gstPercent");
-const watchGstAmountValue = watch("gstAmountValue");
+  // 🔢 Watch fields
+  const watchProductId = watch("productId");
+  const watchStock = watch("stock");
+  const watchUnitPrice = watch("unitPrice");
+  const watchDiscount = watch("discount");
+  const watchGstPercent = watch("gstPercent");
 
+  // ✅ Auto-fill when product changes
+  useEffect(() => {
+    if (!watchProductId) return;
 
-useEffect(() => {
-  if (!watchProductId) return;
+    const product = products.find(
+      (p) => p.id === Number(watchProductId)
+    );
+    if (!product) return;
 
-  const product = products.find((p) => p.id === Number(watchProductId));
-  if (!product) return;
-
-  // Auto-fill fields when product changes
-  setValue("unitPrice", product.price);
-  setValue("unitPriceCost", product.price);   
-  setValue("stock", 1);                       
-  setValue("discount", 0);                    
-  setValue("totalAmount", product.price); 
-   
-
-}, [watchProductId, products, setValue]);
-
-useEffect(() => {
-  let stock = Number(watchStock);
-  let unitPrice = Number(watchUnitPrice);
-  let discount = Number(watchDiscount);
-  let gstPercent = Number(watchGstPercent);
-  let gstAmountValue = Number(watchGstAmountValue);
-
-  // --- STOCK VALIDATION ---
-  if (stock < 1) {
-    stock = 1;
+    setValue("unitPrice", product.price);
+    setValue("unitPriceCost", product.price);
     setValue("stock", 1);
-  }
-
-  // --- DISCOUNT VALIDATION ---
-  if (discount < 0) {
-    discount = 0;
     setValue("discount", 0);
-  }
-  if (discount > unitPrice) {
-    discount = unitPrice;
-    setValue("discount", unitPrice);
-  }
+    setValue("totalAmount", product.price);
+  }, [watchProductId, products, setValue]);
 
-  // --- UNIT PRICE VALIDATION ---
-  if (unitPrice < 0) {
-    unitPrice = 0;
-    setValue("unitPrice", 0);
-  }
+  // ✅ Auto-calc totals
+  useEffect(() => {
+    let stock = Number(watchStock) || 1;
+    let unitPrice = Number(watchUnitPrice) || 0;
+    let discount = Number(watchDiscount) || 0;
+    let gstPercent = Number(watchGstPercent) || 0;
 
-  // --- GST VALIDATION ---
-  if (gstPercent < 0) {
-    gstPercent = 0;
-    setValue("gstPercent", 0);
-  }
+    if (stock < 1) stock = 1;
+    if (discount < 0) discount = 0;
+    if (discount > unitPrice) discount = unitPrice;
 
-  // --- CALCULATIONS ---
-  const unitPriceCost = unitPrice - discount;
-  setValue("unitPriceCost", unitPriceCost < 0 ? 0 : unitPriceCost);
+    const unitPriceCost = unitPrice - discount;
+    setValue("unitPriceCost", unitPriceCost);
 
-  // GST amount value
-  const gstAmountValue1 = (unitPriceCost * stock * gstPercent) / 100;
-  setValue("gstAmountValue", gstAmountValue1);
+    const gstAmountValue =
+      (unitPriceCost * stock * gstPercent) / 100;
+    setValue("gstAmountValue", gstAmountValue);
 
-  const gstValue = (unitPriceCost * stock * gstPercent) / 100;
-  const totalAmount = (unitPriceCost * stock) + gstValue;
-  setValue("totalAmount", totalAmount);
-
-}, [watchStock, watchUnitPrice, watchDiscount, watchGstPercent, watchGstAmountValue, setValue]);
-
-
+    const totalAmount =
+      unitPriceCost * stock + gstAmountValue;
+    setValue("totalAmount", totalAmount);
+  }, [
+    watchStock,
+    watchUnitPrice,
+    watchDiscount,
+    watchGstPercent,
+    setValue,
+  ]);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -223,7 +202,9 @@ useEffect(() => {
         {type === "create" ? "Create a new Order" : "Update Order"}
       </h1>
 
-      <span className="text-xs text-gray-500 font-medium">Order Information</span>
+      <span className="text-xs text-gray-500 font-medium">
+        Order Information
+      </span>
 
       <div className="flex justify-between flex-wrap gap-4">
 

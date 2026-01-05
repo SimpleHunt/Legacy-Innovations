@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
 import TableSearch from '@/components/TableSearch';
 import FiltersBar from '@/components/FiltersBar';
-import { User } from "@/generated";
+import { User } from "@prisma/client";
 import { ITEM_PER_PAGE } from '@/lib/settings';
 import { getSessionUser } from '@/lib/getSessionUser';
 import { useSearchParams } from 'next/navigation';
@@ -15,9 +15,16 @@ interface Props {
   searchParams: { [key: string]: string | undefined };
 }
 
+type SessionUser = {
+  id: string;
+  role: string;
+  email?: string | null;
+};
+
 export default function UserList({  }: Props) {
   const searchParams = useSearchParams();
   const [role, setRole] = useState("");
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [data, setData] = useState<User[]>([]);
   const [count, setCount] = useState(0);
 
@@ -29,23 +36,18 @@ export default function UserList({  }: Props) {
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const isActive = searchParams.get("isActive") || "";
 
-  useEffect(() => {
-    const user = getSessionUser();
-    setRole(user.role);
-    fetchData(user);
-  }, []);
-    useEffect(() => {
-      const user = getSessionUser();
-      if (user) fetchData(user);
-    }, [searchParams]); 
+useEffect(() => {
+  const sessionUser = getSessionUser();
+  if (!sessionUser) return;
+
+  setUser(sessionUser);
+  setRole(sessionUser.role);
+
+  fetchData(sessionUser);
+}, [searchParams]);
+
   
-  type SessionUser = {
-    fullName: string;
-    role: string;
-    id: string;
-    email: string;
-    phone: string;
-  };
+  
 
   const fetchData = async (user : SessionUser) => {
     

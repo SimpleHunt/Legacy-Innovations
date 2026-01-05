@@ -237,13 +237,13 @@ const loadFilteredSummary = async () => {
               </div>
 
               {/* FRANCHISE */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-600">Franchise</span>
                 <select value={selectedFranchise} onChange={onFilterChange(setSelectedFranchise)} className="text-xs border rounded-md px-2 py-1 bg-white">
                   <option value="">Select Franchise</option>
                   {franchise.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
-              </div>
+              </div> */}
 
               {/* INSIDE SALES */}
               <div className="flex items-center gap-2">

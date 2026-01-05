@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
 import TableSearch from '@/components/TableSearch';
 import FiltersBar from '@/components/FiltersBar';
-import { enquiry } from "@/generated";
+import { enquiry } from "@prisma/client";
 import { ITEM_PER_PAGE } from '@/lib/settings';
 import { getSessionUser } from '@/lib/getSessionUser';
 import { useSearchParams } from 'next/navigation';
@@ -14,11 +14,17 @@ import { useSearchParams } from 'next/navigation';
 interface Props {
   searchParams: { [key: string]: string | undefined };
 }
+type SessionUser = {
+  id: string;
+  role: string;
+  email?: string | null;
+};
 
 export default function FranchiseEnquiryList({  }: Props) {
    const searchParams = useSearchParams()
   const [role, setRole] = useState("");
   const [data, setData] = useState<enquiry[]>([]);
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [count, setCount] = useState(0);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -30,22 +36,20 @@ export default function FranchiseEnquiryList({  }: Props) {
   const isActive = searchParams.get("isActive") || "";
 
   useEffect(() => {
-    const user = getSessionUser();
-    setRole(user.role);
-    fetchData(user);
+    const sessionUser = getSessionUser();
+    if (!sessionUser) return;
+
+    setUser(sessionUser);
+    setRole(sessionUser.role);
+    
   }, []);
     useEffect(() => {
-      const user = getSessionUser();
-      if (user) fetchData(user);
+     // const user = getSessionUser();
+       if (!user) return;
+      fetchData(user);
     }, [searchParams]); 
 
-    type SessionUser = {
-    fullName: string;
-    role: string;
-    id: string;
-    email: string;
-    phone: string;
-  };
+    
 
   const fetchData = async (user: SessionUser) => {
     

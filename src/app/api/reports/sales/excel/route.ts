@@ -12,7 +12,9 @@ export async function GET(req: NextRequest) {
         lte: new Date(endDate),
       },
     },
-    include: { customer: true },
+    include: { 
+//customer: true 
+},
     orderBy: { createdAt: "desc" },
   });
 

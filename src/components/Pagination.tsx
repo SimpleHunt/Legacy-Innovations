@@ -3,6 +3,16 @@
 import { useRouter } from "next/navigation";
 import { getSessionUser } from "@/lib/getSessionUser";
 import { ITEM_PER_PAGE } from "@/lib/settings";
+import { useState, useEffect } from "react";
+
+
+type SessionUser = {
+  id: string;
+  role: string;
+  fullName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+};
 
 const Pagination = ({ page, count }: { page: number; count: number }) => {
   const router = useRouter();
@@ -10,21 +20,28 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
   const safeCount = Number(count) || 0;
   const safePerPage = Number(ITEM_PER_PAGE) || 10;
   const totalPages = Math.max(1, Math.ceil(safeCount / safePerPage));
+  const [user, setUser] = useState<SessionUser | null>(null);
 
   const changePage = (newPage: number) => {
-    const user = getSessionUser();
+    //const user = getSessionUser();
     const params = new URLSearchParams(window.location.search);
 
-    params.set("page", String(newPage));
-    params.set("role", user.role);
+    const sessionUser = getSessionUser();
+    if (!sessionUser) return;
 
-    if (["FRANCHISE", "EMPLOYEE"].includes(user.role)) {
-      params.set("createdBy", user.id);
+    setUser(sessionUser);
+    //setRole(sessionUser.role);
+
+    params.set("page", String(newPage));
+    params.set("role", sessionUser.role);
+
+    if (["FRANCHISE", "EMPLOYEE"].includes(sessionUser.role)) {
+      params.set("createdBy", sessionUser.id);
       params.delete("customerId");
     }
 
-    if (user.role === "CUSTOMER") {
-      params.set("customerId", user.id);
+    if (sessionUser.role === "CUSTOMER") {
+      params.set("customerId", sessionUser.id);
       params.delete("createdBy");
     }
 

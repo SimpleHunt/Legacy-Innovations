@@ -3,7 +3,7 @@ export const revalidate = 0;
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { Product } from "@/generated";
+import { Product } from "@prisma/client";
 import FormModal from "@/components/FromModel";
 import FiltersBar from "@/components/FiltersBar";
 import { ITEM_PER_PAGE } from "@/lib/settings";

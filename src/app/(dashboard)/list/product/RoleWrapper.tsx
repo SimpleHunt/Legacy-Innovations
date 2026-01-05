@@ -7,7 +7,7 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import FiltersBar from "@/components/FiltersBar";
-import { Product } from "@/generated";
+import { Product } from "@prisma/client";
 import Image from "next/image";
 
 export default function RoleWrapper({

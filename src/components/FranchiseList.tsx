@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
 import TableSearch from '@/components/TableSearch';
 import FiltersBar from '@/components/FiltersBar';
-import { Franchise } from "@/generated";
+import { Franchise } from "@prisma/client";
 import { ITEM_PER_PAGE } from '@/lib/settings';
 import { getSessionUser } from '@/lib/getSessionUser';
 import { useSearchParams } from 'next/navigation';
@@ -15,10 +15,16 @@ interface Props {
   searchParams: { [key: string]: string | undefined };
 }
 
+type SessionUser = {
+  id: string;
+  role: string;
+  email?: string | null;
+};
 export default function FranchiseList({  }: Props) {
    const searchParams = useSearchParams()
   const [role, setRole] = useState("");
   const [data, setData] = useState<Franchise[]>([]);
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [count, setCount] = useState(0);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -29,23 +35,18 @@ export default function FranchiseList({  }: Props) {
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const isActive = searchParams.get("isActive") || "";
 
-  useEffect(() => {
-    const user = getSessionUser();
-    setRole(user.role);
-    fetchData(user);
-  }, []);
-    useEffect(() => {
-      const user = getSessionUser();
-      if (user) fetchData(user);
-    }, [searchParams]); 
+ useEffect(() => {
+  const sessionUser = getSessionUser();
+  if (!sessionUser) return;
 
-  type SessionUser = {
-    fullName: string;
-    role: string;
-    id: string;
-    email: string;
-    phone: string;
-  };
+  setUser(sessionUser);
+  setRole(sessionUser.role);
+
+  fetchData(sessionUser);
+}, [searchParams]);
+
+
+  
 
   const fetchData = async (user: SessionUser) => {
     

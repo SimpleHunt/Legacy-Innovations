@@ -10,7 +10,7 @@ export default async function Page({ searchParams }: { searchParams: { [key: str
           {/* PAGE CONTENT */}
           <div className="flex-1">
             <RoleWrapper allowedRoles={["SUPER_ADMIN", "ADMIN", "FRANCHISE", "EMPLOYEE"]}>
-              <CustomerList searchParams={searchParams} />
+              <CustomerList  />
             </RoleWrapper>
             
           </div>

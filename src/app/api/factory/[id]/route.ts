@@ -19,7 +19,7 @@ export async function GET(
     const factory = await prisma.factory.findUnique({
       where: { id: factoryId },
       include: {
-        order: true,
+        //order: true,
       },
     });
 

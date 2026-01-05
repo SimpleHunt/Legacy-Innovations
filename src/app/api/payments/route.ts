@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const payments = await prisma.payment.findMany({
-      include: { order: true },
+      include: { 
+//order: true
+ },
       orderBy: { id: "desc" },
     });
 

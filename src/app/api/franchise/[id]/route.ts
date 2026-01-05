@@ -25,8 +25,8 @@ export async function GET(
     const franchise = await prisma.franchise.findUnique({
       where: { id: franchiseId },
       include: {
-        customers: true,
-        orders: true,
+        //customers: true,
+        //orders: true,
       },
     });
 

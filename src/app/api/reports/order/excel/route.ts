@@ -20,10 +20,10 @@ export async function GET(req: Request) {
         },
       },
       include: {
-        customer: true,
-        franchise: true,
-        product: true,
-        employee: true,
+        //customer: true,
+        //franchise: true,
+        //product: true,
+        //employee: true,
       },
     });
 
@@ -40,17 +40,17 @@ export async function GET(req: Request) {
       { header: "Date", key: "date" },
     ];
 
-    orders.forEach((o) => {
-      sheet.addRow({
-        id: o.id,
-        customer: o.customer?.name || "N/A",
-        franchise: o.franchise?.name || "N/A",
-        product: o.product?.name || "N/A",
-        employee: o.employee?.fullName || "N/A",
-        amount: o.totalAmount,
-        date: o.createdAt.toISOString().slice(0, 10),
-      });
-    });
+    //orders.forEach((o) => {
+      //sheet.addRow({
+      //  id: o.id,
+       // customer: o.customer?.name || "N/A",
+       // franchise: o.franchise?.name || "N/A",
+       // product: o.product?.name || "N/A",
+       // employee: o.employee?.fullName || "N/A",
+        //amount: o.totalAmount,
+       // date: o.createdAt.toISOString().slice(0, 10),
+      //});
+    //});
 
     const buffer = await workbook.xlsx.writeBuffer();
     return new NextResponse(buffer, {

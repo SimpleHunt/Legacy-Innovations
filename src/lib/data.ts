@@ -17,6 +17,6 @@ export async function getFranchises() {
 export async function getOrders() {
   return prisma.order.findMany({
     //include: { customer: true, franchise: true, items: true },
-    include: { customer: true, franchise: true },
+    //include: { customer: true, franchise: true },
   });
 }

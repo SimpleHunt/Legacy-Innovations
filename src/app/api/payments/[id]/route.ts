@@ -15,7 +15,9 @@ export async function GET(
 
     const payment = await prisma.payment.findUnique({
       where: { id: Number(id) },
-      include: { order: true },
+      include: { 
+//order: true
+ },
     });
 
     if (!payment) {

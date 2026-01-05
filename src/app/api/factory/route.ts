@@ -3,7 +3,9 @@ import prisma from "@/lib/db";
 
 export async function GET() {
   try {
-    const items = await prisma.factory.findMany({ include: { order: true } });
+    const items = await prisma.factory.findMany({ include: { 
+//order: true
+ } });
     return NextResponse.json(items);
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });

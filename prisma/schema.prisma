@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -9,155 +10,155 @@ datasource db {
 }
 
 model User {
-  id                           Int         @id @default(autoincrement())
   email                        String?     @unique
   password                     String?
-  fullname                     String?
+  fullName                     String?
   phone                        String      @unique
-  role                         role
-  isactive                     Boolean?    @default(true)
-  loginuserid                  String?     @unique
-  createdat                    DateTime?   @default(now()) @db.Timestamp(6)
-  updatedat                    DateTime?   @default(now()) @db.Timestamp(6)
+  role                         Role
+  isActive                     Boolean     @default(true)
+  createdAt                    DateTime    @default(now())
+  updatedAt                    DateTime    @updatedAt
+  loginUserId                  String?     @unique
+  id                           Int         @id @default(autoincrement())
   Customer                     Customer[]
   Franchise                    Franchise[]
-  Order_Order_createdbyToUser  Order[]     @relation("Order_createdbyToUser")
-  Order_Order_employeeidToUser Order[]     @relation("Order_employeeidToUser")
+  Order_Order_createdByToUser  Order[]     @relation("Order_createdByToUser")
+  Order_Order_employeeIdToUser Order[]     @relation("Order_employeeIdToUser")
   Product                      Product[]
 }
 
 model enquiry {
-  enquiryid  Int       @id @default(autoincrement())
+  enquiryID  Int      @id @default(autoincrement())
   name       String
-  owneremail String    @unique
-  ownername  String?
-  ownerphone String    @unique
+  ownerEmail String   @unique
+  ownerName  String?
+  ownerPhone String   @unique
   address    String?
   status     Int
-  createdby  Int?
-  createdat  DateTime? @default(now()) @db.Timestamp(6)
-  updatedat  DateTime? @default(now()) @db.Timestamp(6)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  createdBy  Int?
 }
 
 model Franchise {
-  id             Int        @id @default(autoincrement())
   name           String
   code           String     @unique
   address        String?
-  owneremail     String     @unique
-  ownername      String?
-  ownerphone     String     @unique
-  companyprofile String?
-  companykyc     String?
-  bankdetails    String?
-  itrdocs        String?
-  isactive       Boolean?   @default(true)
-  createdby      Int?
-  createdat      DateTime?  @default(now()) @db.Timestamp(6)
-  updatedat      DateTime?  @default(now()) @db.Timestamp(6)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  isActive       Boolean    @default(true)
+  ownerEmail     String     @unique
+  ownerName      String?
+  ownerPhone     String     @unique
+  companyProfile String?
+  companyKyc     String?
+  bankDetails    String?
+  itrDocs        String?
+  id             Int        @id @default(autoincrement())
+  createdBy      Int?
   Customer       Customer[]
-  User           User?      @relation(fields: [createdby], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_franchise_creator")
+  User           User?      @relation(fields: [createdBy], references: [id])
   Order          Order[]
 }
 
 model Customer {
-  id           Int        @id @default(autoincrement())
   name         String
   email        String?
   phone        String?
   address      String?
-  customertype String?
-  cusotmercode String     @unique
-  franchiseid  Int?
-  createdby    Int?
-  employeeid   Int?
-  createdat    DateTime?  @default(now()) @db.Timestamp(6)
-  updatedat    DateTime?  @default(now()) @db.Timestamp(6)
-  User         User?      @relation(fields: [employeeid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_employee")
-  Franchise    Franchise? @relation(fields: [franchiseid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_franchise")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  customerType String?
+  id           Int        @id @default(autoincrement())
+  franchiseId  Int?
+  createdBy    Int?
+  employeeId   Int?
+  customerCode String     @unique
+  User         User?      @relation(fields: [employeeId], references: [id])
+  Franchise    Franchise? @relation(fields: [franchiseId], references: [id])
   Order        Order[]
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
   name        String
   price       Float
-  stock       Int?      @default(0)
-  isactive    Boolean?  @default(true)
+  stock       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   size        String
-  productcode String    @unique
-  createdbyid Int?
-  createdat   DateTime? @default(now()) @db.Timestamp(6)
-  updatedat   DateTime? @default(now()) @db.Timestamp(6)
+  id          Int      @id @default(autoincrement())
+  productCode String   @unique
+  createdById Int?
   Order       Order[]
-  User        User?     @relation(fields: [createdbyid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_creator")
+  User        User?    @relation(fields: [createdById], references: [id])
 }
 
 model Order {
+  orderNumber                 String     @unique
+  status                      String     @default("PENDING")
+  expectedDeliveryDate        DateTime?
+  defectedStatus              Int
+  defExpectedDate             DateTime   @default(now())
+  unitPrice                   Float      @default(0)
+  unitPriceCost               Float      @default(0)
+  discountDate                DateTime
+  discount                    Float      @default(0)
+  gstPercentage               Float      @default(0)
+  gstAmount                   Float      @default(0)
+  totalAmount                 Float      @default(0)
+  createdAt                   DateTime   @default(now())
+  updatedAt                   DateTime   @updatedAt
+  climate                     Climate
+  employeeId                  Int?
+  createdBy                   Int?
+  productId                   Int
+  terrain                     Terrain
   id                          Int        @id @default(autoincrement())
-  ordernumber                 String     @unique
-  status                      String?    @default("PENDING")
-  expecteddeliverydate        DateTime?  @db.Timestamp(6)
-  defectedstatus              Int?
-  defexpecteddate             DateTime?  @default(now()) @db.Timestamp(6)
-  unitprice                   Float?     @default(0)
-  unitpricecost               Float?     @default(0)
-  discountdate                DateTime   @db.Timestamp(6)
-  discount                    Float?     @default(0)
-  gstpercentage               Float?     @default(0)
-  gstamount                   Float?     @default(0)
-  totalamount                 Float?     @default(0)
-  climate                     climate
-  terrain                     terrain
-  employeeid                  Int?
-  createdby                   Int?
-  productid                   Int
-  franchiseid                 Int?
-  customerid                  Int?
-  createdat                   DateTime?  @default(now()) @db.Timestamp(6)
-  updatedat                   DateTime?  @default(now()) @db.Timestamp(6)
+  franchiseId                 Int?
+  customerId                  Int?
   Factory                     Factory?
-  User_Order_createdbyToUser  User?      @relation("Order_createdbyToUser", fields: [createdby], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_created_by")
-  Customer                    Customer?  @relation(fields: [customerid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_customer")
-  User_Order_employeeidToUser User?      @relation("Order_employeeidToUser", fields: [employeeid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_employee")
-  Franchise                   Franchise? @relation(fields: [franchiseid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_franchise")
-  Product                     Product    @relation(fields: [productid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_product")
+  User_Order_createdByToUser  User?      @relation("Order_createdByToUser", fields: [createdBy], references: [id])
+  Customer                    Customer?  @relation(fields: [customerId], references: [id])
+  User_Order_employeeIdToUser User?      @relation("Order_employeeIdToUser", fields: [employeeId], references: [id])
+  Franchise                   Franchise? @relation(fields: [franchiseId], references: [id])
+  Product                     Product    @relation(fields: [productId], references: [id])
   Payment                     Payment[]
 }
 
 model Factory {
   id           Int       @id @default(autoincrement())
-  orderid      Int       @unique
-  orderstatus  String?   @default("PROCESSING")
-  deliverydate DateTime? @db.Timestamp(6)
-  createdat    DateTime? @default(now()) @db.Timestamp(6)
-  Order        Order     @relation(fields: [orderid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_factory_order")
+  orderId      Int       @unique
+  orderStatus  String    @default("PROCESSING")
+  deliveryDate DateTime?
+  createdAt    DateTime  @default(now())
+  Order        Order     @relation(fields: [orderId], references: [id])
 }
 
 model Payment {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   amount    Float
-  orderid   Int
-  status    String?   @default("PENDING")
+  orderId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String   @default("PENDING")
   method    String
-  createdat DateTime? @default(now()) @db.Timestamp(6)
-  updatedat DateTime? @default(now()) @db.Timestamp(6)
-  Order     Order     @relation(fields: [orderid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_payment_order")
+  Order     Order    @relation(fields: [orderId], references: [id])
 }
 
-enum climate {
+enum Climate {
   HUMID
   COLD
 }
 
-enum paymentmethod {
+enum PaymentMethod {
   CASH
   CARD
   UPI
   BANK_TRANSFER
 }
 
-enum role {
+enum Role {
   SUPER_ADMIN
   ADMIN
   FACTORY
@@ -166,7 +167,7 @@ enum role {
   CUSTOMER
 }
 
-enum terrain {
+enum Terrain {
   FLAT
   HILL_STATION
 }

@@ -1,8 +1,19 @@
+# Node / Next
 node_modules
 .next
+out
+npm-debug.log
+
+# Prisma generated (CRITICAL)
+src/generated
+node_modules/.prisma
+
+# Git / OS
 .git
 .gitignore
+.DS_Store
+
+# Env & configs
 .env
-npm-debug.log
 Dockerfile
 docker-compose.yml

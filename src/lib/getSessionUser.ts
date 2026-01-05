@@ -1,11 +1,16 @@
-"use client";
+export function getSessionUser() {
+  if (typeof window === "undefined") return null;
 
-export const getSessionUser = () => {
-  const fullName = sessionStorage.getItem("fullName") || "";
-  const role = sessionStorage.getItem("role") || "";
-  const id = sessionStorage.getItem("id") || "";
-   const email = sessionStorage.getItem("email") || "";
-    const phone = sessionStorage.getItem("phone") || "";
+  const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
 
-  return { fullName, role, id ,email,phone};
-};
+  if (!id || !role) return null;
+
+  return {
+    id,
+    role,
+    fullName: localStorage.getItem("fullName"),
+    email: localStorage.getItem("email"),
+    phone: localStorage.getItem("phone"),
+  };
+}

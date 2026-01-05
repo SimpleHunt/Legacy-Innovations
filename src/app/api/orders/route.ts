@@ -75,8 +75,8 @@ export async function GET(req: NextRequest) {
         skip: (page - 1) * take,
         take,
         include: {
-          customer: true,
-          product: true,
+          //customer: true,
+          //product: true,
         },
       }),
       prisma.order.count({ where }),

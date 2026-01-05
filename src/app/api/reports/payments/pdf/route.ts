@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     where: {
       createdAt: { gte: new Date(startDate), lte: new Date(endDate) },
     },
-    include: { order: { include: { customer: true, franchise: true } } },
+    
   });
 
   const doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -26,16 +26,7 @@ export async function GET(req: Request) {
   doc.fontSize(18).text("Payment Report", { align: "center" }).moveDown();
   doc.fontSize(12);
 
-  payments.forEach((p, i) => {
-    doc.text(
-      `${i + 1}. Customer: ${p.order?.customer?.name || "N/A"}, Franchise: ${
-        p.order?.franchise?.name || "N/A"
-      }, Amount: ${p.amount}, Date: ${p.createdAt.toISOString().slice(0, 10)}, Status: ${
-        p.status
-      }, Method: ${p.method}`
-    );
-  });
-
+  
   doc.end();
   const pdfBuffer = Buffer.concat(buffers);
 

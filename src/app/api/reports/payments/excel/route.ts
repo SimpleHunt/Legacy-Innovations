@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     where: {
       createdAt: { gte: new Date(startDate), lte: new Date(endDate) },
     },
-    include: { order: { include: { customer: true, franchise: true } } },
+    
   });
 
   const workbook = new ExcelJS.Workbook();
@@ -31,17 +31,7 @@ export async function GET(req: Request) {
     { header: "Method", key: "method" },
   ];
 
-  payments.forEach((p) =>
-    sheet.addRow({
-      id: p.id,
-      customer: p.order?.customer?.name || "N/A",
-      franchise: p.order?.franchise?.name || "N/A",
-      amount: p.amount,
-      date: p.createdAt.toISOString().slice(0, 10),
-      status: p.status,
-      method: p.method,
-    })
-  );
+
 
   const buffer = await workbook.xlsx.writeBuffer();
   return new NextResponse(buffer, {

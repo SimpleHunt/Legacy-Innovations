@@ -68,7 +68,7 @@ const FranchiseListPage = () => {
 
    useEffect(() => {
      const user = getSessionUser();
-   setRole(user.role);
+   //setRole(user.role);
    }, []);
 
 

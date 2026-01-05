@@ -3,24 +3,23 @@ import { z } from "zod";
 export const productSchema = z.object({
   productName: z.string().min(1, { message: "Product Name is required!" }),
   productSize: z.string().min(1, { message: "Product Size is required!" }),
-  // productPrice: z
-  //   .string()
-  //   .min(1, { message: "Product Price is required!" })
-  //   .transform((val) => Number(val))
-  //   .refine((val) => !isNaN(val), "Price must be a valid number"),
-  // productStock: z
-  //   .string()
-  //   .min(1, { message: "Product Stock is required!" })
-  //   .transform((val) => Number(val))
-  //   .refine((val) => !isNaN(val), "Stock must be a valid number"),
   productPrice: z
-    .number()
-    .refine((val) => val > 0, { message: "Price must be greater than 0" }),
+    .string()
+    .min(1, { message: "Product Price is required!" })
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Stock must be a valid number!",
+    })
+    .transform((num) => num.toString()),
 
   productStock: z
-    .number()
-    .refine((val) => val >= 0, { message: "Stock cannot be negative" }),
-    productCode: z.string().min(1, { message: "Product Code is required!" }),
+    .string()
+    .min(1, { message: "Product Stock is required!" })
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Stock must be a valid number!",
+    })
+    .transform((num) => num.toString()),
+  
+     productCode: z.string().min(1, { message: "Product Code is required!" }),
 });
 
 export type ProductSchema = z.infer<typeof productSchema>;

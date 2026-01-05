@@ -13,48 +13,65 @@ const menuItems = [
         icon: "/home.png",
         label: "Dashboard",
         href: "/dashboard",
-        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+        visible: [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "FACTORY",
+          "EMPLOYEE",
+          "FRANCHISE",
+          "CUSTOMER",
+        ],
       },
       {
         icon: "/product.png",
         label: "Products",
         href: "/list/product",
-        visible: ["SUPER_ADMIN","ADMIN","FRANCHISE","FACTORY","EMPLOYEE","CUSTOMER"],
+        visible: [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "FRANCHISE",
+          "FACTORY",
+          "EMPLOYEE",
+          "CUSTOMER",
+        ],
       },
       {
         icon: "/franchise.png",
         label: "Franchise",
         href: "/list/franchise",
-        visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE"],
+        visible: ["SUPER_ADMIN", "ADMIN", "EMPLOYEE"],
       },
       {
         icon: "/franchise.png",
         label: "Franchise Enquiry",
         href: "/list/enquiry",
-        visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE"],
+        visible: ["SUPER_ADMIN", "ADMIN", "EMPLOYEE"],
       },
       {
         icon: "/customer.png",
         label: "Customer",
         href: "/list/customer",
-        visible: ["SUPER_ADMIN","ADMIN","EMPLOYEE","FRANCHISE"],
+        visible: ["SUPER_ADMIN", "ADMIN", "EMPLOYEE", "FRANCHISE"],
       },
-      
       {
         icon: "/order.png",
         label: "Order Details",
         href: "/list/order",
-        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+        visible: [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "FACTORY",
+          "EMPLOYEE",
+          "FRANCHISE",
+          "CUSTOMER",
+        ],
       },
-      
       {
         icon: "/customer.png",
         label: "User Details",
         href: "/list/user",
-        visible: ["SUPER_ADMIN","ADMIN"],
+        visible: ["SUPER_ADMIN", "ADMIN"],
       },
-      
-      
     ],
   },
   {
@@ -66,50 +83,14 @@ const menuItems = [
         href: "/reports",
         visible: ["SUPER_ADMIN", "ADMIN"],
       },
-      {
-        icon: "/salesReport.png",
-        label: "Report",
-        href: "/reports/sales",
-        visible: ["SUPER_ADMIN", "ADMIN"],
-      },
       // {
       //   icon: "/salesReport.png",
-      //   label: "Product Report",
-      //   href: "/reports/product",
-      //   visible: ["SUPER_ADMIN", "ADMIN"],
-      // },
-      // {
-      //   icon: "/salesReport.png",
-      //   label: "Sale Report",
+      //   label: "Report",
       //   href: "/reports/sales",
       //   visible: ["SUPER_ADMIN", "ADMIN"],
       // },
-      // {
-      //   icon: "/customerReport.png",
-      //   label: "Customer Report",
-      //   href: "/reports/customer",
-      //   visible: ["SUPER_ADMIN", "ADMIN"],
-      // },
-    //   {
-    //     icon: "/franchiseReport.png",
-    //     label: "Franchise Report",
-    //     href: "/reports/franchise",
-    //     visible: ["SUPER_ADMIN", "ADMIN"],
-    //   },
-    //   {
-    //     icon: "/franchiseReport.png",
-    //     label: "Order Report",
-    //     href: "/reports/order",
-    //     visible: ["SUPER_ADMIN", "ADMIN"],
-    //   },
-    //   {
-    //     icon: "/franchiseReport.png",
-    //     label: "Payment Report",
-    //     href: "/reports/payment",
-    //     visible: ["SUPER_ADMIN", "ADMIN"],
-    //   },
-    ],
-  },
+    ],
+  },
   {
     title: "OTHER",
     items: [
@@ -117,12 +98,26 @@ const menuItems = [
         icon: "/profile.png",
         label: "Profile",
         href: "/profile",
-        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+        visible: [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "FACTORY",
+          "EMPLOYEE",
+          "FRANCHISE",
+          "CUSTOMER",
+        ],
       },
       {
         icon: "/logout.png",
         label: "Logout",
-        visible: ["SUPER_ADMIN","ADMIN","FACTORY","EMPLOYEE","FRANCHISE","CUSTOMER"],
+        visible: [
+          "SUPER_ADMIN",
+          "ADMIN",
+          "FACTORY",
+          "EMPLOYEE",
+          "FRANCHISE",
+          "CUSTOMER",
+        ],
       },
     ],
   },
@@ -133,23 +128,24 @@ const Menu = () => {
   const [role, setRole] = useState<string>("");
   const [mounted, setMounted] = useState(false);
 
-  // ✅ Detect client mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // ✅ Read from localStorage
   useEffect(() => {
     if (!mounted) return;
-    const storedRole = sessionStorage.getItem("role");
+    const storedRole = localStorage.getItem("role");
     setRole(storedRole || "");
   }, [mounted]);
 
+  // ✅ Clear localStorage on logout
   const handleLogout = () => {
-    sessionStorage.clear();
-    router.push("/");
+    localStorage.clear();
+    router.replace("/login");
   };
 
-  if (!mounted) return null; // prevent hydration mismatch
+  if (!mounted) return null;
 
   return (
     <div className="mt-4 text-sm">

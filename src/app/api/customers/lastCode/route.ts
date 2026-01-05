@@ -6,11 +6,11 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const last = await prisma.customer.findFirst({
-      orderBy: { cusotmerCode: "desc" },
+      orderBy: { customerCode: "desc" },
     });
 
     return NextResponse.json({
-      lastCode: last?.cusotmerCode || "LI-FC-000",
+      lastCode: last?.customerCode || "LI-FC-000",
     });
   } catch (error) {
     return NextResponse.json(

@@ -64,12 +64,15 @@ const Login = () => {
         return;
       }
 
+      console.log(data);
       
-      sessionStorage.setItem("fullName", data.user.fullName ?? "");
-      sessionStorage.setItem("role", data.user.role ?? "");
-      sessionStorage.setItem("id", data.user.id ?? "");
-      sessionStorage.setItem("email", data.user.email ?? "");
-      sessionStorage.setItem("phone", data.user.phone ?? "");
+
+      
+     localStorage.setItem("fullName", data.user.fullName ?? "");
+      localStorage.setItem("role", data.user.role ?? "");
+      localStorage.setItem("id", data.user.id ?? "");
+      localStorage.setItem("email", data.user.email ?? "");
+      localStorage.setItem("phone", data.user.phone ?? "");
     
       router.push("/dashboard");
 
