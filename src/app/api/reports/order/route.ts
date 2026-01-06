@@ -43,16 +43,30 @@ export async function GET(req: NextRequest) {
       skip,
       take,
       include: {
-        //product: true,
-        //customer: true,
-        //franchise: true,
+        Product: true,
+        Customer: true,
+        Franchise: true,
       },
       orderBy: { id: "desc" },
     });
 
     const count = await prisma.order.count({ where });
 
-   
+     const formatted = data.map((o) => ({
+      id: o.id,
+      name: o.Customer?.name ?? "-",
+      productName: o.Product?.name ?? "-",
+      orderNumber: o.orderNumber,
+      totalAmount: o.totalAmount,
+      createdAt: o.createdAt ? o.createdAt.toISOString() : null,
+    }));
+
+   return NextResponse.json({
+      data: formatted,
+      count,
+      page,
+      take,
+    });
   } catch (error) {
     console.error("report orders API error", error);
     return NextResponse.json({ error: String(error) }, { status: 500 });

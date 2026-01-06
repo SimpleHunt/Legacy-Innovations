@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_BASE_URL || "http://72.61.238.253:3001";
 
 // 🔹 Session user type
 type SessionUser = {

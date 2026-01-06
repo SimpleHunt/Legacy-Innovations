@@ -73,7 +73,9 @@ export default function FranchiseList({  }: Props) {
     { header: "Address", accessor: "address", className: "hidden lg:table-cell" },
     { header: "IsActive", accessor: "isActive", className: "hidden md:table-cell" },
     { header: "Documents", accessor: "documents", className: "hidden lg:table-cell" },
-    { header: "Actions", accessor: "action" },
+    ...(["SUPER_ADMIN", "ADMIN"].includes(role)
+      ? [{ header: "Actions", accessor: "action", className: "hidden lg:table-cell" }]
+      : []),
   ];
   
 

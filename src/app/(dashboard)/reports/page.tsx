@@ -70,27 +70,37 @@ export default function ProductReportPage() {
     loadInitial();
   }, []);
 
-  // fetch report data based on filters / page
   const loadReport = async () => {
   try {
-    const res = await axios.get(`${baseUrl}/api/reports/order`, {
-      params: {
-        page,
-        take: 10,
-        productId: selectedProduct || undefined,
-        franchiseId: selectedFranchise || undefined,
-        employeeId: selectedEmployee || undefined,
-        customerId: selectedCustomer || undefined,
-        status: selectedStatus || undefined,
-        startDate: startDate || undefined,
-        endDate: endDate || undefined,
-      },
+    const params = new URLSearchParams({
+      page: page.toString(),
+      take: "10",
+      ...(selectedProduct && { productId: selectedProduct }),
+      ...(selectedFranchise && { franchiseId: selectedFranchise }),
+      ...(selectedEmployee && { employeeId: selectedEmployee }),
+      ...(selectedCustomer && { customerId: selectedCustomer }),
+      ...(selectedStatus && { status: selectedStatus }),
+      ...(startDate && { startDate }),
+      ...(endDate && { endDate }),
     });
 
-    setReportData(res.data.data);
-    setCount(res.data.count);
+    const res = await fetch(
+      `${baseUrl}/api/reports/order?${params.toString()}`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch report: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log('report');
+    console.log(data);
+
+    setReportData(data.data);
+    setCount(data.count);
   } catch (err) {
-    console.error(err);
+    console.error("Report load error:", err);
   }
 };
 
@@ -109,7 +119,7 @@ const loadFilteredSummary = async () => {
       }
     });
 
-    //setSummary(res.data.summary);
+    setSummary(res.data.summary);
     setStatusCounts(res.data.statusCounts);
 
   } catch (err) {
@@ -324,7 +334,7 @@ const loadFilteredSummary = async () => {
             </div>
 
             <div className="border-t py-2 px-4 flex justify-end">
-              {/* <Pagination page={page} count={count} setPage={setPage} /> */}
+              { <Pagination page={page} count={count}  /> }
             </div>
           </div>
         </div>

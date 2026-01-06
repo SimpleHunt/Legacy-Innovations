@@ -52,20 +52,18 @@ export default function OrderList({ searchParams }: OrderListProps) {
   const sortOrder = searchParams.sortOrder || "desc";
   const status = searchParams.status || "";
 
-  // ✅ Load session ONCE
   useEffect(() => {
-    const sessionUser = getSessionUser();
-    if (!sessionUser) return;
+  const sessionUser = getSessionUser();
+  if (!sessionUser) return;
 
-    setUser(sessionUser);
-    setRole(sessionUser.role);
-  }, []);
+  setUser(sessionUser);
+  setRole(sessionUser.role);
 
-  // ✅ Fetch orders when params or user change
-  useEffect(() => {
-    if (!user) return;
-    fetchOrders(user);
-  }, [searchParams, user]);
+  fetchOrders(sessionUser);
+}, [searchParams]);
+
+
+ 
 
   const fetchOrders = async (user: SessionUser) => {
     

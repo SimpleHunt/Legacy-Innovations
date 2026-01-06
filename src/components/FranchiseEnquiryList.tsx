@@ -35,19 +35,18 @@ export default function FranchiseEnquiryList({  }: Props) {
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const isActive = searchParams.get("isActive") || "";
 
-  useEffect(() => {
-    const sessionUser = getSessionUser();
-    if (!sessionUser) return;
 
-    setUser(sessionUser);
-    setRole(sessionUser.role);
-    
-  }, []);
-    useEffect(() => {
-     // const user = getSessionUser();
-       if (!user) return;
-      fetchData(user);
-    }, [searchParams]); 
+  useEffect(() => {
+  const sessionUser = getSessionUser();
+  if (!sessionUser) return;
+
+  setUser(sessionUser);
+  setRole(sessionUser.role);
+
+  fetchData(sessionUser);
+}, [searchParams]);
+
+ 
 
     
 
@@ -57,8 +56,8 @@ export default function FranchiseEnquiryList({  }: Props) {
       `${baseUrl}/api/enquiry?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
       { next: { revalidate: 0 } }
     );
-
-    console.log("FETCH ORDERS URL:", res);
+    // console.log("sadf");
+    // console.log("FETCH ORDERS URL:", res);
 
     const result = await res.json();
     setData(result.enquiry);
@@ -77,7 +76,9 @@ export default function FranchiseEnquiryList({  }: Props) {
     { header: "Address", accessor: "address", className: "hidden lg:table-cell" },
     // { header: "Status", accessor: "Status", className: "hidden md:table-cell" },
 
-    // { header: "Actions", accessor: "action" },
+     ...(["SUPER_ADMIN", "ADMIN"].includes(role)
+      ? [{ header: "Actions", accessor: "action", className: "hidden lg:table-cell" }]
+      : []),
   ];
 
   const renderRow = (item: enquiry,index: number) => (

@@ -24,6 +24,8 @@ export default function CustomerList() {
   const searchParams = useSearchParams();
 
   const [role, setRole] = useState<string>("");
+  const [user, setUser] = useState<SessionUser | null>(null);
+  
   const [dataState, setDataState] = useState<{
     customers: Customer[];
     count: number;
@@ -42,14 +44,15 @@ export default function CustomerList() {
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const isActive = searchParams.get("isActive") || "";
 
-  // Fetch data when params change
-  useEffect(() => {
-    const user = getSessionUser();
-    if (!user) return;
+ useEffect(() => {
+  const sessionUser = getSessionUser();
+  if (!sessionUser) return;
 
-    setRole(user.role);        // ✅ FIXED
-    fetchData(user);
-  }, [searchParams]);
+  setUser(sessionUser);
+  setRole(sessionUser.role);
+
+  fetchData(sessionUser);
+}, [searchParams]);
 
   const fetchData = async (user: SessionUser) => {
     const createdBy = user.id;
@@ -93,7 +96,9 @@ export default function CustomerList() {
           },
         ]
       : []),
-    { header: "Actions", accessor: "action" },
+    ...(["SUPER_ADMIN", "ADMIN"].includes(role)
+      ? [{ header: "Actions", accessor: "action", className: "hidden lg:table-cell" }]
+      : []),
   ];
 
   const renderRow = (item: Customer, index: number) => (

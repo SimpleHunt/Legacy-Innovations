@@ -10,6 +10,8 @@ import { writeFile } from "fs/promises";
 
 export async function GET(req: Request) {
   try {
+
+    console.log("Franchise API hit");
     const { searchParams } = new URL(req.url);
 
     // PAGINATION
