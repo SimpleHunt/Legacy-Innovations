@@ -63,10 +63,13 @@ const CustomerForm = ({ type, data, onClose }: { type: "create" | "update"; data
         <InputField label="Customer Name" name="name" defaultValue={data?.name} register={register} error={errors.name} />
         <InputField label="Email" name="email" defaultValue={data?.email} register={register} error={errors.email} />
         <InputField label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />
-        <TextAreaField label="Address" name="address" defaultValue={data?.address} register={register} error={errors.address} />
+        <TextAreaField label="Address" name="address" defaultValue={data?.address} register={register} error={errors.address} />        
+        <TextAreaField label="Description" name="description" defaultValue={data?.description} register={register} error={errors.description} />
+      </div>
+      <div className="flex justify-between flex-wrap gap-4">
         <InputField label="User Name" name="loginUserId" defaultValue={data?.loginUserId} register={register} error={errors.loginUserId} />
         <InputField label="Password" name="password" register={register} error={errors.password} />
-      </div>
+        </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}

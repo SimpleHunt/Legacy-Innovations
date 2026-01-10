@@ -102,6 +102,8 @@ model Order {
   expectedDeliveryDate        DateTime?
   defectedStatus              Int
   defExpectedDate             DateTime   @default(now())
+  quantity                    Int
+  description                 String
   unitPrice                   Float      @default(0)
   unitPriceCost               Float      @default(0)
   discountDate                DateTime

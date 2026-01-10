@@ -93,38 +93,80 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const required = ["orderNumber", "customerId", "productId", "totalAmount"];
-    const missing = required.filter((key) => !body[key]);
+    const {
+      orderNumber,
+      customerId,
+      climate,
+      terrain,
+      description,
+      createdBy,
+      employeeId,
+      franchiseId,
+      items,
+    } = body;
 
-    if (missing.length > 0) {
+    if (!items || items.length === 0) {
       return NextResponse.json(
-        { error: `Missing fields: ${missing.join(", ")}` },
+        { error: "No products provided" },
         { status: 400 }
       );
     }
 
-    // Convert to numbers
-    body.customerId = Number(body.customerId);
-    body.productId = Number(body.productId);
-    if (body.createdBy) body.createdBy = Number(body.createdBy);
+    // ✅ INSERT ORDERS ONE BY ONE (SAME ORDER NUMBER)
+    const createdOrders = [];
 
-    // Date conversion
-    if (body.expectedDeliveryDate) {
-      body.expectedDeliveryDate = new Date(body.expectedDeliveryDate);
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+
+      const uniqueOrderNumber = `${orderNumber}-${i + 1}`;
+
+      const order = await prisma.order.create({
+        data: {
+          orderNumber: uniqueOrderNumber,
+          customerId,
+          productId: item.productId,
+
+          climate: item.climate ?? climate,
+          terrain: item.terrain ?? terrain,
+          description: item.description ?? description,
+
+          quantity: item.stock,
+          unitPrice: item.unitPrice,
+          discount: item.discount,
+          unitPriceCost: item.unitPriceCost,
+          gstPercentage: item.gstPercent,
+          gstAmount: item.gstAmount,
+          totalAmount: item.totalAmount,
+
+          defectedStatus: 0,                    
+          discountDate: new Date(),
+
+          createdBy,
+          employeeId,
+          franchiseId,
+        },
+      });
+
+      createdOrders.push(order);
     }
 
-    delete body.id; // important for create()
-
-    const created = await prisma.order.create({ data: body });
-
-    return NextResponse.json(created, { status: 201 });
-
-  } catch (err: any) {
-    console.error("❌ Error creating order:", err);
-    return NextResponse.json({ error: err.message }, { status: 400 });
+    return NextResponse.json(
+      {
+        success: true,
+        count: createdOrders.length,
+        orderNumber,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("ORDER INSERT ERROR:", error);
+    return NextResponse.json(
+      { error: "Failed to create orders" },
+      { status: 500 }
+    );
   }
 }

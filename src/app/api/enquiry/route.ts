@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
       ownerEmail,
       ownerPhone,
       address,
+      description,
     } = body;
 
 
@@ -81,6 +82,7 @@ export async function POST(req: NextRequest) {
           ownerEmail,
           ownerPhone,
           address,
+          description,
           status: 1,
           
         

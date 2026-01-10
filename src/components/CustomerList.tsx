@@ -87,6 +87,11 @@ export default function CustomerList() {
       accessor: "address",
       className: "hidden lg:table-cell",
     },
+    {
+      header: "Description",
+      accessor: "description",
+      className: "hidden lg:table-cell",
+    },
     ...(["SUPER_ADMIN", "ADMIN"].includes(role)
       ? [
           {
@@ -116,6 +121,7 @@ export default function CustomerList() {
       <td className="hidden md:table-cell">{item.phone}</td>
       <td className="hidden md:table-cell">{item.email}</td>
       <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden md:table-cell">{item.description}</td>
 
       {["SUPER_ADMIN", "ADMIN"].includes(role) && (
         <td className="hidden md:table-cell">{item.customerType}</td>

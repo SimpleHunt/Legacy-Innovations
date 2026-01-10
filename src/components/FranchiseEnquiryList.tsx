@@ -74,7 +74,7 @@ export default function FranchiseEnquiryList({  }: Props) {
     { header: "Mobile", accessor: "mobile", className: "hidden lg:table-cell" },
     { header: "Email", accessor: "email", className: "hidden lg:table-cell" },
     { header: "Address", accessor: "address", className: "hidden lg:table-cell" },
-    // { header: "Status", accessor: "Status", className: "hidden md:table-cell" },
+    { header: "Description", accessor: "Description", className: "hidden md:table-cell" },
 
      ...(["SUPER_ADMIN", "ADMIN"].includes(role)
       ? [{ header: "Actions", accessor: "action", className: "hidden lg:table-cell" }]
@@ -91,6 +91,7 @@ export default function FranchiseEnquiryList({  }: Props) {
       <td className="hidden md:table-cell">{item.ownerEmail}</td>
       
       <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden md:table-cell">{item.description}</td>
      
       <td>
         {["SUPER_ADMIN", "ADMIN"].includes(role)  && (

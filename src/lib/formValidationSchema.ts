@@ -85,7 +85,7 @@ export const enquirySchema = z.object({
     .max(10, { message: "Phone must be 10 digits" })
     .regex(/^[0-9]{10}$/, { message: "Phone must contain only numbers" }),
   address: z.string().min(1, { message: "Address is required!" }),
-  //status:z.string().min(1, { message: "Frachise is required!" }),
+  description:z.string().min(1, { message: "Description is required!" }),
 });
 
 export type EnquirySchema = z.infer<typeof enquirySchema>;
@@ -101,7 +101,8 @@ export const customerSchema = z.object({
     .regex(/^[0-9]{10}$/, { message: "Phone must contain only numbers" }),
   address: z.string().min(1, { message: "Address is required!" }),
   loginUserId: z.string().min(1, { message: "Username is required!" }),
-  password: z.string().min(1, { message: "Password is required!" })
+  password: z.string().min(1, { message: "Password is required!" }),
+  description: z.string().min(1, { message: "Description is required!" }),
 });
 
 export type CustomerSchema = z.infer<typeof customerSchema>;
@@ -129,6 +130,13 @@ export const orderSchema = z.object({
       message: "Terrain is required!",
     }),
 
+  gstPercent: z
+    .enum(["9", "18", "0"])
+    .or(z.literal(""))
+    .refine((val) => val !== "", {
+      message: "GST Percentage is required!",
+    }),
+
   stock: z.coerce.number().min(1, "Stock must be at least 1"),
 
   unitPrice: z.coerce.number().min(0, "Unit price must be positive"),
@@ -137,7 +145,7 @@ export const orderSchema = z.object({
 
   unitPriceCost: z.coerce.number().min(0),
 
-  gstPercent: z.coerce.number().min(0),
+  //gstPercent: z.coerce.number().min(0),
 
   gstAmountValue: z.coerce.number().min(0),
 

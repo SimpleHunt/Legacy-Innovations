@@ -48,6 +48,7 @@ const FranchiseEnquiryForm = ({
       ownerEmail: formData.email,
       ownerPhone: formData.phone,
       address: formData.address,
+      description: formData.description,
     };
 
     console.log("PAYLOAD:", payload);
@@ -100,6 +101,14 @@ const FranchiseEnquiryForm = ({
           defaultValue={data?.email}
           register={register}
           error={errors.email}
+        />
+
+        <TextAreaField
+          label="Description"
+          name="description"
+          defaultValue={data?.description}
+          register={register}
+          error={errors.description}
         />
 
         <TextAreaField
