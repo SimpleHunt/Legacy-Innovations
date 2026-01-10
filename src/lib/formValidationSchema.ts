@@ -109,19 +109,11 @@ export type CustomerSchema = z.infer<typeof customerSchema>;
 
 
 export const orderSchema = z.object({
-  orderNumber: z
-    .string()
-    .min(1, { message: "Order Number is required!" }),
+  orderNumber: z.string().min(1, { message: "Order Number is required!" }),
 
-  customerId: z
-    .string()
-    .min(1, { message: "Order Number is required!" }),
+  customerId: z.string().min(1, { message: "Customer is required!" }),
 
-  productId: z
-    .string()
-    .min(1, { message: "Order Number is required!" }),
-
-    
+  productId: z.string().min(1, { message: "Product is required!" }),
 
   climate: z
     .enum(["HUMID", "COLD"])
@@ -136,34 +128,22 @@ export const orderSchema = z.object({
     .refine((val) => val !== "", {
       message: "Terrain is required!",
     }),
-    
-  stock: z
-    .number()
-    .min(1, "Stock must be at least 1"),
 
-  unitPrice: z
-    .number()
-    .min(0, "Unit price must be positive"),
+  stock: z.coerce.number().min(1, "Stock must be at least 1"),
 
-  discount: z
-    .number()
-    .min(0, "Discount cannot be negative"),
+  unitPrice: z.coerce.number().min(0, "Unit price must be positive"),
 
-  unitPriceCost: z
-    .number()
-    .min(0, "Price after discount cannot be negative"),
+  discount: z.coerce.number().min(0, "Discount cannot be negative"),
 
-  gstPercent: z
-    .number()
-    .min(0, "GST cannot be negative"),
-  gstAmountValue: z
-    .number()
-    .min(0, "GST Amount Value cannot be negative"),
+  unitPriceCost: z.coerce.number().min(0),
 
-  totalAmount: z
-    .number()
-    .min(0, "Total cannot be negative"),
+  gstPercent: z.coerce.number().min(0),
+
+  gstAmountValue: z.coerce.number().min(0),
+
+  totalAmount: z.coerce.number().min(0),
 });
+
 
 export type OrderSchema = z.infer<typeof orderSchema>;
 

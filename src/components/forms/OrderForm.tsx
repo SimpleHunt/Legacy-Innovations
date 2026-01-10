@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSessionUser } from "@/lib/getSessionUser";
+import { z } from "zod";
 
 type SessionUser = {
   id: string;
@@ -63,16 +64,21 @@ const OrderForm = ({ type, data, onClose }: OrderFormProps) => {
     loadData();
   }, [user]);
 
+   type OrderFormInput = z.input<typeof orderSchema>;   // 👈 unknown allowed
+type OrderFormOutput = z.output<typeof orderSchema>; // 👈 numbers guaranteed
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm<OrderSchema>({
+  } = useForm<OrderFormInput>({
     resolver: zodResolver(orderSchema),
     defaultValues: data || { gstPercent: 18 },
   });
+
+ 
 
   // ✅ Auto-generate order number (create only)
   useEffect(() => {
@@ -278,7 +284,7 @@ const OrderForm = ({ type, data, onClose }: OrderFormProps) => {
           type="number"
           register={register}
           //registerOptions={{ valueAsNumber: true }}
-          error={errors.stock}
+          //error={errors.stock}
         />
 
       </div>
@@ -288,20 +294,21 @@ const OrderForm = ({ type, data, onClose }: OrderFormProps) => {
           label="Unit Price"
           name="unitPrice"
           register={register}
-          error={errors.unitPrice}
+          //error={errors.unitPrice}
           inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
         />
 
         <InputField
           label="Discount"
           name="discount"
+          type="number"
           register={register}
         />
         <InputField
           label="Unit Price Cost"
           name="unitPriceCost"
           register={register}
-          error={errors.unitPriceCost}
+          //error={errors.unitPriceCost}
           inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
         />
       </div>
@@ -310,21 +317,21 @@ const OrderForm = ({ type, data, onClose }: OrderFormProps) => {
           label="GST Percentage % "
           name="gstPercent"
           register={register}
-          error={errors.gstPercent}
+          //error={errors.gstPercent}
           inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }}
         />
         <InputField
           label="GST Amount Value"
           name="gstAmountValue"
           register={register}
-          error={errors.gstAmountValue}
+          //error={errors.gstAmountValue}
           inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
         />
         <InputField
           label="Total Amount"
           name="totalAmount"
           register={register}
-          error={errors.totalAmount}
+          //error={errors.totalAmount}
           inputProps={{ readOnly: true, style: { backgroundColor: "rgb(205 205 205)" } }} 
         />
       </div>

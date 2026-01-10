@@ -24,7 +24,7 @@ const ProductListPage = async ({
   const sortBy = params.sortBy || "id";
   const sortOrder = params.sortOrder || "desc";
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://72.61.238.253:3001";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   const res = await fetch(
     `${baseUrl}/api/products?page=${page}&take=${ITEM_PER_PAGE}&search=${search}&isActive=${isActive}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
